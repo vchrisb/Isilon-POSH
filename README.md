@@ -12,6 +12,7 @@ This is an inofficial Powershell module that allows you to manage your EMC Isilo
 
 #### Installation
 
+Copy the folder 'IsilonPlatform' and 'SSLValidation' to the desired module path.
 You can find the configured Powershell module paths in the variable '$env:PSModulePath'.
 
 #### Examples
