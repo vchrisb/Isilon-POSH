@@ -6,9 +6,35 @@ EMC Isilon Platform API implementation in Powershell
 
 This is an inofficial Powershell module that allows you to manage your EMC Isilon Scale-Out NAS systems by Powershell. Only a subset of the  Isilon Platform API is currently implemented. 
 
-#### Requirements:
+#### Requirements
 * Powershell 3.0 and newer
 * Isilon OneFS 7.1.0.0 and newer
+
+#### Installation
+
+You can find the configured Powershell module paths in the variable '$env:PSModulePath'.
+
+#### Examples
+```PowerShell
+Import-Module IsilonPlatform
+
+New-isiSession -ComputerName isilonc1.emc.lab -Username root -Password a
+New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2.emc.lab
+
+Get-isiSMBShares
+Get-isiSMBShares -Cluster isilonc2.emc.lab
+isilonc1.emc.lab, isilonc2.emc.lab | Get-isiSMBShares
+```
+
+#### SSL Validation
+If you are using self signed certificates on your Isilon you need to disable SSL validation in powershell.
+This could be accomplished by code from Matthew Graeber. (http://poshcode.org/3606)
+The code could also be found in this repository.
+
+```PowerShell
+Import-Module SSLValidation
+Disable-SSLValidation
+```
 
 #### Implemented Commands
 
@@ -50,16 +76,5 @@ This is an inofficial Powershell module that allows you to manage your EMC Isilo
 * Set-isiSyncPolicies
 * Set-isiZones
 
-#### Examples:
-```PowerShell
-Import-Module IsilonPlatform
-
-New-isiSession -ComputerName isilonc1.emc.lab -Username root -Password a
-New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2.emc.lab
-
-Get-isiSMBShares
-Get-isiSMBShares -Cluster isilonc2.emc.lab
-isilonc1.emc.lab, isilonc2.emc.lab | Get-isiSMBShares
-```
-#### DISCLAIMER:
+#### DISCLAIMER
 This Powershell Module is not supported. Use at your own risk!
