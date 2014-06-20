@@ -17,7 +17,10 @@ More Information clould be found in these blog posts:
 #### Installation
 
 Copy the folder 'IsilonPlatform' and 'SSLValidation' to the desired module path.
-You can find the configured Powershell module paths in the variable '$env:PSModulePath'.
+You can find the configured Powershell module paths in the variable 
+```PowerShell
+$env:PSModulePath
+```
 
 #### Examples
 ```PowerShell
