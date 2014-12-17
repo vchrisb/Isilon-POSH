@@ -22,6 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
+
 function New-isiSession{
 
 <#
@@ -70,10 +73,10 @@ function New-isiSession{
         $baseurl = "https://$ComputerName`:8080"
 
         #create Jason Object for Input Values
-        $jobj = convertto-json (New-Object PSObject -Property @{username= $Username;password = $Password; services = ("platform",“namespace”)})
+        $jobj = convertto-json @{username= $username;password = $password; services = ('platform','namespace')}
 
         #create session
-        $ISIObject = Invoke-RestMethod -Uri "$baseurl/session/1/session" -Body $jobj -ContentType "application/json; charset=utf-8" -Method POST -SessionVariable session -ErrorAction Stop -ErrorVariable myErr -TimeoutSec 15 -DisableKeepAlive
+        $ISIObject = Invoke-RestMethod -Uri "$baseurl/session/1/session" -Body $jobj -ContentType "application/json; charset=utf-8" -Method POST -SessionVariable session -TimeoutSec 180
 
         #remove cluster if entry exists
         Clear-isiSession -Cluster $Cluster
@@ -263,15 +266,16 @@ function Send-isiAPI{
 #>
 
     Param(
-    [Parameter(Mandatory=$True)][string]$Resource,[string]$Method="GET",
-    $body,
-    [string]$Cluster=$isi_sessiondefault)
+    [Parameter(Mandatory=$True)][string]$Resource,
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][ValidateSet('GET_JSON','GET','POST','PUT','DELETE','POST')][string]$Method="GET",
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][string]$body,
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][string]$Cluster=$isi_sessiondefault)
 
     $isi_session = Get-isiSession -Cluster $Cluster
     $url = $isi_session.url + $Resource
     $session = $isi_session.session
     $Method = $Method.ToUpper()
-    $timeout = 60
+    $timeout = 180
     
     if (!$Cluster){
         Write-Error "No Cluster connected!"
@@ -285,32 +289,25 @@ function Send-isiAPI{
         
 
     }else{
-        
-        switch($Method){
-            "GET_JSON"{ 
-                #$ISIObject = Invoke-RestMethod -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout
-                $ISIObject = (Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout).content
+            try{
+                if ($Method -eq 'GET_JSON') {
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout).content
 
-             }
-            "GET"{ 
-                #$ISIObject = Invoke-RestMethod -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout
-                $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout).content | ConvertFrom-Json
+                } elseif ( ($Method -eq 'GET') -or ($Method -eq 'DELETE') ) {
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout).content | ConvertFrom-Json
+                
+                } elseif ( ($Method -eq 'PUT') -or ($Method -eq 'POST') ) {
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json; charset=utf-8").content | ConvertFrom-Json
 
-             }
-            "POST"{ 
-                #$ISIObject = Invoke-RestMethod -Uri $url -Method $Method -WebSession $session -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec $timeout
-                $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec $timeout).content | ConvertFrom-Json
-            }
-            "PUT"{ 
-                #$ISIObject = Invoke-RestMethod -Uri $url -Method $Method -WebSession $session -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec $timeout
-                $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec $timeout).content | ConvertFrom-Json
-            }
-            "DELETE"{ 
-                #$ISIObject = Invoke-RestMethod -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout
-                $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout).content | ConvertFrom-Json
-            }
+                }       
+            } 
+            catch {
+                $result = $_.Exception.Response.GetResponseStream()
+                $reader = New-Object System.IO.StreamReader($result)
+                $responseBody = $reader.ReadToEnd() | ConvertFrom-Json
+                Write-Error $responseBody.errors.message
 
-        }
+            }  
         $isi_session.timeout = (Get-Date).AddSeconds($isi_session.timeout_inactive)
         $ISIObject
     }
@@ -320,7 +317,6 @@ Export-ModuleMember -Function New-isiSession
 Export-ModuleMember -Function Get-isiSession
 Export-ModuleMember -Function Get-isiSessioninfo
 Export-ModuleMember -Function Remove-isiSession
-Export-ModuleMember -Function Send-isiAPI
 
 function Get-isiSMBSharesSummary{
 <#
@@ -734,41 +730,8 @@ function New-isiSMBShares{
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('access_based_enumeration')){ Add-Member -InputObject $obj -type NoteProperty -name access_based_enumeration -value $access_based_enumeration }
-            if ($PSBoundParameters.ContainsKey('access_based_enumeration_root_only')){ Add-Member -InputObject $obj -type NoteProperty -name access_based_enumeration_root_only -value $access_based_enumeration_root_only }
-            if ($PSBoundParameters.ContainsKey('allow_delete_readonly')){ Add-Member -InputObject $obj -type NoteProperty -name allow_delete_readonly -value $allow_delete_readonly }
-            if ($PSBoundParameters.ContainsKey('allow_execute_always')){ Add-Member -InputObject $obj -type NoteProperty -name allow_execute_always -value $allow_execute_always }
-            if ($PSBoundParameters.ContainsKey('allow_variable_expansion')){ Add-Member -InputObject $obj -type NoteProperty -name allow_variable_expansion -value $allow_variable_expansion }
-            if ($PSBoundParameters.ContainsKey('auto_create_directory')){ Add-Member -InputObject $obj -type NoteProperty -name auto_create_directory -value $auto_create_directory }
-            if ($PSBoundParameters.ContainsKey('browsable')){ Add-Member -InputObject $obj -type NoteProperty -name browsable -value $browsable }
-            if ($PSBoundParameters.ContainsKey('change_notify')){ Add-Member -InputObject $obj -type NoteProperty -name change_notify -value $change_notify }
-            if ($PSBoundParameters.ContainsKey('create_permissions')){ Add-Member -InputObject $obj -type NoteProperty -name create_permissions -value $create_permissions }
-            if ($PSBoundParameters.ContainsKey('csc_policy')){ Add-Member -InputObject $obj -type NoteProperty -name csc_policy -value $csc_policy }
-            if ($PSBoundParameters.ContainsKey('description')){ Add-Member -InputObject $obj -type NoteProperty -name description -value $description }
-            if ($PSBoundParameters.ContainsKey('directory_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name directory_create_mask -value $directory_create_mask }
-            if ($PSBoundParameters.ContainsKey('directory_create_mode')){ Add-Member -InputObject $obj -type NoteProperty -name directory_create_mode -value $directory_create_mode }
-            if ($PSBoundParameters.ContainsKey('file_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name file_create_mask -value $file_create_mask }
-            if ($PSBoundParameters.ContainsKey('file_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name file_create_mode -value $file_create_mode }
-            if ($PSBoundParameters.ContainsKey('hide_dot_files')){ Add-Member -InputObject $obj -type NoteProperty -name hide_dot_files -value $hide_dot_files }
-            if ($PSBoundParameters.ContainsKey('host_acl')){ Add-Member -InputObject $obj -type NoteProperty -name host_acl -value $host_acl }
-            if ($PSBoundParameters.ContainsKey('impersonate_guest')){ Add-Member -InputObject $obj -type NoteProperty -name impersonate_guest -value $impersonate_guest }
-            if ($PSBoundParameters.ContainsKey('impersonate_user')){ Add-Member -InputObject $obj -type NoteProperty -name impersonate_user -value $impersonate_user }
-            if ($PSBoundParameters.ContainsKey('inheritable_path_acl')){ Add-Member -InputObject $obj -type NoteProperty -name inheritable_path_acl -value $inheritable_path_acl }
-            if ($PSBoundParameters.ContainsKey('mangle_byte_start')){ Add-Member -InputObject $obj -type NoteProperty -name mangle_byte_start -value $mangle_byte_start }
-            if ($PSBoundParameters.ContainsKey('mangle_map')){ Add-Member -InputObject $obj -type NoteProperty -name mangle_map -value $mangle_map }
-            Add-Member -InputObject $obj -type NoteProperty -name name -value $name
-            if ($PSBoundParameters.ContainsKey('ntfs_acl_support')){ Add-Member -InputObject $obj -type NoteProperty -name ntfs_acl_support -value $ntfs_acl_support }
-            if ($PSBoundParameters.ContainsKey('oplocks')){ Add-Member -InputObject $obj -type NoteProperty -name oplocks -value $oplocks }
-            Add-Member -InputObject $obj -type NoteProperty -name path -value $path
-            if ($PSBoundParameters.ContainsKey('permissions')){ Add-Member -InputObject $obj -type NoteProperty -name permissions -value $permissions }
-            if ($PSBoundParameters.ContainsKey('run_as_root')){ Add-Member -InputObject $obj -type NoteProperty -name run_as_root -value $run_as_root }
-            if ($PSBoundParameters.ContainsKey('strict_flush')){ Add-Member -InputObject $obj -type NoteProperty -name strict_flush -value $strict_flush }
-            if ($PSBoundParameters.ContainsKey('strict_locking')){ Add-Member -InputObject $obj -type NoteProperty -name strict_locking -value $strict_locking }
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","New-isiSMBShares")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/protocols/smb/shares" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/protocols/smb/shares" -body (convertto-json -depth 40 $PSBoundParameters)
             }
     }
     End{
@@ -834,41 +797,8 @@ function Set-isiSMBShares{
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('access_based_enumeration')){ Add-Member -InputObject $obj -type NoteProperty -name access_based_enumeration -value $access_based_enumeration }
-            if ($PSBoundParameters.ContainsKey('access_based_enumeration_root_only')){ Add-Member -InputObject $obj -type NoteProperty -name access_based_enumeration_root_only -value $access_based_enumeration_root_only }
-            if ($PSBoundParameters.ContainsKey('allow_delete_readonly')){ Add-Member -InputObject $obj -type NoteProperty -name allow_delete_readonly -value $allow_delete_readonly }
-            if ($PSBoundParameters.ContainsKey('allow_execute_always')){ Add-Member -InputObject $obj -type NoteProperty -name allow_execute_always -value $allow_execute_always }
-            if ($PSBoundParameters.ContainsKey('allow_variable_expansion')){ Add-Member -InputObject $obj -type NoteProperty -name allow_variable_expansion -value $allow_variable_expansion }
-            if ($PSBoundParameters.ContainsKey('auto_create_directory')){ Add-Member -InputObject $obj -type NoteProperty -name auto_create_directory -value $auto_create_directory }
-            if ($PSBoundParameters.ContainsKey('browsable')){ Add-Member -InputObject $obj -type NoteProperty -name browsable -value $browsable }
-            if ($PSBoundParameters.ContainsKey('change_notify')){ Add-Member -InputObject $obj -type NoteProperty -name change_notify -value $change_notify }
-            if ($PSBoundParameters.ContainsKey('create_permissions')){ Add-Member -InputObject $obj -type NoteProperty -name create_permissions -value $create_permissions }
-            if ($PSBoundParameters.ContainsKey('csc_policy')){ Add-Member -InputObject $obj -type NoteProperty -name csc_policy -value $csc_policy }
-            if ($PSBoundParameters.ContainsKey('description')){ Add-Member -InputObject $obj -type NoteProperty -name description -value $description }
-            if ($PSBoundParameters.ContainsKey('directory_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name directory_create_mask -value $directory_create_mask }
-            if ($PSBoundParameters.ContainsKey('directory_create_mode')){ Add-Member -InputObject $obj -type NoteProperty -name directory_create_mode -value $directory_create_mode }
-            if ($PSBoundParameters.ContainsKey('file_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name file_create_mask -value $file_create_mask }
-            if ($PSBoundParameters.ContainsKey('file_create_mask')){ Add-Member -InputObject $obj -type NoteProperty -name file_create_mode -value $file_create_mode }
-            if ($PSBoundParameters.ContainsKey('hide_dot_files')){ Add-Member -InputObject $obj -type NoteProperty -name hide_dot_files -value $hide_dot_files }
-            if ($PSBoundParameters.ContainsKey('host_acl')){ Add-Member -InputObject $obj -type NoteProperty -name host_acl -value $host_acl }
-            if ($PSBoundParameters.ContainsKey('impersonate_guest')){ Add-Member -InputObject $obj -type NoteProperty -name impersonate_guest -value $impersonate_guest }
-            if ($PSBoundParameters.ContainsKey('impersonate_user')){ Add-Member -InputObject $obj -type NoteProperty -name impersonate_user -value $impersonate_user }
-            if ($PSBoundParameters.ContainsKey('inheritable_path_acl')){ Add-Member -InputObject $obj -type NoteProperty -name inheritable_path_acl -value $inheritable_path_acl }
-            if ($PSBoundParameters.ContainsKey('mangle_byte_start')){ Add-Member -InputObject $obj -type NoteProperty -name mangle_byte_start -value $mangle_byte_start }
-            if ($PSBoundParameters.ContainsKey('mangle_map')){ Add-Member -InputObject $obj -type NoteProperty -name mangle_map -value $mangle_map }
-            if ($PSBoundParameters.ContainsKey('new_name')){Add-Member -InputObject $obj -type NoteProperty -name name -value $new_name}
-            if ($PSBoundParameters.ContainsKey('ntfs_acl_support')){ Add-Member -InputObject $obj -type NoteProperty -name ntfs_acl_support -value $ntfs_acl_support }
-            if ($PSBoundParameters.ContainsKey('oplocks')){ Add-Member -InputObject $obj -type NoteProperty -name oplocks -value $oplocks }
-            if ($PSBoundParameters.ContainsKey('path')){Add-Member -InputObject $obj -type NoteProperty -name path -value $path}
-            if ($PSBoundParameters.ContainsKey('permissions')){ Add-Member -InputObject $obj -type NoteProperty -name permissions -value $permissions }
-            if ($PSBoundParameters.ContainsKey('run_as_root')){ Add-Member -InputObject $obj -type NoteProperty -name run_as_root -value $run_as_root }
-            if ($PSBoundParameters.ContainsKey('strict_flush')){ Add-Member -InputObject $obj -type NoteProperty -name strict_flush -value $strict_flush }
-            if ($PSBoundParameters.ContainsKey('strict_locking')){ Add-Member -InputObject $obj -type NoteProperty -name strict_locking -value $strict_locking }
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","New-isiSMBShares")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/protocols/smb/shares/$name" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/protocols/smb/shares/$name" -body (convertto-json -depth 40 $PSBoundParameters)
                 $ISIObject
             }
     }
@@ -1063,26 +993,8 @@ function Set-isiZones {
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('all_auth_providers')){ Add-Member -InputObject $obj -type NoteProperty -name all_auth_providers -value $all_auth_providers }
-            if ($PSBoundParameters.ContainsKey('all_smb_shares')){ Add-Member -InputObject $obj -type NoteProperty -name all_smb_shares -value $all_smb_shares }
-            if ($PSBoundParameters.ContainsKey('alternate_system_provider')){ Add-Member -InputObject $obj -type NoteProperty -name alternate_system_provider -value $alternate_system_provider }
-            if ($PSBoundParameters.ContainsKey('auth_providers')){ Add-Member -InputObject $obj -type NoteProperty -name auth_providers -value $auth_providers }
-            if ($PSBoundParameters.ContainsKey('cache_size')){ Add-Member -InputObject $obj -type NoteProperty -name cache_size -value $cache_size }
-            if ($PSBoundParameters.ContainsKey('home_directory_umask')){ Add-Member -InputObject $obj -type NoteProperty -name home_directory_umask -value $home_directory_umask }
-            if ($PSBoundParameters.ContainsKey('ifs_restricted')){ Add-Member -InputObject $obj -type NoteProperty -name ifs_restricted -value $ifs_restricted }
-            if ($PSBoundParameters.ContainsKey('local_provider')){ Add-Member -InputObject $obj -type NoteProperty -name local_provider -value $local_provider }
-            if ($PSBoundParameters.ContainsKey('map_untrusted')){ Add-Member -InputObject $obj -type NoteProperty -name map_untrusted -value $map_untrusted }
-            if ($PSBoundParameters.ContainsKey('new_name')){Add-Member -InputObject $obj -type NoteProperty -name name -value $new_name}
-            if ($PSBoundParameters.ContainsKey('netbios_name')){ Add-Member -InputObject $obj -type NoteProperty -name netbios_name -value $netbios_name }
-            if ($PSBoundParameters.ContainsKey('skeleton_directory')){ Add-Member -InputObject $obj -type NoteProperty -name skeleton_directory -value $skeleton_directory }
-            if ($PSBoundParameters.ContainsKey('smb_shares')){ Add-Member -InputObject $obj -type NoteProperty -name smb_shares -value $smb_shares }
-            if ($PSBoundParameters.ContainsKey('system_provider')){ Add-Member -InputObject $obj -type NoteProperty -name system_provider -value $system_provider }
-            if ($PSBoundParameters.ContainsKey('user_mapping_rules')){ Add-Member -InputObject $obj -type NoteProperty -name user_mapping_rules -value $user_mapping_rules }
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","Set-isiZones")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/zones/$name" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/zones/$name" -body (convertto-json -depth 40 $PSBoundParameters)
             }
     }
     End{
@@ -1133,26 +1045,8 @@ function New-isiZones{
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('all_auth_providers')){ Add-Member -InputObject $obj -type NoteProperty -name all_auth_providers -value $all_auth_providers }
-            if ($PSBoundParameters.ContainsKey('all_smb_shares')){ Add-Member -InputObject $obj -type NoteProperty -name all_smb_shares -value $all_smb_shares }
-            if ($PSBoundParameters.ContainsKey('alternate_system_provider')){ Add-Member -InputObject $obj -type NoteProperty -name alternate_system_provider -value $alternate_system_provider }
-            if ($PSBoundParameters.ContainsKey('auth_providers')){ Add-Member -InputObject $obj -type NoteProperty -name auth_providers -value $auth_providers }
-            if ($PSBoundParameters.ContainsKey('cache_size')){ Add-Member -InputObject $obj -type NoteProperty -name cache_size -value $cache_size }
-            if ($PSBoundParameters.ContainsKey('home_directory_umask')){ Add-Member -InputObject $obj -type NoteProperty -name home_directory_umask -value $home_directory_umask }
-            if ($PSBoundParameters.ContainsKey('ifs_restricted')){ Add-Member -InputObject $obj -type NoteProperty -name ifs_restricted -value $ifs_restricted }
-            if ($PSBoundParameters.ContainsKey('local_provider')){ Add-Member -InputObject $obj -type NoteProperty -name local_provider -value $local_provider }
-            if ($PSBoundParameters.ContainsKey('map_untrusted')){ Add-Member -InputObject $obj -type NoteProperty -name map_untrusted -value $map_untrusted }
-            Add-Member -InputObject $obj -type NoteProperty -name name -value $name
-            if ($PSBoundParameters.ContainsKey('netbios_name')){ Add-Member -InputObject $obj -type NoteProperty -name netbios_name -value $netbios_name }
-            if ($PSBoundParameters.ContainsKey('skeleton_directory')){ Add-Member -InputObject $obj -type NoteProperty -name skeleton_directory -value $skeleton_directory }
-            if ($PSBoundParameters.ContainsKey('smb_shares')){ Add-Member -InputObject $obj -type NoteProperty -name smb_shares -value $smb_shares }
-            if ($PSBoundParameters.ContainsKey('system_provider')){ Add-Member -InputObject $obj -type NoteProperty -name system_provider -value $system_provider }
-            if ($PSBoundParameters.ContainsKey('user_mapping_rules')){ Add-Member -InputObject $obj -type NoteProperty -name user_mapping_rules -value $user_mapping_rules }
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","New-isiZones")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/zones" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/zones" -body (convertto-json -depth 40 $PSBoundParameters)
             }
     }
     End{
@@ -1327,19 +1221,8 @@ function Set-isiQuotas {
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('container')){ Add-Member -InputObject $obj -type NoteProperty -name container -value $container }
-            if ($PSBoundParameters.ContainsKey('enforced')){ Add-Member -InputObject $obj -type NoteProperty -name enforced -value $enforced }
-            if ($PSBoundParameters.ContainsKey('include_snapshots')){ Add-Member -InputObject $obj -type NoteProperty -name include_snapshots -value $include_snapshots }
-            if ($PSBoundParameters.ContainsKey('path')){ Add-Member -InputObject $obj -type NoteProperty -name path -value $path }
-            if ($PSBoundParameters.ContainsKey('persona')){ Add-Member -InputObject $obj -type NoteProperty -name persona -value $persona }
-            if ($PSBoundParameters.ContainsKey('thresholds')){ Add-Member -InputObject $obj -type NoteProperty -name thresholds -value $thresholds }
-            if ($PSBoundParameters.ContainsKey('thresholds_include_overhead')){ Add-Member -InputObject $obj -type NoteProperty -name thresholds_include_overhead -value $thresholds_include_overhead }
-            if ($PSBoundParameters.ContainsKey('type')){ Add-Member -InputObject $obj -type NoteProperty -name type -value $type }
-
             if ($Force -or $PSCmdlet.ShouldProcess("$id","Set-isiZones")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/quota/quotas/$id" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/quota/quotas/$id" -body (convertto-json -depth 40 $PSBoundParameters)
                 $ISIObject.id
             }
     }
@@ -1381,19 +1264,8 @@ function New-isiQuotas{
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('container')){ Add-Member -InputObject $obj -type NoteProperty -name container -value $container }
-            Add-Member -InputObject $obj -type NoteProperty -name enforced -value $enforced
-            Add-Member -InputObject $obj -type NoteProperty -name include_snapshots -value $include_snapshots
-            Add-Member -InputObject $obj -type NoteProperty -name path -value $path
-            if ($PSBoundParameters.ContainsKey('persona')){ Add-Member -InputObject $obj -type NoteProperty -name persona -value $persona }
-            if ($PSBoundParameters.ContainsKey('thresholds')){ Add-Member -InputObject $obj -type NoteProperty -name thresholds -value $thresholds }
-            Add-Member -InputObject $obj -type NoteProperty -name thresholds_include_overhead -value $thresholds_include_overhead
-            Add-Member -InputObject $obj -type NoteProperty -name type -value $type
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","New-isiZones")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/quota/quotas" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/quota/quotas" -body (convertto-json -depth 40 $PSBoundParameters)
                 $ISIObject.id
             }
     }
@@ -1679,39 +1551,8 @@ function Set-isiSyncPolicies {
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            if ($PSBoundParameters.ContainsKey('action')){ Add-Member -InputObject $obj -type NoteProperty -name action -value $action }
-            if ($PSBoundParameters.ContainsKey('burst_mode')){ Add-Member -InputObject $obj -type NoteProperty -name burst_mode -value $burst_mode }
-            if ($PSBoundParameters.ContainsKey('check_integrity')){ Add-Member -InputObject $obj -type NoteProperty -name check_integrity -value $check_integrity }
-            if ($PSBoundParameters.ContainsKey('description')){ Add-Member -InputObject $obj -type NoteProperty -name description -value $description }
-            if ($PSBoundParameters.ContainsKey('enabled')){ Add-Member -InputObject $obj -type NoteProperty -name enabled -value $enabled }
-            if ($PSBoundParameters.ContainsKey('log_level')){ Add-Member -InputObject $obj -type NoteProperty -name log_level -value $log_level }
-            if ($PSBoundParameters.ContainsKey('log_removed_files')){ Add-Member -InputObject $obj -type NoteProperty -name log_removed_files -value $log_removed_files }
-            if ($PSBoundParameters.ContainsKey('new_name')){Add-Member -InputObject $obj -type NoteProperty -name name -value $new_name}
-            if ($PSBoundParameters.ContainsKey('password')){ Add-Member -InputObject $obj -type NoteProperty -name password -value $password }
-            if ($PSBoundParameters.ContainsKey('report_max_age')){ Add-Member -InputObject $obj -type NoteProperty -name report_max_age -value $report_max_age }
-            if ($PSBoundParameters.ContainsKey('report_max_count')){Add-Member -InputObject $obj -type NoteProperty -name report_max_count -value $report_max_count}
-            if ($PSBoundParameters.ContainsKey('restrict_target_network')){ Add-Member -InputObject $obj -type NoteProperty -name restrict_target_network -value $restrict_target_network }
-            if ($PSBoundParameters.ContainsKey('schedule')){ Add-Member -InputObject $obj -type NoteProperty -name schedule -value $schedule }
-            if ($PSBoundParameters.ContainsKey('source_exclude_directories')){ Add-Member -InputObject $obj -type NoteProperty -name source_exclude_directories -value $source_exclude_directories }
-            if ($PSBoundParameters.ContainsKey('source_include_directories')){ Add-Member -InputObject $obj -type NoteProperty -name source_include_directories -value $source_include_directories }
-            if ($PSBoundParameters.ContainsKey('source_root_path')){ Add-Member -InputObject $obj -type NoteProperty -name source_root_path -value $source_root_path }
-            if ($PSBoundParameters.ContainsKey('source_snapshot_archive')){ Add-Member -InputObject $obj -type NoteProperty -name source_snapshot_archive -value $source_snapshot_archive }
-            if ($PSBoundParameters.ContainsKey('source_snapshot_expiration')){ Add-Member -InputObject $obj -type NoteProperty -name source_snapshot_expiration -value $source_snapshot_expiration }
-            if ($PSBoundParameters.ContainsKey('target_compare_initial_sync')){ Add-Member -InputObject $obj -type NoteProperty -name target_compare_initial_sync -value $target_compare_initial_sync }
-            if ($PSBoundParameters.ContainsKey('target_detect_modifications')){ Add-Member -InputObject $obj -type NoteProperty -name target_detect_modifications -value $target_detect_modifications }
-            if ($PSBoundParameters.ContainsKey('target_host')){ Add-Member -InputObject $obj -type NoteProperty -name target_host -value $target_host }
-            if ($PSBoundParameters.ContainsKey('target_path')){ Add-Member -InputObject $obj -type NoteProperty -name target_path -value $target_path }
-            if ($PSBoundParameters.ContainsKey('target_snapshot_alias')){ Add-Member -InputObject $obj -type NoteProperty -name target_snapshot_alias -value $target_snapshot_alias }
-            if ($PSBoundParameters.ContainsKey('target_snapshot_archive')){ Add-Member -InputObject $obj -type NoteProperty -name target_snapshot_archive -value $target_snapshot_archive }
-            if ($PSBoundParameters.ContainsKey('target_snapshot_expiration')){ Add-Member -InputObject $obj -type NoteProperty -name target_snapshot_expiration -value $target_snapshot_expiration }
-            if ($PSBoundParameters.ContainsKey('target_snapshot_pattern')){ Add-Member -InputObject $obj -type NoteProperty -name target_snapshot_pattern -value $target_snapshot_pattern }
-            if ($PSBoundParameters.ContainsKey('workers_per_node')){ Add-Member -InputObject $obj -type NoteProperty -name workers_per_node -value $workers_per_node }
-
-
             if ($Force -or $PSCmdlet.ShouldProcess("$name","Set-isiSyncPolicies")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/sync/policies/$name" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method PUT -Resource "/platform/1/sync/policies/$name" -body (convertto-json -depth 40 $PSBoundParameters)
             }
     }
     End{
@@ -1789,13 +1630,8 @@ function Start-isiSyncJobs {
     }
     Process{
 
-            #create object
-            $obj = [pscustomobject]@{}
-            Add-Member -InputObject $obj -type NoteProperty -name id -value $policy
-
-
             if ($Force -or $PSCmdlet.ShouldProcess("$id","Start-isiSyncJobs")){
-                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/sync/jobs" -body (convertto-json -depth 40 $obj)
+                $ISIObject = Send-isiAPI -Cluster $Cluster -Method POST -Resource "/platform/1/sync/jobs" -body (convertto-json -depth 40 $PSBoundParameters)
             }
     }
     End{
