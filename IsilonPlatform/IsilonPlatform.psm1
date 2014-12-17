@@ -34,6 +34,18 @@ function New-isiSession{
 .DESCRIPTION
     Establishes a new Session with an Isilon Cluster
 
+.PARAMETER ComputerName
+IP or FQDN of an Isilon node or SmartConnect address
+
+.PARAMETER Username
+
+.PARAMETER Password
+
+.PARAMETER Cluster
+This variable will default to the ComputerName if not set.
+
+.PARAMETER default
+
 .EXAMPLE
     New-isiSession -ComputerName 172.19.20.21 -Username root -Password a -Cluster Isilon1
 
@@ -44,7 +56,7 @@ function New-isiSession{
     "isilon1.domain.com","isilon2.domain.com" | New-isiSession -Username root -Password a
 
 #>
-
+    [CmdletBinding()]
     Param(
             [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][ValidateNotNullOrEmpty()][string] $ComputerName, 
             [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $Username, 
@@ -99,7 +111,7 @@ function New-isiSession{
     }
 }
 
-function Get-isiSessioninfo {
+function Get-isiSessionInfo {
 
 <#
 .SYNOPSIS
@@ -107,20 +119,22 @@ function Get-isiSessioninfo {
 
 .DESCRIPTION
 
-.EXAMPLE
-    Get-isiSessioninfo
+.PARAMETER Cluster
 
 .EXAMPLE
-    Get-isiSessioninfo -Cluster Isilon1
+    Get-isiSessionInfo
 
 .EXAMPLE
-    "isilon1.domain.com","isilon2.domain.com" | Get-isiSessioninfo
+    Get-isiSessionInfo -Cluster Isilon1
 
+.EXAMPLE
+    "isilon1.domain.com","isilon2.domain.com" | Get-isiSessionInfo
 
 .NOTES
     
 
 #>
+    [CmdletBinding()]
     Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][string]$Cluster=$isi_sessiondefault)
 
     Begin{
@@ -143,6 +157,8 @@ function Get-isiSession {
 
 .DESCRIPTION
 
+.PARAMETER Cluster
+
 .EXAMPLE
     Get-isiSession
 
@@ -153,13 +169,10 @@ function Get-isiSession {
     
 
 #>
+    [CmdletBinding()]
+    Param([string]$Cluster)
 
-    Param([string]$Cluster,[switch]$default)
-
-    if($default){
-        $isi_sessiondefault
-    }
-    Elseif($Cluster){
+    if($Cluster){
         $isi_sessions | where { $_.cluster -eq $Cluster }
     }else{
         $isi_sessions
@@ -174,6 +187,8 @@ function Clear-isiSession {
 
 .DESCRIPTION
 
+.PARAMETER Cluster
+
 .EXAMPLE
     Clear-isiSession
 
@@ -184,7 +199,7 @@ function Clear-isiSession {
     
 
 #>
-
+    [CmdletBinding()]
     param ([Parameter(Mandatory=$False,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true,Position=0)][string]$Cluster)
 
     if($Cluster){
@@ -207,6 +222,8 @@ function Remove-isiSession {
 
 .DESCRIPTION
 
+.PARAMETER Cluster
+
 .EXAMPLE
     Remove-isiSession
 
@@ -220,7 +237,7 @@ function Remove-isiSession {
     
 
 #>
-
+    [CmdletBinding()]
     Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][string]$Cluster=$isi_sessiondefault)
 
     Begin{
@@ -250,6 +267,66 @@ function Remove-isiSession {
         
 }
 
+function Get-isiSessionDefault {
+
+<#
+.SYNOPSIS
+    Display Default Isilon Sessisons
+
+.DESCRIPTION
+
+.EXAMPLE
+    Get-isiSession
+
+.NOTES
+    
+
+#>
+
+        $script:isi_sessiondefault
+}
+
+function Set-isiSessionDefault {
+
+<#
+.SYNOPSIS
+     Isilon Sessison
+
+.DESCRIPTION
+
+
+.EXAMPLE
+    Set-isiSessionDefault -Cluster Isilon1
+
+.NOTES
+    
+
+#>
+    [CmdletBinding()]
+    Param([Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$false,ValueFromPipeline=$false)][string]$Cluster)
+
+    Begin{
+
+    }
+
+    Process{        
+
+        if (@($isi_sessions | where { $_.cluster -eq $Cluster} ).count -eq 1){
+            $script:isi_sessiondefault = $Cluster
+
+        }
+        else{
+            Write-Error "Session for Cluster `"$Cluster`" not found"
+        
+        }    
+
+    }
+
+    End{
+    }
+        
+}
+
 function Send-isiAPI{
 
 <#
@@ -258,13 +335,21 @@ function Send-isiAPI{
 
 .DESCRIPTION
 
+.PARAMETER Cluster
+
+.PARAMETER Resource
+
+.PARAMETER body
+
+.PARAMETER Method
+
 .EXAMPLE
     Send-isiAPI -Resource "/platform/1/protocols/smb/shares" -Cluster IsilonC1 -Method GET
 
 .NOTES
 
 #>
-
+    [CmdletBinding()]
     Param(
     [Parameter(Mandatory=$True)][string]$Resource,
     [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][ValidateSet('GET_JSON','GET','POST','PUT','DELETE','POST')][string]$Method="GET",
@@ -315,7 +400,9 @@ function Send-isiAPI{
 
 Export-ModuleMember -Function New-isiSession
 Export-ModuleMember -Function Get-isiSession
-Export-ModuleMember -Function Get-isiSessioninfo
+Export-ModuleMember -Function Get-isiSessionInfo
+Export-ModuleMember -Function Get-isiSessionDefault
+Export-ModuleMember -Function Set-isiSessionDefault
 Export-ModuleMember -Function Remove-isiSession
 
 function Get-isiSMBSharesSummary{
