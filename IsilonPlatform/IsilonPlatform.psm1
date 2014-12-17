@@ -58,11 +58,11 @@ This variable will default to the ComputerName if not set.
 #>
     [CmdletBinding()]
     Param(
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][ValidateNotNullOrEmpty()][string] $ComputerName, 
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $Username, 
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $Password,
-            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string]$Cluster,
-            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true)][switch]$default)
+            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string] $ComputerName, 
+            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=1)][ValidateNotNullOrEmpty()][string] $Username, 
+            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=2)][ValidateNotNullOrEmpty()][string] $Password,
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster,
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=4)][switch]$default)
 
     Begin{
         
@@ -135,7 +135,7 @@ function Get-isiSessionInfo {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][string]$Cluster=$isi_sessiondefault)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster=$isi_sessiondefault)
 
     Begin{
 
@@ -170,7 +170,7 @@ function Get-isiSession {
 
 #>
     [CmdletBinding()]
-    Param([string]$Cluster)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster)
 
     if($Cluster){
         $isi_sessions | where { $_.cluster -eq $Cluster }
@@ -238,7 +238,7 @@ function Remove-isiSession {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true)][string]$Cluster=$isi_sessiondefault)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster=$isi_sessiondefault)
 
     Begin{
 
@@ -303,7 +303,7 @@ function Set-isiSessionDefault {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$false,ValueFromPipeline=$false)][string]$Cluster)
+    Param([Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0)][string]$Cluster)
 
     Begin{
 
@@ -351,10 +351,10 @@ function Send-isiAPI{
 #>
     [CmdletBinding()]
     Param(
-    [Parameter(Mandatory=$True)][string]$Resource,
-    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][ValidateSet('GET_JSON','GET','POST','PUT','DELETE','POST')][string]$Method="GET",
-    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][string]$body,
-    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False)][string]$Cluster=$isi_sessiondefault)
+    [Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=0)][string]$Resource,
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=1)][ValidateSet('GET_JSON','GET','POST','PUT','DELETE','POST')][string]$Method="GET",
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=2)][string]$body,
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=3)][string]$Cluster=$isi_sessiondefault)
 
     $isi_session = Get-isiSession -Cluster $Cluster
     $url = $isi_session.url + $Resource
