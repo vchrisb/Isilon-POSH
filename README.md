@@ -18,7 +18,7 @@ More Information clould be found in these blog posts:
 * Websession support, no need to store password
 * PowerShell pipeline support
 * concurrently connecting to multiple Isilon clusters
-* close to 100% of the Platform API covered
+* 100% of the Platform API for OneFS v7.2 covered
 * confirmation and error handling
 
 #### Installation
