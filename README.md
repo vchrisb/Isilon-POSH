@@ -29,9 +29,9 @@ Import-Module IsilonPlatform
 New-isiSession -ComputerName isilonc1.emc.lab -Username root -Password a
 New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2.emc.lab
 
-Get-isiSMBShares
-Get-isiSMBShares -Cluster isilonc2.emc.lab
-isilonc1.emc.lab, isilonc2.emc.lab | Get-isiSMBShares
+Get-isiSmbShares
+Get-isiSmbShares -Cluster isilonc2.emc.lab
+Get-isiSession | Get-isiSmbShares
 ```
 
 #### SSL Validation
