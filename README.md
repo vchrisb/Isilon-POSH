@@ -37,7 +37,7 @@ Import-Module IsilonPlatform
 New-isiSession -ComputerName isilonc1.emc.lab -Username root -Password a
 
 # connect Isilon using IP address and configure a Cluster name
-New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2.emc.lab
+New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2
 
 # Get all SMB shares for default cluster
 Get-isiSmbShares
