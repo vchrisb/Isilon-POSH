@@ -32,6 +32,8 @@ New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster 
 Get-isiSmbShares
 Get-isiSmbShares -Cluster isilonc2.emc.lab
 Get-isiSession | Get-isiSmbShares
+New-isiSmbShare -name HR -path '/ifs/data/HR'
+Get-isiSmbShares | where -like '*test*' | Set-isiSmbShares -describtion 'This is a Test Share'
 ```
 
 #### SSL Validation
