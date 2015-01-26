@@ -30,13 +30,13 @@
 RootModule = 'IsilonPlatform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.5'
+ModuleVersion = '1.1.7'
 
 # ID used to uniquely identify this module
 GUID = '0bcb10cf-1d7e-4bad-8239-f725dcf1808f'
 
 # Author of this module
-Author = 'CHRISTOPHER BANCK'
+Author = 'Christopher Banck'
 
 # Company or vendor of this module
 CompanyName = ''
@@ -81,25 +81,25 @@ PowerShellVersion = '3.0'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+#NestedModules = @('IsilonPlatformGet.psm1')
 
 # Functions to export from this module
-FunctionsToExport = '*'
+#FunctionsToExport = '*'
 
 # Cmdlets to export from this module
-CmdletsToExport = '*'
+#CmdletsToExport = '*'
 
 # Variables to export from this module
-VariablesToExport = '*'
+#VariablesToExport = '*'
 
 # Aliases to export from this module
-AliasesToExport = '*'
+#AliasesToExport = '*'
 
 # List of all modules packaged with this module
-# ModuleList = @()
+#ModuleList = @('IsilonPlatformGet')
 
 # List of all files packaged with this module
-FileList = @('IsilonPlatform.psm1','IsilonPlatform.psd1')
+FileList = @('IsilonPlatform.psm1','IsilonPlatform.psd1','IsilonPlatformGet.psm1')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess
 # PrivateData = ''
