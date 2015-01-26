@@ -14,6 +14,13 @@ More Information clould be found in these blog posts:
 * Powershell 3.0 and newer
 * Isilon OneFS 7.1.0.0 and newer
 
+#### Features
+* Websession support, no need to store password
+* PowerShell pipeline support
+* concurrently connecting to multiple Isilon clusters
+* close to 100% of the Platform API covered
+* confirmation and error handling
+
 #### Installation
 
 Copy the folder 'IsilonPlatform' and 'SSLValidation' to the desired module path.
