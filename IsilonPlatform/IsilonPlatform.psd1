@@ -30,7 +30,7 @@
 RootModule = 'IsilonPlatform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.7'
+ModuleVersion = '1.2.1'
 
 # ID used to uniquely identify this module
 GUID = '0bcb10cf-1d7e-4bad-8239-f725dcf1808f'
@@ -99,7 +99,7 @@ PowerShellVersion = '3.0'
 #ModuleList = @('IsilonPlatformGet')
 
 # List of all files packaged with this module
-FileList = @('IsilonPlatform.psm1','IsilonPlatform.psd1','IsilonPlatformGet.psm1')
+FileList = @('IsilonPlatform.psm1','IsilonPlatform.psd1')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess
 # PrivateData = ''
