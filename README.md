@@ -53,6 +53,9 @@ New-isiSmbShare -name HR -path '/ifs/data/HR'
 
 # add a describtion to all SMB shares that have 'test' in there share name
 Get-isiSmbShares | where name -like '*test*' | Set-isiSmbShare -description 'This is a Test Share'
+
+# print help for function New-isiSmbShares
+Get-Help -Detailed New-isiSmbShares
 ```
 
 #### SSL Validation
