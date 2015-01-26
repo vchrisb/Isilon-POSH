@@ -33,14 +33,24 @@ $env:PSModulePath
 ```PowerShell
 Import-Module IsilonPlatform
 
+# connect Isilon using FQDN
 New-isiSession -ComputerName isilonc1.emc.lab -Username root -Password a
+# connect Isilon using IP address and configure a Cluster name
 New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster isilonc2.emc.lab
 
+# Get all SMB shares for default cluster
 Get-isiSmbShares
+# Get all SMB shares for cluster isilonc2.emc.lab
 Get-isiSmbShares -Cluster isilonc2.emc.lab
+
+# Get all SMB shares for all connected cluster
 Get-isiSession | Get-isiSmbShares
+
+# create new SMB share
 New-isiSmbShare -name HR -path '/ifs/data/HR'
-Get-isiSmbShares | where -like '*test*' | Set-isiSmbShares -describtion 'This is a Test Share'
+
+# add a describtion to all SMB shares that have 'test' in there share name
+Get-isiSmbShares | where name -like '*test*' | Set-isiSmbShares -describtion 'This is a Test Share'
 ```
 
 #### SSL Validation
