@@ -40,6 +40,7 @@ New-isiSession -ComputerName 192.168.10.100 -Username root -Password a -Cluster 
 
 # Get all SMB shares for default cluster
 Get-isiSmbShares
+
 # Get all SMB shares for cluster isilonc2.emc.lab
 Get-isiSmbShares -Cluster isilonc2.emc.lab
 
