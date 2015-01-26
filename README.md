@@ -44,45 +44,5 @@ Import-Module SSLValidation
 Disable-SSLValidation
 ```
 
-#### Implemented Commands
-
-* Get-isiNFSExports
-* Get-isiQuotas
-* Get-isiQuotasSummary
-* Get-isiSession
-* Get-isiSessioninfo
-* Get-isiSMBOpenfiles
-* Get-isiSMBOpenfilesSummary
-* Get-isiSMBSettingsGlobal
-* Get-isiSMBSettingsGlobalSummary
-* Get-isiSMBSettingsShares
-* Get-isiSMBSettingsSharesSummary
-* Get-isiSMBShares
-* Get-isiSMBSharesSummary
-* Get-isiSyncJobs
-* Get-isiSyncJobsSummary
-* Get-isiSyncPolicies
-* Get-isiSyncPoliciesSummary
-* Get-isiSyncReports
-* Get-isiSyncReportsSummary
-* Get-isiSyncTargetPolicies
-* Get-isiSyncTargetPoliciesSummary
-* Get-isiZones
-* Get-isiZonesSummary
-* New-isiQuotas
-* New-isiSession
-* New-isiSMBShares
-* New-isiZones
-* Remove-isiQuotas
-* Remove-isiSession
-* Remove-isiSMBShares
-* Remove-isiSyncPolicies
-* Remove-isiZones
-* Send-isiAPI
-* Set-isiQuotas
-* Set-isiSMBShares
-* Set-isiSyncPolicies
-* Set-isiZones
-
 #### DISCLAIMER
 This Powershell Module is not supported. Use at your own risk!
