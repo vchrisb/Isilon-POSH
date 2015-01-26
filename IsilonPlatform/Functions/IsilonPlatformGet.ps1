@@ -19,6 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+
+#Build using Isilon OneFS build: B_7_2_0_16(RELEASE)
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
@@ -26,10 +29,10 @@ $ErrorActionPreference = "Stop"
 function Get-isiAuditSettings{
 <#
 .SYNOPSIS
-    Get Audit Settings
-    
+	Get Audit Settings
+
 .DESCRIPTION
-    Retrieves the auditing global settings.
+	Retrieves the auditing global settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -39,17 +42,16 @@ function Get-isiAuditSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuditSettings
@@ -57,10 +59,10 @@ Export-ModuleMember -Function Get-isiAuditSettings
 function Get-isiAuditTopics{
 <#
 .SYNOPSIS
-    Get Audit Topics
-    
+	Get Audit Topics
+
 .DESCRIPTION
-    Retrieve a list of audit topics.
+	Retrieve a list of audit topics.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -70,17 +72,16 @@ function Get-isiAuditTopics{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics" -Cluster $Cluster
 			$ISIObject.topics
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuditTopics
@@ -88,13 +89,16 @@ Export-ModuleMember -Function Get-isiAuditTopics
 function Get-isiAuditTopic{
 <#
 .SYNOPSIS
-    Get Audit Topic
-    
+	Get Audit Topic
+
 .DESCRIPTION
-    Retrieve the audit topic information.
+	Retrieve the audit topic information.
 
 .PARAMETER id
-	Topic ID
+	Topic id
+
+.PARAMETER name
+	Topic name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -102,20 +106,25 @@ function Get-isiAuditTopic{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics/$parameter1" -Cluster $Cluster
 			$ISIObject.topics
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuditTopic
@@ -123,13 +132,16 @@ Export-ModuleMember -Function Get-isiAuditTopic
 function Get-isiAuthAccess{
 <#
 .SYNOPSIS
-    Get Auth Access
-    
+	Get Auth Access
+
 .DESCRIPTION
-    Determine user's access rights to a file
+	Determine user's access rights to a file
 
 .PARAMETER id
-	User ID
+	User id
+
+.PARAMETER name
+	User name
 
 .PARAMETER numeric
 	Show the user's numeric identifier.
@@ -146,15 +158,15 @@ function Get-isiAuthAccess{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$numeric,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -168,14 +180,19 @@ function Get-isiAuthAccess{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/access/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/access/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.access
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthAccess
@@ -183,10 +200,10 @@ Export-ModuleMember -Function Get-isiAuthAccess
 function Get-isiAuthGroups{
 <#
 .SYNOPSIS
-    Get Auth Groups
-    
+	Get Auth Groups
+
 .DESCRIPTION
-    List all groups.
+	List all groups.
 
 .PARAMETER cached
 	If true, only return cached objects.
@@ -236,9 +253,8 @@ function Get-isiAuthGroups{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -273,14 +289,14 @@ function Get-isiAuthGroups{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.groups
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthGroups
@@ -288,13 +304,16 @@ Export-ModuleMember -Function Get-isiAuthGroups
 function Get-isiAuthGroup{
 <#
 .SYNOPSIS
-    Get Auth Group
-    
+	Get Auth Group
+
 .DESCRIPTION
-    Retrieve the group information.
+	Retrieve the group information.
 
 .PARAMETER id
-	Group ID
+	Group id
+
+.PARAMETER name
+	Group name
 
 .PARAMETER cached
 	If true, only return cached objects.
@@ -314,16 +333,16 @@ function Get-isiAuthGroup{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -340,14 +359,19 @@ function Get-isiAuthGroup{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.groups
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthGroup
@@ -355,13 +379,16 @@ Export-ModuleMember -Function Get-isiAuthGroup
 function Get-isiAuthGroupMembers{
 <#
 .SYNOPSIS
-    Get Auth Group Members
-    
-.DESCRIPTION
-    List all the members of the group.
+	Get Auth Group Members
 
-.PARAMETER id
-	Group ID
+.DESCRIPTION
+	List all the members of the group.
+
+.PARAMETER group_id
+	Group group_id
+
+.PARAMETER group_name
+	Group group_name
 
 .PARAMETER limit
 	Return no more than this many results at once (see resume).
@@ -381,16 +408,16 @@ function Get-isiAuthGroupMembers{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$group_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$group_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -407,14 +434,19 @@ function Get-isiAuthGroupMembers{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($group_id){
+				$parameter1 = $group_id
+			} else {
+				$parameter1 = $group_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$id/members" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$parameter1/members" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.members
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthGroupMembers
@@ -422,10 +454,10 @@ Export-ModuleMember -Function Get-isiAuthGroupMembers
 function Get-isiAuthId{
 <#
 .SYNOPSIS
-    Get Auth Id
-    
+	Get Auth Id
+
 .DESCRIPTION
-    Retrieve the current security token.
+	Retrieve the current security token.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -435,17 +467,16 @@ function Get-isiAuthId{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/id" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/id" -Cluster $Cluster
 			$ISIObject.ntoken
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthId
@@ -453,13 +484,16 @@ Export-ModuleMember -Function Get-isiAuthId
 function Get-isiAuthMappingIdentities{
 <#
 .SYNOPSIS
-    Get Auth Mapping Identity
-    
+	Get Auth Mapping Identity
+
 .DESCRIPTION
-    Retrieve all identity mappings (uid, gid, sid, and on-disk) for the supplied source persona.
+	Retrieve all identity mappings (uid, gid, sid, and on-disk) for the supplied source persona.
 
 .PARAMETER id
-	Source ID
+	Source id
+
+.PARAMETER name
+	Source name
 
 .PARAMETER nocreate
 	Idmap should attempt to create missing identity mappings.
@@ -473,14 +507,14 @@ function Get-isiAuthMappingIdentities{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$nocreate,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -491,14 +525,19 @@ function Get-isiAuthMappingIdentities{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/identities/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/identities/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.identities
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthMappingIdentities
@@ -506,10 +545,10 @@ Export-ModuleMember -Function Get-isiAuthMappingIdentities
 function Get-isiAuthMappingUsersLookup{
 <#
 .SYNOPSIS
-    Get Auth Mapping Users Lookup
-    
+	Get Auth Mapping Users Lookup
+
 .DESCRIPTION
-    Retrieve the user information.
+	Retrieve the user information.
 
 .PARAMETER gid
 	The IDs of the groups that the user belongs to.
@@ -539,9 +578,8 @@ function Get-isiAuthMappingUsersLookup{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$uid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$user,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -564,11 +602,11 @@ function Get-isiAuthMappingUsersLookup{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/lookup" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/lookup" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.mapping
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthMappingUsersLookup
@@ -576,10 +614,10 @@ Export-ModuleMember -Function Get-isiAuthMappingUsersLookup
 function Get-isiAuthMappingUsersRules{
 <#
 .SYNOPSIS
-    Get Auth Mapping Users Rules
-    
+	Get Auth Mapping Users Rules
+
 .DESCRIPTION
-    Retrieve the user mapping rules.
+	Retrieve the user mapping rules.
 
 .PARAMETER zone
 	The zone to which the user mapping applies.
@@ -593,9 +631,8 @@ function Get-isiAuthMappingUsersRules{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -606,11 +643,11 @@ function Get-isiAuthMappingUsersRules{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/rules" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/rules" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.rules
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthMappingUsersRules
@@ -618,13 +655,16 @@ Export-ModuleMember -Function Get-isiAuthMappingUsersRules
 function Get-isiAuthNetgroup{
 <#
 .SYNOPSIS
-    Get Auth Netgroup
-    
+	Get Auth Netgroup
+
 .DESCRIPTION
-    Retrieve the user information.
+	Retrieve the user information.
 
 .PARAMETER id
-	Netgroup ID
+	Netgroup id
+
+.PARAMETER name
+	Netgroup name
 
 .PARAMETER ignore_errors
 	Ignore netgroup errors.
@@ -644,16 +684,16 @@ function Get-isiAuthNetgroup{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$ignore_errors,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$recursive,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -670,14 +710,19 @@ function Get-isiAuthNetgroup{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/netgroups/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/netgroups/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.netgroups
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthNetgroup
@@ -685,10 +730,10 @@ Export-ModuleMember -Function Get-isiAuthNetgroup
 function Get-isiAuthPrivileges{
 <#
 .SYNOPSIS
-    Get Auth Privileges
-    
+	Get Auth Privileges
+
 .DESCRIPTION
-    List all privileges.
+	List all privileges.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -698,17 +743,16 @@ function Get-isiAuthPrivileges{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/privileges" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/privileges" -Cluster $Cluster
 			$ISIObject.privileges
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthPrivileges
@@ -716,10 +760,10 @@ Export-ModuleMember -Function Get-isiAuthPrivileges
 function Get-isiAuthProvidersAds{
 <#
 .SYNOPSIS
-    Get Auth Providers Ads
-    
+	Get Auth Providers Ads
+
 .DESCRIPTION
-    List all ADS providers.
+	List all ADS providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -734,9 +778,8 @@ function Get-isiAuthProvidersAds{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -747,11 +790,11 @@ function Get-isiAuthProvidersAds{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.ads
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersAds
@@ -759,13 +802,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersAds
 function Get-isiAuthProviderAds{
 <#
 .SYNOPSIS
-    Get Auth Provider Ads
-    
+	Get Auth Provider Ads
+
 .DESCRIPTION
-    Retrieve the ADS provider.
+	Retrieve the ADS provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -777,13 +823,13 @@ function Get-isiAuthProviderAds{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -791,14 +837,19 @@ function Get-isiAuthProviderAds{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.ads
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderAds
@@ -806,13 +857,16 @@ Export-ModuleMember -Function Get-isiAuthProviderAds
 function Get-isiAuthProviderAdsControllers{
 <#
 .SYNOPSIS
-    Get Auth Provider Ads Controllers
-    
+	Get Auth Provider Ads Controllers
+
 .DESCRIPTION
-    List all ADS controllers.
+	List all ADS controllers.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -820,20 +874,25 @@ function Get-isiAuthProviderAdsControllers{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$id/controllers" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$parameter1/controllers" -Cluster $Cluster
 			$ISIObject.controllers
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderAdsControllers
@@ -841,13 +900,16 @@ Export-ModuleMember -Function Get-isiAuthProviderAdsControllers
 function Get-isiAuthProviderAdsDomains{
 <#
 .SYNOPSIS
-    Get Auth Provider Ads Domains
-    
-.DESCRIPTION
-    List all ADS domains.
+	Get Auth Provider Ads Domains
 
-.PARAMETER id
-	Provider ID
+.DESCRIPTION
+	List all ADS domains.
+
+.PARAMETER ads_id
+	Provider ads_id
+
+.PARAMETER ads_name
+	Provider ads_name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -859,13 +921,13 @@ function Get-isiAuthProviderAdsDomains{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$ads_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$ads_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -873,14 +935,19 @@ function Get-isiAuthProviderAdsDomains{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($ads_id){
+				$parameter1 = $ads_id
+			} else {
+				$parameter1 = $ads_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$id/domains" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1/domains" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.domains
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderAdsDomains
@@ -888,16 +955,22 @@ Export-ModuleMember -Function Get-isiAuthProviderAdsDomains
 function Get-isiAuthProviderAdsDomain{
 <#
 .SYNOPSIS
-    Get Auth Provider Ads Domain
-    
+	Get Auth Provider Ads Domain
+
 .DESCRIPTION
-    Retrieve the ADS domain information.
+	Retrieve the ADS domain information.
+
+.PARAMETER ads_id
+	Provider ads_id
+
+.PARAMETER ads_name
+	Provider ads_name
 
 .PARAMETER id
-	Provider ID
+	 id
 
-.PARAMETER id2
-	Domain ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -905,21 +978,32 @@ function Get-isiAuthProviderAdsDomain{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$ads_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$ads_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$id/domains/$id2" 
+			if ($ads_id){
+				$parameter1 = $ads_id
+			} else {
+				$parameter1 = $ads_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$parameter1/domains/$parameter2" -Cluster $Cluster
 			$ISIObject.domains
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderAdsDomain
@@ -927,13 +1011,16 @@ Export-ModuleMember -Function Get-isiAuthProviderAdsDomain
 function Get-isiAuthProviderAdsSearch{
 <#
 .SYNOPSIS
-    Get Auth Provider Ads Search
-    
+	Get Auth Provider Ads Search
+
 .DESCRIPTION
-    Retrieve search results.
+	Retrieve search results.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER description
 	The user or group description to search for.
@@ -971,9 +1058,10 @@ function Get-isiAuthProviderAdsSearch{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$filter,
@@ -984,9 +1072,8 @@ function Get-isiAuthProviderAdsSearch{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][bool]$search_users,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$user,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1018,17 +1105,22 @@ function Get-isiAuthProviderAdsSearch{
 			if ($user){
 				$queryArguments += 'user=' + $user
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$id/search" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1/search" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.objects
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderAdsSearch
@@ -1036,10 +1128,10 @@ Export-ModuleMember -Function Get-isiAuthProviderAdsSearch
 function Get-isiAuthProvidersFile{
 <#
 .SYNOPSIS
-    Get Auth Providers File
-    
+	Get Auth Providers File
+
 .DESCRIPTION
-    List all file providers.
+	List all file providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1054,9 +1146,8 @@ function Get-isiAuthProvidersFile{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1067,11 +1158,11 @@ function Get-isiAuthProvidersFile{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.file
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersFile
@@ -1079,13 +1170,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersFile
 function Get-isiAuthProviderFile{
 <#
 .SYNOPSIS
-    Get Auth Provider File
-    
+	Get Auth Provider File
+
 .DESCRIPTION
-    Retrieve the file provider.
+	Retrieve the file provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1097,13 +1191,13 @@ function Get-isiAuthProviderFile{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1111,14 +1205,19 @@ function Get-isiAuthProviderFile{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.file
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderFile
@@ -1126,10 +1225,10 @@ Export-ModuleMember -Function Get-isiAuthProviderFile
 function Get-isiAuthProvidersKrb5{
 <#
 .SYNOPSIS
-    Get Auth Providers Krb5
-    
+	Get Auth Providers Krb5
+
 .DESCRIPTION
-    List all KRB5 providers.
+	List all KRB5 providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1144,9 +1243,8 @@ function Get-isiAuthProvidersKrb5{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1157,11 +1255,11 @@ function Get-isiAuthProvidersKrb5{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.krb5
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersKrb5
@@ -1169,13 +1267,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersKrb5
 function Get-isiAuthProviderKrb5{
 <#
 .SYNOPSIS
-    Get Auth Provider Krb5
-    
+	Get Auth Provider Krb5
+
 .DESCRIPTION
-    Retrieve the KRB5 provider.
+	Retrieve the KRB5 provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1187,13 +1288,13 @@ function Get-isiAuthProviderKrb5{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1201,14 +1302,19 @@ function Get-isiAuthProviderKrb5{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.krb5
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderKrb5
@@ -1216,10 +1322,10 @@ Export-ModuleMember -Function Get-isiAuthProviderKrb5
 function Get-isiAuthProvidersLdap{
 <#
 .SYNOPSIS
-    Get Auth Providers Ldap
-    
+	Get Auth Providers Ldap
+
 .DESCRIPTION
-    List all LDAP providers.
+	List all LDAP providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1234,9 +1340,8 @@ function Get-isiAuthProvidersLdap{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1247,11 +1352,11 @@ function Get-isiAuthProvidersLdap{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.ldap
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersLdap
@@ -1259,13 +1364,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersLdap
 function Get-isiAuthProviderLdap{
 <#
 .SYNOPSIS
-    Get Auth Provider Ldap
-    
+	Get Auth Provider Ldap
+
 .DESCRIPTION
-    Retrieve the LDAP provider.
+	Retrieve the LDAP provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1277,13 +1385,13 @@ function Get-isiAuthProviderLdap{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1291,14 +1399,19 @@ function Get-isiAuthProviderLdap{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.ldap
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderLdap
@@ -1306,10 +1419,10 @@ Export-ModuleMember -Function Get-isiAuthProviderLdap
 function Get-isiAuthProvidersLocal{
 <#
 .SYNOPSIS
-    Get Auth Providers Local
-    
+	Get Auth Providers Local
+
 .DESCRIPTION
-    List all local providers.
+	List all local providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1324,9 +1437,8 @@ function Get-isiAuthProvidersLocal{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1337,11 +1449,11 @@ function Get-isiAuthProvidersLocal{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.local
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersLocal
@@ -1349,13 +1461,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersLocal
 function Get-isiAuthProviderLocal{
 <#
 .SYNOPSIS
-    Get Auth Provider Local
-    
+	Get Auth Provider Local
+
 .DESCRIPTION
-    Retrieve the local provider.
+	Retrieve the local provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1367,13 +1482,13 @@ function Get-isiAuthProviderLocal{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1381,14 +1496,19 @@ function Get-isiAuthProviderLocal{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.local
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderLocal
@@ -1396,10 +1516,10 @@ Export-ModuleMember -Function Get-isiAuthProviderLocal
 function Get-isiAuthProvidersNis{
 <#
 .SYNOPSIS
-    Get Auth Providers Nis
-    
+	Get Auth Providers Nis
+
 .DESCRIPTION
-    List all NIS providers.
+	List all NIS providers.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1414,9 +1534,8 @@ function Get-isiAuthProvidersNis{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1427,11 +1546,11 @@ function Get-isiAuthProvidersNis{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.nis
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersNis
@@ -1439,13 +1558,16 @@ Export-ModuleMember -Function Get-isiAuthProvidersNis
 function Get-isiAuthProviderNis{
 <#
 .SYNOPSIS
-    Get Auth Provider Nis
-    
+	Get Auth Provider Nis
+
 .DESCRIPTION
-    Retrieve the NIS provider.
+	Retrieve the NIS provider.
 
 .PARAMETER id
-	Provider ID
+	Provider id
+
+.PARAMETER name
+	Provider name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1457,13 +1579,13 @@ function Get-isiAuthProviderNis{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1471,14 +1593,19 @@ function Get-isiAuthProviderNis{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.nis
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProviderNis
@@ -1486,10 +1613,10 @@ Export-ModuleMember -Function Get-isiAuthProviderNis
 function Get-isiAuthProvidersSummary{
 <#
 .SYNOPSIS
-    Get Auth Providers Summary
-    
+	Get Auth Providers Summary
+
 .DESCRIPTION
-    Retrieve the summary information.
+	Retrieve the summary information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1499,17 +1626,16 @@ function Get-isiAuthProvidersSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/summary" -Cluster $Cluster
 			$ISIObject.provider_instances
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthProvidersSummary
@@ -1517,10 +1643,10 @@ Export-ModuleMember -Function Get-isiAuthProvidersSummary
 function Get-isiAuthRoles{
 <#
 .SYNOPSIS
-    Get Auth Roles
-    
+	Get Auth Roles
+
 .DESCRIPTION
-    List all roles.
+	List all roles.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -1543,9 +1669,8 @@ function Get-isiAuthRoles{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1562,11 +1687,11 @@ function Get-isiAuthRoles{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.roles
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthRoles
@@ -1574,13 +1699,16 @@ Export-ModuleMember -Function Get-isiAuthRoles
 function Get-isiAuthRole{
 <#
 .SYNOPSIS
-    Get Auth Role
-    
+	Get Auth Role
+
 .DESCRIPTION
-    Retrieve the role information.
+	Retrieve the role information.
 
 .PARAMETER id
-	Role ID
+	Role id
+
+.PARAMETER name
+	Role name
 
 .PARAMETER resolve_names
 	Resolve names of personas.
@@ -1591,13 +1719,13 @@ function Get-isiAuthRole{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1605,14 +1733,19 @@ function Get-isiAuthRole{
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.roles
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthRole
@@ -1620,13 +1753,16 @@ Export-ModuleMember -Function Get-isiAuthRole
 function Get-isiAuthRoleMembers{
 <#
 .SYNOPSIS
-    Get Auth Role Members
-    
-.DESCRIPTION
-    List all the members of the role.
+	Get Auth Role Members
 
-.PARAMETER id
-	Role ID
+.DESCRIPTION
+	List all the members of the role.
+
+.PARAMETER role_id
+	Role role_id
+
+.PARAMETER role_name
+	Role role_name
 
 .PARAMETER resolve_names
 	Resolve names of personas.
@@ -1637,13 +1773,13 @@ function Get-isiAuthRoleMembers{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$role_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1651,14 +1787,19 @@ function Get-isiAuthRoleMembers{
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
 			}
+			if ($role_id){
+				$parameter1 = $role_id
+			} else {
+				$parameter1 = $role_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$id/members" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$parameter1/members" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.members
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthRoleMembers
@@ -1666,13 +1807,16 @@ Export-ModuleMember -Function Get-isiAuthRoleMembers
 function Get-isiAuthRolePrivileges{
 <#
 .SYNOPSIS
-    Get Auth Role Privileges
-    
-.DESCRIPTION
-    List all privileges in the role.
+	Get Auth Role Privileges
 
-.PARAMETER id
-	Role ID
+.DESCRIPTION
+	List all privileges in the role.
+
+.PARAMETER role_id
+	Role role_id
+
+.PARAMETER role_name
+	Role role_name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1680,20 +1824,25 @@ function Get-isiAuthRolePrivileges{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$role_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/roles/$id/privileges" 
+			if ($role_id){
+				$parameter1 = $role_id
+			} else {
+				$parameter1 = $role_name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/roles/$parameter1/privileges" -Cluster $Cluster
 			$ISIObject.privileges
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthRolePrivileges
@@ -1701,10 +1850,10 @@ Export-ModuleMember -Function Get-isiAuthRolePrivileges
 function Get-isiAuthSettingsGlobal{
 <#
 .SYNOPSIS
-    Get Auth Settings Global
-    
+	Get Auth Settings Global
+
 .DESCRIPTION
-    Retrieve the global settings.
+	Retrieve the global settings.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1723,9 +1872,8 @@ function Get-isiAuthSettingsGlobal{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1739,11 +1887,11 @@ function Get-isiAuthSettingsGlobal{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/global" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/global" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.global_settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsGlobal
@@ -1751,10 +1899,10 @@ Export-ModuleMember -Function Get-isiAuthSettingsGlobal
 function Get-isiAuthSettingsKrb5Defaults{
 <#
 .SYNOPSIS
-    Get Auth Settings Krb5 Defaults
-    
+	Get Auth Settings Krb5 Defaults
+
 .DESCRIPTION
-    Retrieve the krb5 settings.
+	Retrieve the krb5 settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1764,17 +1912,16 @@ function Get-isiAuthSettingsKrb5Defaults{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/defaults" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/defaults" -Cluster $Cluster
 			$ISIObject.krb5_settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsKrb5Defaults
@@ -1782,10 +1929,10 @@ Export-ModuleMember -Function Get-isiAuthSettingsKrb5Defaults
 function Get-isiAuthSettingsKrb5Domains{
 <#
 .SYNOPSIS
-    Get Auth Settings Krb5 Domains
-    
+	Get Auth Settings Krb5 Domains
+
 .DESCRIPTION
-    Retrieve the krb5 settings for domains.
+	Retrieve the krb5 settings for domains.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1795,17 +1942,16 @@ function Get-isiAuthSettingsKrb5Domains{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains" -Cluster $Cluster
 			$ISIObject.domains
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsKrb5Domains
@@ -1813,13 +1959,16 @@ Export-ModuleMember -Function Get-isiAuthSettingsKrb5Domains
 function Get-isiAuthSettingsKrb5Domain{
 <#
 .SYNOPSIS
-    Get Auth Settings Krb5 Domain
-    
+	Get Auth Settings Krb5 Domain
+
 .DESCRIPTION
-    View the krb5 domain settings.
+	View the krb5 domain settings.
 
 .PARAMETER id
-	Domain ID
+	Domain id
+
+.PARAMETER name
+	Domain name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1827,20 +1976,25 @@ function Get-isiAuthSettingsKrb5Domain{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains/$parameter1" -Cluster $Cluster
 			$ISIObject.domain
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsKrb5Domain
@@ -1848,10 +2002,10 @@ Export-ModuleMember -Function Get-isiAuthSettingsKrb5Domain
 function Get-isiAuthSettingsKrb5Realms{
 <#
 .SYNOPSIS
-    Get Auth Settings Krb5 Realms
-    
+	Get Auth Settings Krb5 Realms
+
 .DESCRIPTION
-    Retrieve the krb5 settings for realms.
+	Retrieve the krb5 settings for realms.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1861,17 +2015,16 @@ function Get-isiAuthSettingsKrb5Realms{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms" -Cluster $Cluster
 			$ISIObject.realm
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsKrb5Realms
@@ -1879,13 +2032,16 @@ Export-ModuleMember -Function Get-isiAuthSettingsKrb5Realms
 function Get-isiAuthSettingsKrb5Realm{
 <#
 .SYNOPSIS
-    Get Auth Settings Krb5 Realm
-    
+	Get Auth Settings Krb5 Realm
+
 .DESCRIPTION
-    Retrieve the krb5 settings for realms.
+	Retrieve the krb5 settings for realms.
 
 .PARAMETER id
-	Realm ID
+	Realm id
+
+.PARAMETER name
+	Realm name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1893,20 +2049,25 @@ function Get-isiAuthSettingsKrb5Realm{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms/$parameter1" -Cluster $Cluster
 			$ISIObject.realm
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsKrb5Realm
@@ -1914,10 +2075,10 @@ Export-ModuleMember -Function Get-isiAuthSettingsKrb5Realm
 function Get-isiAuthSettingsMapping{
 <#
 .SYNOPSIS
-    Get Auth Settings Mapping
-    
+	Get Auth Settings Mapping
+
 .DESCRIPTION
-    Retrieve the mapping settings.
+	Retrieve the mapping settings.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -1936,9 +2097,8 @@ function Get-isiAuthSettingsMapping{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -1952,11 +2112,11 @@ function Get-isiAuthSettingsMapping{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.mapping_settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthSettingsMapping
@@ -1964,10 +2124,10 @@ Export-ModuleMember -Function Get-isiAuthSettingsMapping
 function Get-isiAuthShells{
 <#
 .SYNOPSIS
-    Get Auth Shells
-    
+	Get Auth Shells
+
 .DESCRIPTION
-    List all shells.
+	List all shells.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1977,17 +2137,16 @@ function Get-isiAuthShells{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/shells" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/shells" -Cluster $Cluster
 			$ISIObject.shells
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthShells
@@ -1995,10 +2154,10 @@ Export-ModuleMember -Function Get-isiAuthShells
 function Get-isiAuthUsers{
 <#
 .SYNOPSIS
-    Get Auth Users
-    
+	Get Auth Users
+
 .DESCRIPTION
-    List all users.
+	List all users.
 
 .PARAMETER cached
 	If true, only return cached objects.
@@ -2048,9 +2207,8 @@ function Get-isiAuthUsers{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2085,14 +2243,14 @@ function Get-isiAuthUsers{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.users
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthUsers
@@ -2100,13 +2258,16 @@ Export-ModuleMember -Function Get-isiAuthUsers
 function Get-isiAuthUser{
 <#
 .SYNOPSIS
-    Get Auth User
-    
+	Get Auth User
+
 .DESCRIPTION
-    Retrieve the user information.
+	Retrieve the user information.
 
 .PARAMETER id
-	User ID
+	User id
+
+.PARAMETER name
+	User name
 
 .PARAMETER cached
 	If true, only return cached objects.
@@ -2126,16 +2287,16 @@ function Get-isiAuthUser{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2152,14 +2313,19 @@ function Get-isiAuthUser{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.users
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthUser
@@ -2167,13 +2333,16 @@ Export-ModuleMember -Function Get-isiAuthUser
 function Get-isiAuthUserMemberOfGroups{
 <#
 .SYNOPSIS
-    Get Auth User Member Of Groups
-    
-.DESCRIPTION
-    List all groups the user is a member of.
+	Get Auth User Member Of Groups
 
-.PARAMETER id
-	User ID
+.DESCRIPTION
+	List all groups the user is a member of.
+
+.PARAMETER user_id
+	User user_id
+
+.PARAMETER user_name
+	User user_name
 
 .PARAMETER provider
 	Filter groups by provider.
@@ -2190,15 +2359,15 @@ function Get-isiAuthUserMemberOfGroups{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$user_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$user_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2212,14 +2381,19 @@ function Get-isiAuthUserMemberOfGroups{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($user_id){
+				$parameter1 = $user_id
+			} else {
+				$parameter1 = $user_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$id/member_of" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$parameter1/member_of" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.member_of
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthUserMemberOfGroups
@@ -2227,10 +2401,10 @@ Export-ModuleMember -Function Get-isiAuthUserMemberOfGroups
 function Get-isiAuthWellknowns{
 <#
 .SYNOPSIS
-    Get Auth Wellknowns
-    
+	Get Auth Wellknowns
+
 .DESCRIPTION
-    List all wellknown personas.
+	List all wellknown personas.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2240,17 +2414,16 @@ function Get-isiAuthWellknowns{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/wellknowns" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/wellknowns" -Cluster $Cluster
 			$ISIObject.wellknowns
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthWellknowns
@@ -2258,13 +2431,13 @@ Export-ModuleMember -Function Get-isiAuthWellknowns
 function Get-isiAuthWellknown{
 <#
 .SYNOPSIS
-    Get Auth Wellknown
-    
+	Get Auth Wellknown
+
 .DESCRIPTION
-    Retrieve the wellknown persona.
+	Retrieve the wellknown persona.
 
 .PARAMETER id
-	Wellknown ID
+	Wellknown id
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -2276,13 +2449,12 @@ function Get-isiAuthWellknown{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2290,14 +2462,19 @@ function Get-isiAuthWellknown{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/wellknowns/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/wellknowns/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.wellknowns
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiAuthWellknown
@@ -2305,10 +2482,10 @@ Export-ModuleMember -Function Get-isiAuthWellknown
 function Get-isiCloudAccounts{
 <#
 .SYNOPSIS
-    Get Cloud Accounts
-    
+	Get Cloud Accounts
+
 .DESCRIPTION
-    List all accounts.
+	List all accounts.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -2331,9 +2508,8 @@ function Get-isiCloudAccounts{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2350,11 +2526,11 @@ function Get-isiCloudAccounts{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/accounts" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/accounts" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.accounts
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudAccounts
@@ -2362,13 +2538,16 @@ Export-ModuleMember -Function Get-isiCloudAccounts
 function Get-isiCloudAccount{
 <#
 .SYNOPSIS
-    Get Cloud Account
-    
+	Get Cloud Account
+
 .DESCRIPTION
-    Retrieve cloud account information.
+	Retrieve cloud account information.
 
 .PARAMETER id
-	Account ID
+	Account id
+
+.PARAMETER name
+	Account name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2376,20 +2555,25 @@ function Get-isiCloudAccount{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/accounts/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/accounts/$parameter1" -Cluster $Cluster
 			$ISIObject.accounts
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudAccount
@@ -2397,10 +2581,10 @@ Export-ModuleMember -Function Get-isiCloudAccount
 function Get-isiCloudJobs{
 <#
 .SYNOPSIS
-    Get Cloud Jobs
-    
+	Get Cloud Jobs
+
 .DESCRIPTION
-    List all cloudpools jobs.
+	List all cloudpools jobs.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -2423,9 +2607,8 @@ function Get-isiCloudJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2442,11 +2625,11 @@ function Get-isiCloudJobs{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.jobs
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudJobs
@@ -2454,13 +2637,16 @@ Export-ModuleMember -Function Get-isiCloudJobs
 function Get-isiCloudJobsFile{
 <#
 .SYNOPSIS
-    Get Cloud Jobs File
-    
+	Get Cloud Jobs File
+
 .DESCRIPTION
-    Retrieve files associated with a cloudpool job.
+	Retrieve files associated with a cloudpool job.
 
 .PARAMETER id
-	Job ID
+	Job id
+
+.PARAMETER name
+	Job name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2468,24 +2654,29 @@ function Get-isiCloudJobsFile{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs-files/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs-files/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.files
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudJobsFile
@@ -2493,13 +2684,16 @@ Export-ModuleMember -Function Get-isiCloudJobsFile
 function Get-isiCloudJob{
 <#
 .SYNOPSIS
-    Get Cloud Job
-    
+	Get Cloud Job
+
 .DESCRIPTION
-    Retrieve cloudpool job information.
+	Retrieve cloudpool job information.
 
 .PARAMETER id
-	Job ID
+	Job id
+
+.PARAMETER name
+	Job name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2507,24 +2701,29 @@ function Get-isiCloudJob{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.jobs
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudJob
@@ -2532,10 +2731,10 @@ Export-ModuleMember -Function Get-isiCloudJob
 function Get-isiCloudPools{
 <#
 .SYNOPSIS
-    Get Cloud Pools
-    
+	Get Cloud Pools
+
 .DESCRIPTION
-    List all pools.
+	List all pools.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -2558,9 +2757,8 @@ function Get-isiCloudPools{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2577,11 +2775,11 @@ function Get-isiCloudPools{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/pools" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/pools" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.pools
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudPools
@@ -2589,13 +2787,16 @@ Export-ModuleMember -Function Get-isiCloudPools
 function Get-isiCloudPool{
 <#
 .SYNOPSIS
-    Get Cloud Pool
-    
+	Get Cloud Pool
+
 .DESCRIPTION
-    Retrieve cloud pool information
+	Retrieve cloud pool information
 
 .PARAMETER id
-	Pool ID
+	Pool id
+
+.PARAMETER name
+	Pool name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2603,20 +2804,25 @@ function Get-isiCloudPool{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/pools/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/pools/$parameter1" -Cluster $Cluster
 			$ISIObject.pools
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudPool
@@ -2624,10 +2830,10 @@ Export-ModuleMember -Function Get-isiCloudPool
 function Get-isiCloudSettings{
 <#
 .SYNOPSIS
-    Get Cloud Settings
-    
+	Get Cloud Settings
+
 .DESCRIPTION
-    List all cloud settings.
+	List all cloud settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2637,17 +2843,16 @@ function Get-isiCloudSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiCloudSettings
@@ -2655,10 +2860,10 @@ Export-ModuleMember -Function Get-isiCloudSettings
 function Get-isiClusterConfig{
 <#
 .SYNOPSIS
-    Get Cluster Config
-    
+	Get Cluster Config
+
 .DESCRIPTION
-    Retrieve the cluster information.
+	Retrieve the cluster information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2668,17 +2873,16 @@ function Get-isiClusterConfig{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/config" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/config" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiClusterConfig
@@ -2686,10 +2890,10 @@ Export-ModuleMember -Function Get-isiClusterConfig
 function Get-isiClusterExternalIPs{
 <#
 .SYNOPSIS
-    Get Cluster External IPs
-    
+	Get Cluster External IPs
+
 .DESCRIPTION
-    Retrieve the cluster IP addresses.
+	Retrieve the cluster IP addresses.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2699,17 +2903,16 @@ function Get-isiClusterExternalIPs{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/external-ips" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/external-ips" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiClusterExternalIPs
@@ -2717,10 +2920,10 @@ Export-ModuleMember -Function Get-isiClusterExternalIPs
 function Get-isiClusterIdentity{
 <#
 .SYNOPSIS
-    Get Cluster Identity
-    
+	Get Cluster Identity
+
 .DESCRIPTION
-    Retrieve the login information.
+	Retrieve the login information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2730,17 +2933,16 @@ function Get-isiClusterIdentity{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/identity" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/identity" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiClusterIdentity
@@ -2748,10 +2950,10 @@ Export-ModuleMember -Function Get-isiClusterIdentity
 function Get-isiClusterFsStats{
 <#
 .SYNOPSIS
-    Get Cluster FS Stats
-    
+	Get Cluster FS Stats
+
 .DESCRIPTION
-    Retrieve the filesystem statistics.
+	Retrieve the filesystem statistics.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2761,17 +2963,16 @@ function Get-isiClusterFsStats{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/statfs" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/statfs" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiClusterFsStats
@@ -2779,10 +2980,10 @@ Export-ModuleMember -Function Get-isiClusterFsStats
 function Get-isiClusterTime{
 <#
 .SYNOPSIS
-    Get Cluster Time
-    
+	Get Cluster Time
+
 .DESCRIPTION
-    Retrieve the current cluster time.
+	Retrieve the current cluster time.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2792,17 +2993,16 @@ function Get-isiClusterTime{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/time" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/time" -Cluster $Cluster
 			$ISIObject.time
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiClusterTime
@@ -2810,10 +3010,10 @@ Export-ModuleMember -Function Get-isiClusterTime
 function Get-isiDebugStats{
 <#
 .SYNOPSIS
-    Get Debug Stats
-    
+	Get Debug Stats
+
 .DESCRIPTION
-    List cumulative call statistics for each resource.
+	List cumulative call statistics for each resource.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2823,17 +3023,16 @@ function Get-isiDebugStats{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/debug/stats" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/debug/stats" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiDebugStats
@@ -2841,10 +3040,10 @@ Export-ModuleMember -Function Get-isiDebugStats
 function Get-isiDedupeDedupeSummary{
 <#
 .SYNOPSIS
-    Get Dedupe Summary
-    
+	Get Dedupe Summary
+
 .DESCRIPTION
-    Return summary information about dedupe.
+	Return summary information about dedupe.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2854,17 +3053,16 @@ function Get-isiDedupeDedupeSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/dedupe-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/dedupe-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiDedupeDedupeSummary
@@ -2872,10 +3070,10 @@ Export-ModuleMember -Function Get-isiDedupeDedupeSummary
 function Get-isiDedupeReports{
 <#
 .SYNOPSIS
-    Get Dedupe Reports
-    
+	Get Dedupe Reports
+
 .DESCRIPTION
-    List dedupe reports.
+	List dedupe reports.
 
 .PARAMETER begin
 	Restrict the query to reports at or after the given time, in seconds since the Epoch.
@@ -2924,9 +3122,8 @@ function Get-isiDedupeReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('id','start_time','end_time')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -2958,14 +3155,14 @@ function Get-isiDedupeReports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiDedupeReports
@@ -2973,13 +3170,16 @@ Export-ModuleMember -Function Get-isiDedupeReports
 function Get-isiDedupeReport{
 <#
 .SYNOPSIS
-    Get Dedupe Report
-    
+	Get Dedupe Report
+
 .DESCRIPTION
-    Retrieve a report for a single dedupe job.
+	Retrieve a report for a single dedupe job.
 
 .PARAMETER id
-	Report ID
+	Report id
+
+.PARAMETER name
+	Report name
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -2991,13 +3191,13 @@ function Get-isiDedupeReport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3005,14 +3205,19 @@ function Get-isiDedupeReport{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiDedupeReport
@@ -3020,10 +3225,10 @@ Export-ModuleMember -Function Get-isiDedupeReport
 function Get-isiDedupeSettings{
 <#
 .SYNOPSIS
-    Get Dedupe Settings
-    
+	Get Dedupe Settings
+
 .DESCRIPTION
-    Retrieve the dedupe settings.
+	Retrieve the dedupe settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3033,17 +3238,16 @@ function Get-isiDedupeSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiDedupeSettings
@@ -3051,10 +3255,10 @@ Export-ModuleMember -Function Get-isiDedupeSettings
 function Get-isiFilepoolDefaultPolicy{
 <#
 .SYNOPSIS
-    Get Filepool Default Policy
-    
+	Get Filepool Default Policy
+
 .DESCRIPTION
-    List default file pool policy.
+	List default file pool policy.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3064,9 +3268,8 @@ function Get-isiFilepoolDefaultPolicy{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3074,11 +3277,11 @@ function Get-isiFilepoolDefaultPolicy{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/default-policy" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/default-policy" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.'default-policy'
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFilepoolDefaultPolicy
@@ -3086,10 +3289,10 @@ Export-ModuleMember -Function Get-isiFilepoolDefaultPolicy
 function Get-isiFilepoolPolicies{
 <#
 .SYNOPSIS
-    Get Filepool Policies
-    
+	Get Filepool Policies
+
 .DESCRIPTION
-    List all policies.
+	List all policies.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3099,9 +3302,8 @@ function Get-isiFilepoolPolicies{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3109,11 +3311,11 @@ function Get-isiFilepoolPolicies{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/policies" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/policies" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.policies
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFilepoolPolicies
@@ -3121,13 +3323,16 @@ Export-ModuleMember -Function Get-isiFilepoolPolicies
 function Get-isiFilepoolPolicy{
 <#
 .SYNOPSIS
-    Get Filepool Policy
-    
+	Get Filepool Policy
+
 .DESCRIPTION
-    Retrieve file pool policy information.
+	Retrieve file pool policy information.
 
 .PARAMETER id
-	Policy ID
+	Policy id
+
+.PARAMETER name
+	Policy name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3135,20 +3340,25 @@ function Get-isiFilepoolPolicy{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filepool/policies/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filepool/policies/$parameter1" -Cluster $Cluster
 			$ISIObject.policies
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFilepoolPolicy
@@ -3156,10 +3366,10 @@ Export-ModuleMember -Function Get-isiFilepoolPolicy
 function Get-isiFilepoolTemplates{
 <#
 .SYNOPSIS
-    Get Filepool Templates
-    
+	Get Filepool Templates
+
 .DESCRIPTION
-    List all templates.
+	List all templates.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3169,9 +3379,8 @@ function Get-isiFilepoolTemplates{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3179,11 +3388,11 @@ function Get-isiFilepoolTemplates{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.templates
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFilepoolTemplates
@@ -3191,13 +3400,16 @@ Export-ModuleMember -Function Get-isiFilepoolTemplates
 function Get-isiFilepoolTemplate{
 <#
 .SYNOPSIS
-    Get Filepool Template
-    
+	Get Filepool Template
+
 .DESCRIPTION
-    List all templates.
+	List all templates.
 
 .PARAMETER id
-	Template ID
+	Template id
+
+.PARAMETER name
+	Template name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3205,24 +3417,29 @@ function Get-isiFilepoolTemplate{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.templates
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFilepoolTemplate
@@ -3230,10 +3447,10 @@ Export-ModuleMember -Function Get-isiFilepoolTemplate
 function Get-isiFsaPath{
 <#
 .SYNOPSIS
-    Get Fsa Path
-    
+	Get Fsa Path
+
 .DESCRIPTION
-    Return export path as plain text.
+	Return export path as plain text.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3243,17 +3460,16 @@ function Get-isiFsaPath{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/fsa/path"
+			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/fsa/path" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFsaPath
@@ -3261,10 +3477,10 @@ Export-ModuleMember -Function Get-isiFsaPath
 function Get-isiFsaResults{
 <#
 .SYNOPSIS
-    Get Fsa Results
-    
+	Get Fsa Results
+
 .DESCRIPTION
-    List all results.
+	List all results.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3274,17 +3490,16 @@ function Get-isiFsaResults{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results" -Cluster $Cluster
 			$ISIObject.results
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFsaResults
@@ -3292,13 +3507,16 @@ Export-ModuleMember -Function Get-isiFsaResults
 function Get-isiFsaResult{
 <#
 .SYNOPSIS
-    Get Fsa Result
-    
+	Get Fsa Result
+
 .DESCRIPTION
-    Retrieve result set information.
+	Retrieve result set information.
 
 .PARAMETER id
-	Result ID
+	Result id
+
+.PARAMETER name
+	Result name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3306,20 +3524,25 @@ function Get-isiFsaResult{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results/$parameter1" -Cluster $Cluster
 			$ISIObject.results
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFsaResult
@@ -3327,10 +3550,10 @@ Export-ModuleMember -Function Get-isiFsaResult
 function Get-isiFsaSettings{
 <#
 .SYNOPSIS
-    Get Fsa Settings
-    
+	Get Fsa Settings
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3340,17 +3563,16 @@ function Get-isiFsaSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiFsaSettings
@@ -3358,10 +3580,10 @@ Export-ModuleMember -Function Get-isiFsaSettings
 function Get-isiJobEvents{
 <#
 .SYNOPSIS
-    Get Job Events
-    
+	Get Job Events
+
 .DESCRIPTION
-    List job events.
+	List job events.
 
 .PARAMETER begin
 	Restrict the query to events at or after the given time, in seconds since the Epoch.
@@ -3404,9 +3626,8 @@ function Get-isiJobEvents{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority','cancelled_user','cancelled_system','failed','succeeded','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3435,14 +3656,14 @@ function Get-isiJobEvents{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/events" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/events" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.events
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobEvents
@@ -3450,10 +3671,10 @@ Export-ModuleMember -Function Get-isiJobEvents
 function Get-isiJobSummary{
 <#
 .SYNOPSIS
-    Get Job Summary
-    
+	Get Job Summary
+
 .DESCRIPTION
-    View job engine status.
+	View job engine status.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3463,17 +3684,16 @@ function Get-isiJobSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/job-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/job-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobSummary
@@ -3481,10 +3701,10 @@ Export-ModuleMember -Function Get-isiJobSummary
 function Get-isiJobs{
 <#
 .SYNOPSIS
-    Get Jobs
-    
+	Get Jobs
+
 .DESCRIPTION
-    List running and paused jobs.
+	List running and paused jobs.
 
 .PARAMETER batch
 	If true, other arguments are ignored, and the query will return all results, unsorted, as quickly as possible.
@@ -3524,9 +3744,8 @@ function Get-isiJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3552,14 +3771,14 @@ function Get-isiJobs{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/jobs" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/jobs" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.jobs
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobs
@@ -3567,13 +3786,16 @@ Export-ModuleMember -Function Get-isiJobs
 function Get-isiJob{
 <#
 .SYNOPSIS
-    Get Job
-    
+	Get Job
+
 .DESCRIPTION
-    View a single job instance.
+	View a single job instance.
 
 .PARAMETER id
-	Job ID
+	Job id
+
+.PARAMETER name
+	Job name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3581,20 +3803,25 @@ function Get-isiJob{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/jobs/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/jobs/$parameter1" -Cluster $Cluster
 			$ISIObject.jobs
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJob
@@ -3602,10 +3829,10 @@ Export-ModuleMember -Function Get-isiJob
 function Get-isiJobPolicies{
 <#
 .SYNOPSIS
-    Get Job Policies
-    
+	Get Job Policies
+
 .DESCRIPTION
-    List job impact policies.
+	List job impact policies.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -3636,9 +3863,8 @@ function Get-isiJobPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3658,14 +3884,14 @@ function Get-isiJobPolicies{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/policies" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/policies" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.policies
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobPolicies
@@ -3673,13 +3899,16 @@ Export-ModuleMember -Function Get-isiJobPolicies
 function Get-isiJobPolicy{
 <#
 .SYNOPSIS
-    Get Job Policy
-    
+	Get Job Policy
+
 .DESCRIPTION
-    View a single job impact policy.
+	View a single job impact policy.
 
 .PARAMETER id
-	Policy ID
+	Policy id
+
+.PARAMETER name
+	Policy name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3687,20 +3916,25 @@ function Get-isiJobPolicy{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/policies/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/policies/$parameter1" -Cluster $Cluster
 			$ISIObject.types
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobPolicy
@@ -3708,10 +3942,10 @@ Export-ModuleMember -Function Get-isiJobPolicy
 function Get-isiJobReports{
 <#
 .SYNOPSIS
-    Get Job Reports
-    
+	Get Job Reports
+
 .DESCRIPTION
-    List job reports.
+	List job reports.
 
 .PARAMETER begin
 	Restrict the query to reports at or after the given time, in seconds since the Epoch.
@@ -3749,9 +3983,8 @@ function Get-isiJobReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3777,14 +4010,14 @@ function Get-isiJobReports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/reports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/reports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobReports
@@ -3792,10 +4025,10 @@ Export-ModuleMember -Function Get-isiJobReports
 function Get-isiJobStatistics{
 <#
 .SYNOPSIS
-    Get Job Statistics
-    
+	Get Job Statistics
+
 .DESCRIPTION
-    View job engine statistics.
+	View job engine statistics.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3805,17 +4038,16 @@ function Get-isiJobStatistics{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/statistics" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/statistics" -Cluster $Cluster
 			$ISIObject.jobs
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobStatistics
@@ -3823,10 +4055,10 @@ Export-ModuleMember -Function Get-isiJobStatistics
 function Get-isiJobTypes{
 <#
 .SYNOPSIS
-    Get Job Types
-    
+	Get Job Types
+
 .DESCRIPTION
-    List job types.
+	List job types.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -3849,9 +4081,8 @@ function Get-isiJobTypes{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$show_all,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -3868,11 +4099,11 @@ function Get-isiJobTypes{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/types" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/types" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.types
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobTypes
@@ -3880,13 +4111,16 @@ Export-ModuleMember -Function Get-isiJobTypes
 function Get-isiJobType{
 <#
 .SYNOPSIS
-    Get Job Type
-    
+	Get Job Type
+
 .DESCRIPTION
-    Retrieve job type information.
+	Retrieve job type information.
 
 .PARAMETER id
-	Type ID
+	Type id
+
+.PARAMETER name
+	Type name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3894,20 +4128,25 @@ function Get-isiJobType{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/types/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/types/$parameter1" -Cluster $Cluster
 			$ISIObject.types
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiJobType
@@ -3915,10 +4154,10 @@ Export-ModuleMember -Function Get-isiJobType
 function Get-isiEula{
 <#
 .SYNOPSIS
-    Get Eula
-    
+	Get Eula
+
 .DESCRIPTION
-    Retrieve the EULA as plain text.
+	Retrieve the EULA as plain text.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3928,17 +4167,16 @@ function Get-isiEula{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/license/eula"
+			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/license/eula" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiEula
@@ -3946,10 +4184,10 @@ Export-ModuleMember -Function Get-isiEula
 function Get-isiLicenses{
 <#
 .SYNOPSIS
-    Get Licenses
-    
+	Get Licenses
+
 .DESCRIPTION
-    Retrieve license information for all licensable products.
+	Retrieve license information for all licensable products.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3959,17 +4197,16 @@ function Get-isiLicenses{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses" -Cluster $Cluster
 			$ISIObject.licenses
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiLicenses
@@ -3977,13 +4214,16 @@ Export-ModuleMember -Function Get-isiLicenses
 function Get-isiLicense{
 <#
 .SYNOPSIS
-    Get License
-    
+	Get License
+
 .DESCRIPTION
-    Retrieve license information for the feature.
+	Retrieve license information for the feature.
 
 .PARAMETER id
-	License ID
+	License id
+
+.PARAMETER name
+	License name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3991,20 +4231,25 @@ function Get-isiLicense{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses/$parameter1" -Cluster $Cluster
 			$ISIObject.licenses
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiLicense
@@ -4012,10 +4257,10 @@ Export-ModuleMember -Function Get-isiLicense
 function Get-isiHdfsProxyUsers{
 <#
 .SYNOPSIS
-    Get Hdfs Proxyusers
-    
+	Get Hdfs Proxyusers
+
 .DESCRIPTION
-    List all proxyusers.
+	List all proxyusers.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4025,9 +4270,8 @@ function Get-isiHdfsProxyUsers{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4035,11 +4279,11 @@ function Get-isiHdfsProxyUsers{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.proxyusers
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsProxyUsers
@@ -4047,13 +4291,16 @@ Export-ModuleMember -Function Get-isiHdfsProxyUsers
 function Get-isiHdfsProxyUser{
 <#
 .SYNOPSIS
-    Get Hdfs Proxyuser
-    
+	Get Hdfs Proxyuser
+
 .DESCRIPTION
-    List all proxyusers.
+	List all proxyusers.
 
 .PARAMETER id
-	Proxyuser ID
+	Proxyuser id
+
+.PARAMETER name
+	Proxyuser name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4061,24 +4308,29 @@ function Get-isiHdfsProxyUser{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.proxyusers
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsProxyUser
@@ -4086,13 +4338,16 @@ Export-ModuleMember -Function Get-isiHdfsProxyUser
 function Get-isiHdfsProxyUserMembers{
 <#
 .SYNOPSIS
-    Get Hdfs Proxyuser Members
-    
-.DESCRIPTION
-    List all the members of the HDFS proxyuser.
+	Get Hdfs Proxyuser Members
 
-.PARAMETER id
-	Proxyuser ID
+.DESCRIPTION
+	List all the members of the HDFS proxyuser.
+
+.PARAMETER proxyuser_id
+	Proxyuser proxyuser_id
+
+.PARAMETER proxyuser_name
+	Proxyuser proxyuser_name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4100,20 +4355,25 @@ function Get-isiHdfsProxyUserMembers{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$proxyuser_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$proxyuser_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/proxyusers/$id/members" 
+			if ($proxyuser_id){
+				$parameter1 = $proxyuser_id
+			} else {
+				$parameter1 = $proxyuser_name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1/members" -Cluster $Cluster
 			$ISIObject.members
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsProxyUserMembers
@@ -4121,10 +4381,10 @@ Export-ModuleMember -Function Get-isiHdfsProxyUserMembers
 function Get-isiHdfsRacks{
 <#
 .SYNOPSIS
-    Get Hdfs Racks
-    
+	Get Hdfs Racks
+
 .DESCRIPTION
-    List all racks.
+	List all racks.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4134,9 +4394,8 @@ function Get-isiHdfsRacks{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4144,11 +4403,11 @@ function Get-isiHdfsRacks{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/racks" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/racks" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.racks
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsRacks
@@ -4156,13 +4415,16 @@ Export-ModuleMember -Function Get-isiHdfsRacks
 function Get-isiHdfsRack{
 <#
 .SYNOPSIS
-    Get Hdfs Rack
-    
+	Get Hdfs Rack
+
 .DESCRIPTION
-    Retrieve the HDFS rack.
+	Retrieve the HDFS rack.
 
 .PARAMETER id
-	RackID
+	Rack id
+
+.PARAMETER name
+	Rack name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4170,20 +4432,25 @@ function Get-isiHdfsRack{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/racks/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/racks/$parameter1" -Cluster $Cluster
 			$ISIObject.racks
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsRack
@@ -4191,10 +4458,10 @@ Export-ModuleMember -Function Get-isiHdfsRack
 function Get-isiHdfsSettings{
 <#
 .SYNOPSIS
-    Get Hdfs Settings
-    
+	Get Hdfs Settings
+
 .DESCRIPTION
-    Retrieve HDFS properties.
+	Retrieve HDFS properties.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4204,17 +4471,16 @@ function Get-isiHdfsSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiHdfsSettings
@@ -4222,10 +4488,10 @@ Export-ModuleMember -Function Get-isiHdfsSettings
 function Get-isiNfsCheck{
 <#
 .SYNOPSIS
-    Get Nfs Check
-    
+	Get Nfs Check
+
 .DESCRIPTION
-    Retrieve NFS export validation information.
+	Retrieve NFS export validation information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4235,17 +4501,16 @@ function Get-isiNfsCheck{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/check" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/check" -Cluster $Cluster
 			$ISIObject.checks
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsCheck
@@ -4253,10 +4518,10 @@ Export-ModuleMember -Function Get-isiNfsCheck
 function Get-isiNfsExports{
 <#
 .SYNOPSIS
-    Get Nfs Exports
-    
+	Get Nfs Exports
+
 .DESCRIPTION
-    List all NFS exports.
+	List all NFS exports.
 
 .PARAMETER check
 	Check for conflicts when listing exports.
@@ -4296,9 +4561,8 @@ function Get-isiNfsExports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4324,14 +4588,14 @@ function Get-isiNfsExports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.exports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsExports
@@ -4339,10 +4603,10 @@ Export-ModuleMember -Function Get-isiNfsExports
 function Get-isiNfsExportsSummary{
 <#
 .SYNOPSIS
-    Get Nfs Exports Summary
-    
+	Get Nfs Exports Summary
+
 .DESCRIPTION
-    Retrieve NFS export summary information.
+	Retrieve NFS export summary information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4352,17 +4616,16 @@ function Get-isiNfsExportsSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/exports-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/exports-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsExportsSummary
@@ -4370,13 +4633,16 @@ Export-ModuleMember -Function Get-isiNfsExportsSummary
 function Get-isiNfsExport{
 <#
 .SYNOPSIS
-    Get Nfs Export
-    
+	Get Nfs Export
+
 .DESCRIPTION
-    Retrieve export information.
+	Retrieve export information.
 
 .PARAMETER id
-	Export ID
+	Export id
+
+.PARAMETER name
+	Export name
 
 .PARAMETER scope
 	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
@@ -4388,13 +4654,13 @@ function Get-isiNfsExport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4402,14 +4668,19 @@ function Get-isiNfsExport{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.exports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsExport
@@ -4417,10 +4688,10 @@ Export-ModuleMember -Function Get-isiNfsExport
 function Get-isiNfsNlmLocks{
 <#
 .SYNOPSIS
-    Get Nfs Nlm Locks
-    
+	Get Nfs Nlm Locks
+
 .DESCRIPTION
-    List all NLM locks.
+	List all NLM locks.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4451,9 +4722,8 @@ function Get-isiNfsNlmLocks{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4473,14 +4743,14 @@ function Get-isiNfsNlmLocks{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/locks" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.locks
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsNlmLocks
@@ -4488,10 +4758,10 @@ Export-ModuleMember -Function Get-isiNfsNlmLocks
 function Get-isiNfsNlmSessions{
 <#
 .SYNOPSIS
-    Get Nfs Nlm Sessions
-    
+	Get Nfs Nlm Sessions
+
 .DESCRIPTION
-    List all NLM sessions.
+	List all NLM sessions.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4522,9 +4792,8 @@ function Get-isiNfsNlmSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4544,14 +4813,14 @@ function Get-isiNfsNlmSessions{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/sessions" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.sessions
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsNlmSessions
@@ -4559,10 +4828,10 @@ Export-ModuleMember -Function Get-isiNfsNlmSessions
 function Get-isiNfsNlmWaiters{
 <#
 .SYNOPSIS
-    Get Nfs Nlm Waiters
-    
+	Get Nfs Nlm Waiters
+
 .DESCRIPTION
-    List all NLM lock waiters.
+	List all NLM lock waiters.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4593,9 +4862,8 @@ function Get-isiNfsNlmWaiters{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4615,14 +4883,14 @@ function Get-isiNfsNlmWaiters{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/waiters" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.waiters
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsNlmWaiters
@@ -4630,10 +4898,10 @@ Export-ModuleMember -Function Get-isiNfsNlmWaiters
 function Get-isiNfsSettingsExport{
 <#
 .SYNOPSIS
-    Get Nfs Settings Export
-    
+	Get Nfs Settings Export
+
 .DESCRIPTION
-    Retrieve export information.
+	Retrieve export information.
 
 .PARAMETER scope
 	If specified as effective or not specified, all fields are returned.  If specified as user, only fields with non-default values are shown.  If specified as default, the original values are returned.
@@ -4648,9 +4916,8 @@ function Get-isiNfsSettingsExport{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('effective','user','default')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4661,11 +4928,11 @@ function Get-isiNfsSettingsExport{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/settings/export" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/settings/export" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsSettingsExport
@@ -4673,10 +4940,10 @@ Export-ModuleMember -Function Get-isiNfsSettingsExport
 function Get-isiNfsSettingsGlobal{
 <#
 .SYNOPSIS
-    Get Nfs Settings Global
-    
+	Get Nfs Settings Global
+
 .DESCRIPTION
-    Retrieve the NFS configuration.
+	Retrieve the NFS configuration.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -4686,17 +4953,16 @@ function Get-isiNfsSettingsGlobal{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/settings/global" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/settings/global" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiNfsSettingsGlobal
@@ -4704,10 +4970,10 @@ Export-ModuleMember -Function Get-isiNfsSettingsGlobal
 function Get-isiSmbOpenfiles{
 <#
 .SYNOPSIS
-    Get Smb Openfiles
-    
+	Get Smb Openfiles
+
 .DESCRIPTION
-    List open files.
+	List open files.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4739,9 +5005,8 @@ function Get-isiSmbOpenfiles{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('id','file','user','locks')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4761,14 +5026,14 @@ function Get-isiSmbOpenfiles{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/openfiles" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/openfiles" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.openfiles
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbOpenfiles
@@ -4776,10 +5041,10 @@ Export-ModuleMember -Function Get-isiSmbOpenfiles
 function Get-isiSmbSessions{
 <#
 .SYNOPSIS
-    Get Smb Sessions
-    
+	Get Smb Sessions
+
 .DESCRIPTION
-    List open sessions.
+	List open sessions.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4811,9 +5076,8 @@ function Get-isiSmbSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('computer','user','client_type','openfiles','active_time','idle_time','guest_login','encryption')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4833,14 +5097,14 @@ function Get-isiSmbSessions{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/sessions" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/sessions" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.sessions
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbSessions
@@ -4848,10 +5112,10 @@ Export-ModuleMember -Function Get-isiSmbSessions
 function Get-isiSmbSettingsGlobal{
 <#
 .SYNOPSIS
-    Get Smb Settings Global
-    
+	Get Smb Settings Global
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -4866,9 +5130,8 @@ function Get-isiSmbSettingsGlobal{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4879,11 +5142,11 @@ function Get-isiSmbSettingsGlobal{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/global" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/global" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbSettingsGlobal
@@ -4891,10 +5154,10 @@ Export-ModuleMember -Function Get-isiSmbSettingsGlobal
 function Get-isiSmbSettingsShare{
 <#
 .SYNOPSIS
-    Get Smb Settings Share
-    
+	Get Smb Settings Share
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER scope
 	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
@@ -4913,9 +5176,8 @@ function Get-isiSmbSettingsShare{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -4929,11 +5191,11 @@ function Get-isiSmbSettingsShare{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbSettingsShare
@@ -4941,10 +5203,10 @@ Export-ModuleMember -Function Get-isiSmbSettingsShare
 function Get-isiSmbShares{
 <#
 .SYNOPSIS
-    Get Smb Shares
-    
+	Get Smb Shares
+
 .DESCRIPTION
-    List all shares.
+	List all shares.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -4989,9 +5251,8 @@ function Get-isiSmbShares{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('id','name','path','description')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5020,14 +5281,14 @@ function Get-isiSmbShares{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.shares
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbShares
@@ -5035,10 +5296,10 @@ Export-ModuleMember -Function Get-isiSmbShares
 function Get-isiSmbSharesSummary{
 <#
 .SYNOPSIS
-    Get Smb Shares Summary
-    
+	Get Smb Shares Summary
+
 .DESCRIPTION
-    Return summary information about shares.
+	Return summary information about shares.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5048,17 +5309,16 @@ function Get-isiSmbSharesSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/smb/shares-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/smb/shares-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbSharesSummary
@@ -5066,13 +5326,16 @@ Export-ModuleMember -Function Get-isiSmbSharesSummary
 function Get-isiSmbShare{
 <#
 .SYNOPSIS
-    Get Smb Share
-    
+	Get Smb Share
+
 .DESCRIPTION
-    Retrieve share.
+	Retrieve share.
 
 .PARAMETER id
-	Share ID
+	Share id
+
+.PARAMETER name
+	Share name
 
 .PARAMETER resolve_names
 	If true, resolve group and user names in personas.
@@ -5090,15 +5353,15 @@ function Get-isiSmbShare{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5112,14 +5375,19 @@ function Get-isiSmbShare{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.shares
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSmbShare
@@ -5127,10 +5395,10 @@ Export-ModuleMember -Function Get-isiSmbShare
 function Get-isiQuotaLicense{
 <#
 .SYNOPSIS
-    Get Quota License
-    
+	Get Quota License
+
 .DESCRIPTION
-    Retrieve license information.
+	Retrieve license information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5140,17 +5408,16 @@ function Get-isiQuotaLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/license" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/license" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaLicense
@@ -5158,10 +5425,10 @@ Export-ModuleMember -Function Get-isiQuotaLicense
 function Get-isiQuotas{
 <#
 .SYNOPSIS
-    Get Quotas
-    
+	Get Quotas
+
 .DESCRIPTION
-    List all or matching quotas. Can also be used to retrieve quota state from existing reports. For any query argument not supplied, the default behavior is return all.
+	List all or matching quotas. Can also be used to retrieve quota state from existing reports. For any query argument not supplied, the default behavior is return all.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -5229,9 +5496,8 @@ function Get-isiQuotas{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][ValidateSet('directory','user','group','default-user','default-group')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5278,14 +5544,14 @@ function Get-isiQuotas{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.quotas
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotas
@@ -5293,10 +5559,10 @@ Export-ModuleMember -Function Get-isiQuotas
 function Get-isiQuotasSummary{
 <#
 .SYNOPSIS
-    Get Quotas Summary
-    
+	Get Quotas Summary
+
 .DESCRIPTION
-    Return summary information about quotas.
+	Return summary information about quotas.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5306,17 +5572,16 @@ function Get-isiQuotasSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotasSummary
@@ -5324,13 +5589,16 @@ Export-ModuleMember -Function Get-isiQuotasSummary
 function Get-isiQuota{
 <#
 .SYNOPSIS
-    Get Quota
-    
+	Get Quota
+
 .DESCRIPTION
-    Retrieve quota information.
+	Retrieve quota information.
 
 .PARAMETER id
-	Quota ID
+	Quota id
+
+.PARAMETER name
+	Quota name
 
 .PARAMETER resolve_names
 	If true, resolve group and user names in personas.
@@ -5344,14 +5612,14 @@ function Get-isiQuota{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5362,14 +5630,19 @@ function Get-isiQuota{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.quotas
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuota
@@ -5377,13 +5650,16 @@ Export-ModuleMember -Function Get-isiQuota
 function Get-isiQuotaNotifications{
 <#
 .SYNOPSIS
-    Get Quota Notifications
-    
-.DESCRIPTION
-    List all rules.
+	Get Quota Notifications
 
-.PARAMETER id
-	Quota ID
+.DESCRIPTION
+	List all rules.
+
+.PARAMETER quota_id
+	Quota quota_id
+
+.PARAMETER quota_name
+	Quota quota_name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5391,20 +5667,25 @@ function Get-isiQuotaNotifications{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$quota_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$id/notifications" 
+			if ($quota_id){
+				$parameter1 = $quota_id
+			} else {
+				$parameter1 = $quota_name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$parameter1/notifications" -Cluster $Cluster
 			$ISIObject.notifications
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaNotifications
@@ -5412,16 +5693,22 @@ Export-ModuleMember -Function Get-isiQuotaNotifications
 function Get-isiQuotaNotification{
 <#
 .SYNOPSIS
-    Get Quota Notification
-    
+	Get Quota Notification
+
 .DESCRIPTION
-    Retrieve notification rule information.
+	Retrieve notification rule information.
+
+.PARAMETER quota_id
+	Quota quota_id
+
+.PARAMETER quota_name
+	Quota quota_name
 
 .PARAMETER id
-	Quota ID
+	 id
 
-.PARAMETER id2
-	Notification ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5429,21 +5716,32 @@ function Get-isiQuotaNotification{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$quota_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$id/notifications/$id2" 
+			if ($quota_id){
+				$parameter1 = $quota_id
+			} else {
+				$parameter1 = $quota_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$parameter1/notifications/$parameter2" -Cluster $Cluster
 			$ISIObject.notifications
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaNotification
@@ -5451,10 +5749,10 @@ Export-ModuleMember -Function Get-isiQuotaNotification
 function Get-isiQuotaReports{
 <#
 .SYNOPSIS
-    Get Quota Reports
-    
+	Get Quota Reports
+
 .DESCRIPTION
-    List all or matching reports.
+	List all or matching reports.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -5496,9 +5794,8 @@ function Get-isiQuotaReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('time','generated','type')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('summary','detail','all')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5524,14 +5821,14 @@ function Get-isiQuotaReports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaReports
@@ -5539,13 +5836,16 @@ Export-ModuleMember -Function Get-isiQuotaReports
 function Get-isiQuotaReport{
 <#
 .SYNOPSIS
-    Get Quota Report
-    
+	Get Quota Report
+
 .DESCRIPTION
-    Retrieve report data (XML) or contents (meta-data).
+	Retrieve report data (XML) or contents (meta-data).
 
 .PARAMETER id
-	Report ID
+	Report id
+
+.PARAMETER name
+	Report name
 
 .PARAMETER contents
 	Display JSON meta-data contents instead of report data.
@@ -5556,13 +5856,13 @@ function Get-isiQuotaReport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$contents,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5570,14 +5870,19 @@ function Get-isiQuotaReport{
 			if ($contents){
 				$queryArguments += 'contents=' + $contents
 			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports/$id" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports/$parameter1" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaReport
@@ -5585,13 +5890,16 @@ Export-ModuleMember -Function Get-isiQuotaReport
 function Get-isiQuotaReportAbout{
 <#
 .SYNOPSIS
-    Get Quota Report About
-    
+	Get Quota Report About
+
 .DESCRIPTION
-    Retrieve report meta-data information.
+	Retrieve report meta-data information.
 
 .PARAMETER id
-	Report ID
+	Report id
+
+.PARAMETER name
+	Report name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5599,20 +5907,25 @@ function Get-isiQuotaReportAbout{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/reports/$id/about" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/reports/$parameter1/about" -Cluster $Cluster
 			$ISIObject.reports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaReportAbout
@@ -5620,10 +5933,10 @@ Export-ModuleMember -Function Get-isiQuotaReportAbout
 function Get-isiQuotaSettingsMappings{
 <#
 .SYNOPSIS
-    Get Quota Settings Mappings
-    
+	Get Quota Settings Mappings
+
 .DESCRIPTION
-    List all rules.
+	List all rules.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5633,17 +5946,16 @@ function Get-isiQuotaSettingsMappings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings" -Cluster $Cluster
 			$ISIObject.mappings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaSettingsMappings
@@ -5651,13 +5963,16 @@ Export-ModuleMember -Function Get-isiQuotaSettingsMappings
 function Get-isiQuotaSettingsMapping{
 <#
 .SYNOPSIS
-    Get Quota Settings Mapping
-    
+	Get Quota Settings Mapping
+
 .DESCRIPTION
-    Retrieve the mapping information.
+	Retrieve the mapping information.
 
 .PARAMETER id
-	Quota ID
+	Quota id
+
+.PARAMETER name
+	Quota name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5665,20 +5980,25 @@ function Get-isiQuotaSettingsMapping{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings/$parameter1" -Cluster $Cluster
 			$ISIObject.mappings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaSettingsMapping
@@ -5686,10 +6006,10 @@ Export-ModuleMember -Function Get-isiQuotaSettingsMapping
 function Get-isiQuotaSettingsNotifications{
 <#
 .SYNOPSIS
-    Get Quota Settings Notifications
-    
+	Get Quota Settings Notifications
+
 .DESCRIPTION
-    List all rules.
+	List all rules.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5699,17 +6019,16 @@ function Get-isiQuotaSettingsNotifications{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications" -Cluster $Cluster
 			$ISIObject.notifications
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaSettingsNotifications
@@ -5717,13 +6036,16 @@ Export-ModuleMember -Function Get-isiQuotaSettingsNotifications
 function Get-isiQuotaSettingsNotification{
 <#
 .SYNOPSIS
-    Get Quota Settings Notification
-    
+	Get Quota Settings Notification
+
 .DESCRIPTION
-    Retrieve notification rule information.
+	Retrieve notification rule information.
 
 .PARAMETER id
-	Notification ID
+	Notification id
+
+.PARAMETER name
+	Notification name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5731,20 +6053,25 @@ function Get-isiQuotaSettingsNotification{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications/$parameter1" -Cluster $Cluster
 			$ISIObject.notifications
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaSettingsNotification
@@ -5752,10 +6079,10 @@ Export-ModuleMember -Function Get-isiQuotaSettingsNotification
 function Get-isiQuotaSettingsReports{
 <#
 .SYNOPSIS
-    Get Quota Settings Reports
-    
+	Get Quota Settings Reports
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5765,17 +6092,16 @@ function Get-isiQuotaSettingsReports{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/reports" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/reports" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiQuotaSettingsReports
@@ -5783,10 +6109,10 @@ Export-ModuleMember -Function Get-isiQuotaSettingsReports
 function Get-isiRemoteSupport{
 <#
 .SYNOPSIS
-    Get Remote Support
-    
+	Get Remote Support
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5796,17 +6122,16 @@ function Get-isiRemoteSupport{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/remotesupport/connectemc" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/remotesupport/connectemc" -Cluster $Cluster
 			$ISIObject.connectemc
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiRemoteSupport
@@ -5814,10 +6139,10 @@ Export-ModuleMember -Function Get-isiRemoteSupport
 function Get-isiSnapshotAliases{
 <#
 .SYNOPSIS
-    Get Snapshot Aliases
-    
+	Get Snapshot Aliases
+
 .DESCRIPTION
-    List all or matching snapshot aliases.
+	List all or matching snapshot aliases.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -5848,9 +6173,8 @@ function Get-isiSnapshotAliases{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -5870,14 +6194,14 @@ function Get-isiSnapshotAliases{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/aliases" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/aliases" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.snapshots
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotAliases
@@ -5885,13 +6209,16 @@ Export-ModuleMember -Function Get-isiSnapshotAliases
 function Get-isiSnapshotAlias{
 <#
 .SYNOPSIS
-    Get Snapshot Aliase
-    
+	Get Snapshot Aliase
+
 .DESCRIPTION
-    Retrieve snapshot alias information.
+	Retrieve snapshot alias information.
 
 .PARAMETER id
-	Snapshot ID
+	Snapshot id
+
+.PARAMETER name
+	Snapshot name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5899,20 +6226,25 @@ function Get-isiSnapshotAlias{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/aliases/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/aliases/$parameter1" -Cluster $Cluster
 			$ISIObject.aliases
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotAlias
@@ -5920,10 +6252,10 @@ Export-ModuleMember -Function Get-isiSnapshotAlias
 function Get-isiSnapshotChangelists{
 <#
 .SYNOPSIS
-    Get Snapshot Changelists
-    
+	Get Snapshot Changelists
+
 .DESCRIPTION
-    List all changelists.
+	List all changelists.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5933,17 +6265,16 @@ function Get-isiSnapshotChangelists{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists" -Cluster $Cluster
 			$ISIObject.changelists
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotChangelists
@@ -5951,13 +6282,16 @@ Export-ModuleMember -Function Get-isiSnapshotChangelists
 function Get-isiSnapshotChangelist{
 <#
 .SYNOPSIS
-    Get Snapshot Changelist
-    
+	Get Snapshot Changelist
+
 .DESCRIPTION
-    Retrieve basic information on a changelist.
+	Retrieve basic information on a changelist.
 
 .PARAMETER id
-	Changelist ID
+	Changelist id
+
+.PARAMETER name
+	Changelist name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -5965,20 +6299,25 @@ function Get-isiSnapshotChangelist{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotChangelist
@@ -5986,13 +6325,16 @@ Export-ModuleMember -Function Get-isiSnapshotChangelist
 function Get-isiSnapshotChangelistLins{
 <#
 .SYNOPSIS
-    Get Snapshot Changelist Lins
-    
-.DESCRIPTION
-    Get entries from a changelist.
+	Get Snapshot Changelist Lins
 
-.PARAMETER id
-	Changelist ID
+.DESCRIPTION
+	Get entries from a changelist.
+
+.PARAMETER changelist_id
+	Changelist changelist_id
+
+.PARAMETER changelist_name
+	Changelist changelist_name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6000,20 +6342,25 @@ function Get-isiSnapshotChangelistLins{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$changelist_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$changelist_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$id/lins" 
+			if ($changelist_id){
+				$parameter1 = $changelist_id
+			} else {
+				$parameter1 = $changelist_name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1/lins" -Cluster $Cluster
 			$ISIObject.lins
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotChangelistLins
@@ -6021,16 +6368,22 @@ Export-ModuleMember -Function Get-isiSnapshotChangelistLins
 function Get-isiSnapshotChangelistLin{
 <#
 .SYNOPSIS
-    Get Snapshot Changelist Lins
-    
+	Get Snapshot Changelist Lins
+
 .DESCRIPTION
-    Get a single entry from the changelist.
+	Get a single entry from the changelist.
+
+.PARAMETER changelist_id
+	Changelist changelist_id
+
+.PARAMETER changelist_name
+	Changelist changelist_name
 
 .PARAMETER id
-	Changelist ID
+	 id
 
-.PARAMETER id2
-	Lin ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6038,21 +6391,32 @@ function Get-isiSnapshotChangelistLin{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$changelist_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$changelist_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$id/lins/$id2" 
+			if ($changelist_id){
+				$parameter1 = $changelist_id
+			} else {
+				$parameter1 = $changelist_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1/lins/$parameter2" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotChangelistLin
@@ -6060,10 +6424,10 @@ Export-ModuleMember -Function Get-isiSnapshotChangelistLin
 function Get-isiSnapshotLicense{
 <#
 .SYNOPSIS
-    Get Snapshot License
-    
+	Get Snapshot License
+
 .DESCRIPTION
-    Retrieve license information.
+	Retrieve license information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6073,17 +6437,16 @@ function Get-isiSnapshotLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/license" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/license" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotLicense
@@ -6091,10 +6454,10 @@ Export-ModuleMember -Function Get-isiSnapshotLicense
 function Get-isiSnapshotPending{
 <#
 .SYNOPSIS
-    Get Snapshot Pending
-    
+	Get Snapshot Pending
+
 .DESCRIPTION
-    Return list of snapshots to be taken.
+	Return list of snapshots to be taken.
 
 .PARAMETER begin
 	Unix Epoch time to start generating matches. Default is now.
@@ -6128,9 +6491,8 @@ function Get-isiSnapshotPending{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6153,14 +6515,14 @@ function Get-isiSnapshotPending{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/pending" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/pending" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.pending
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotPending
@@ -6168,10 +6530,10 @@ Export-ModuleMember -Function Get-isiSnapshotPending
 function Get-isiSnapshotRepstates{
 <#
 .SYNOPSIS
-    Get Snapshot Repstates
-    
+	Get Snapshot Repstates
+
 .DESCRIPTION
-    List all repstates.
+	List all repstates.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6181,17 +6543,16 @@ function Get-isiSnapshotRepstates{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates" -Cluster $Cluster
 			$ISIObject.repstates
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotRepstates
@@ -6199,13 +6560,16 @@ Export-ModuleMember -Function Get-isiSnapshotRepstates
 function Get-isiSnapshotRepstate{
 <#
 .SYNOPSIS
-    Get Snapshot Repstate
-    
+	Get Snapshot Repstate
+
 .DESCRIPTION
-    Retrieve basic information on a repstate.
+	Retrieve basic information on a repstate.
 
 .PARAMETER id
-	Repstate ID
+	Repstate id
+
+.PARAMETER name
+	Repstate name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6213,20 +6577,25 @@ function Get-isiSnapshotRepstate{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates/$parameter1" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotRepstate
@@ -6234,10 +6603,10 @@ Export-ModuleMember -Function Get-isiSnapshotRepstate
 function Get-isiSnapshotSchedules{
 <#
 .SYNOPSIS
-    Get Snapshot Schedules
-    
+	Get Snapshot Schedules
+
 .DESCRIPTION
-    List all or matching schedules.
+	List all or matching schedules.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -6268,9 +6637,8 @@ function Get-isiSnapshotSchedules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6290,14 +6658,14 @@ function Get-isiSnapshotSchedules{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/schedules" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/schedules" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.schedules
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotSchedules
@@ -6305,13 +6673,16 @@ Export-ModuleMember -Function Get-isiSnapshotSchedules
 function Get-isiSnapshotSchedule{
 <#
 .SYNOPSIS
-    Get Snapshot Schedule
-    
+	Get Snapshot Schedule
+
 .DESCRIPTION
-    Retrieve the schedule.
+	Retrieve the schedule.
 
 .PARAMETER id
-	Snapshot ID
+	Snapshot id
+
+.PARAMETER name
+	Snapshot name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6319,20 +6690,25 @@ function Get-isiSnapshotSchedule{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/schedules/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/schedules/$parameter1" -Cluster $Cluster
 			$ISIObject.schedules
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotSchedule
@@ -6340,10 +6716,10 @@ Export-ModuleMember -Function Get-isiSnapshotSchedule
 function Get-isiSnapshotSettings{
 <#
 .SYNOPSIS
-    Get Snapshot Settings
-    
+	Get Snapshot Settings
+
 .DESCRIPTION
-    List all settings
+	List all settings
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6353,17 +6729,16 @@ function Get-isiSnapshotSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotSettings
@@ -6371,10 +6746,10 @@ Export-ModuleMember -Function Get-isiSnapshotSettings
 function Get-isiSnapshots{
 <#
 .SYNOPSIS
-    Get Snapshots
-    
+	Get Snapshots
+
 .DESCRIPTION
-    List all or matching snapshots.
+	List all or matching snapshots.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -6419,9 +6794,8 @@ function Get-isiSnapshots{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('all','active','deleting')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('all','alias','real')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6450,14 +6824,14 @@ function Get-isiSnapshots{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.snapshots
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshots
@@ -6465,10 +6839,10 @@ Export-ModuleMember -Function Get-isiSnapshots
 function Get-isiSnapshotsSummary{
 <#
 .SYNOPSIS
-    Get Snapshots Summary
-    
+	Get Snapshots Summary
+
 .DESCRIPTION
-    Return summary information about snapshots.
+	Return summary information about snapshots.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6478,17 +6852,16 @@ function Get-isiSnapshotsSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotsSummary
@@ -6496,13 +6869,16 @@ Export-ModuleMember -Function Get-isiSnapshotsSummary
 function Get-isiSnapshot{
 <#
 .SYNOPSIS
-    Get Snapshot
-    
+	Get Snapshot
+
 .DESCRIPTION
-    Retrieve snapshot information.
+	Retrieve snapshot information.
 
 .PARAMETER id
-	Snapshot ID
+	Snapshot id
+
+.PARAMETER name
+	Snapshot name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6510,20 +6886,25 @@ function Get-isiSnapshot{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$parameter1" -Cluster $Cluster
 			$ISIObject.snapshots
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshot
@@ -6531,13 +6912,16 @@ Export-ModuleMember -Function Get-isiSnapshot
 function Get-isiSnapshotLocks{
 <#
 .SYNOPSIS
-    Get Snapshot Locks
-    
-.DESCRIPTION
-    List all locks.
+	Get Snapshot Locks
 
-.PARAMETER id
-	Snapshot ID
+.DESCRIPTION
+	List all locks.
+
+.PARAMETER snapshot_id
+	Snapshot snapshot_id
+
+.PARAMETER snapshot_name
+	Snapshot snapshot_name
 
 .PARAMETER dir
 	The direction of the sort.
@@ -6561,17 +6945,17 @@ function Get-isiSnapshotLocks{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$snapshot_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$snapshot_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6588,17 +6972,22 @@ function Get-isiSnapshotLocks{
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
 			}
+			if ($snapshot_id){
+				$parameter1 = $snapshot_id
+			} else {
+				$parameter1 = $snapshot_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots/$id/locks" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots/$parameter1/locks" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.locks
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotLocks
@@ -6606,16 +6995,22 @@ Export-ModuleMember -Function Get-isiSnapshotLocks
 function Get-isiSnapshotLock{
 <#
 .SYNOPSIS
-    Get Snapshot Lock
-    
+	Get Snapshot Lock
+
 .DESCRIPTION
-    Retrieve lock information.
+	Retrieve lock information.
+
+.PARAMETER snapshot_id
+	Snapshot snapshot_id
+
+.PARAMETER snapshot_name
+	Snapshot snapshot_name
 
 .PARAMETER id
-	Snapshot ID
+	 id
 
-.PARAMETER id2
-	Lock ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6623,21 +7018,32 @@ function Get-isiSnapshotLock{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$snapshot_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$snapshot_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$id/locks/$id2" 
+			if ($snapshot_id){
+				$parameter1 = $snapshot_id
+			} else {
+				$parameter1 = $snapshot_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$parameter1/locks/$parameter2" -Cluster $Cluster
 			$ISIObject.locks
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSnapshotLock
@@ -6645,10 +7051,10 @@ Export-ModuleMember -Function Get-isiSnapshotLock
 function Get-isiStatisticsCurrent{
 <#
 .SYNOPSIS
-    Get Statistics Current
-    
+	Get Statistics Current
+
 .DESCRIPTION
-    Retrieve stats.
+	Retrieve stats.
 
 .PARAMETER degraded
 	If true, try to continue even if some stats are unavailable. In this case, errors will be present in the per-key returned data.
@@ -6678,9 +7084,8 @@ function Get-isiStatisticsCurrent{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$expand_clientid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][array]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6703,11 +7108,11 @@ function Get-isiStatisticsCurrent{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/current" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/current" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.stats
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStatisticsCurrent
@@ -6715,10 +7120,10 @@ Export-ModuleMember -Function Get-isiStatisticsCurrent
 function Get-isiStatisticsHistory{
 <#
 .SYNOPSIS
-    Get Statistics History
-    
+	Get Statistics History
+
 .DESCRIPTION
-    Retrieve stats.
+	Retrieve stats.
 
 .PARAMETER begin
 	Earliest time (Unix epoch seconds) of interest. Negative times are interpreted as relative (before) now.
@@ -6764,9 +7169,8 @@ function Get-isiStatisticsHistory{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][array]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][bool]$memory_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][int]$timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6801,11 +7205,11 @@ function Get-isiStatisticsHistory{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/history" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/history" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.stats
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStatisticsHistory
@@ -6813,10 +7217,10 @@ Export-ModuleMember -Function Get-isiStatisticsHistory
 function Get-isiStatisticsKeys{
 <#
 .SYNOPSIS
-    Get Statistics Keys
-    
+	Get Statistics Keys
+
 .DESCRIPTION
-    List meta-data for matching keys.
+	List meta-data for matching keys.
 
 .PARAMETER count
 	Only count matching keys, do not return meta-data.
@@ -6846,9 +7250,8 @@ function Get-isiStatisticsKeys{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$queryable,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -6868,14 +7271,14 @@ function Get-isiStatisticsKeys{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/keys" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/keys" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.keys
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStatisticsKeys
@@ -6883,13 +7286,16 @@ Export-ModuleMember -Function Get-isiStatisticsKeys
 function Get-isiStatisticsKey{
 <#
 .SYNOPSIS
-    Get Statistics Key
-    
+	Get Statistics Key
+
 .DESCRIPTION
-    List key meta-data.
+	List key meta-data.
 
 .PARAMETER id
-	Key ID
+	Key id
+
+.PARAMETER name
+	Key name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6897,20 +7303,25 @@ function Get-isiStatisticsKey{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/keys/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/keys/$parameter1" -Cluster $Cluster
 			$ISIObject.keys
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStatisticsKey
@@ -6918,10 +7329,10 @@ Export-ModuleMember -Function Get-isiStatisticsKey
 function Get-isiStatisticsProtocols{
 <#
 .SYNOPSIS
-    Get Statistics Protocols
-    
+	Get Statistics Protocols
+
 .DESCRIPTION
-    Retrieve protocol list.
+	Retrieve protocol list.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6931,17 +7342,16 @@ function Get-isiStatisticsProtocols{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/protocols" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/protocols" -Cluster $Cluster
 			$ISIObject.protocols
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStatisticsProtocols
@@ -6949,10 +7359,10 @@ Export-ModuleMember -Function Get-isiStatisticsProtocols
 function Get-isiStoragepoolCompatibilitiesActive{
 <#
 .SYNOPSIS
-    Get Storagepool Compatibilities Active
-    
+	Get Storagepool Compatibilities Active
+
 .DESCRIPTION
-    Get a list of active compatibilities
+	Get a list of active compatibilities
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6962,17 +7372,16 @@ function Get-isiStoragepoolCompatibilitiesActive{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active" -Cluster $Cluster
 			$ISIObject.active
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActive
@@ -6980,13 +7389,16 @@ Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActive
 function Get-isiStoragepoolCompatibilitiesActiveId{
 <#
 .SYNOPSIS
-    Get Storagepool Compatibilities Active ID
-    
+	Get Storagepool Compatibilities Active ID
+
 .DESCRIPTION
-    Get a an active compatibilities by id
+	Get a an active compatibilities by id
 
 .PARAMETER id
-	Active Compatibilities ID
+	Active Compatibilities id
+
+.PARAMETER name
+	Active Compatibilities name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6994,20 +7406,25 @@ function Get-isiStoragepoolCompatibilitiesActiveId{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active/$parameter1" -Cluster $Cluster
 			$ISIObject.active
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActiveId
@@ -7015,10 +7432,10 @@ Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActiveId
 function Get-isiStoragepoolCompatibilitiesAvailable{
 <#
 .SYNOPSIS
-    Get Storagepool Compatibilities Available
-    
+	Get Storagepool Compatibilities Available
+
 .DESCRIPTION
-    Get a list of available compatibilities
+	Get a list of available compatibilities
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7028,17 +7445,16 @@ function Get-isiStoragepoolCompatibilitiesAvailable{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/available" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/available" -Cluster $Cluster
 			$ISIObject.available
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesAvailable
@@ -7046,10 +7462,10 @@ Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesAvailable
 function Get-isiStoragepoolNodepools{
 <#
 .SYNOPSIS
-    Get Storagepool Nodepools
-    
+	Get Storagepool Nodepools
+
 .DESCRIPTION
-    List all node pools.
+	List all node pools.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7059,17 +7475,16 @@ function Get-isiStoragepoolNodepools{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools" -Cluster $Cluster
 			$ISIObject.nodepools
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolNodepools
@@ -7077,13 +7492,16 @@ Export-ModuleMember -Function Get-isiStoragepoolNodepools
 function Get-isiStoragepoolNodepool{
 <#
 .SYNOPSIS
-    Get Storagepool Nodepool
-    
+	Get Storagepool Nodepool
+
 .DESCRIPTION
-    Retrieve node pool information.
+	Retrieve node pool information.
 
 .PARAMETER id
-	Nodepool ID
+	Nodepool id
+
+.PARAMETER name
+	Nodepool name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7091,20 +7509,25 @@ function Get-isiStoragepoolNodepool{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools/$parameter1" -Cluster $Cluster
 			$ISIObject.nodepools
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolNodepool
@@ -7112,10 +7535,10 @@ Export-ModuleMember -Function Get-isiStoragepoolNodepool
 function Get-isiStoragepoolSettings{
 <#
 .SYNOPSIS
-    Get Storagepool Settings
-    
+	Get Storagepool Settings
+
 .DESCRIPTION
-    List all settings.
+	List all settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7125,17 +7548,16 @@ function Get-isiStoragepoolSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolSettings
@@ -7143,10 +7565,10 @@ Export-ModuleMember -Function Get-isiStoragepoolSettings
 function Get-isiStoragepoolStatus{
 <#
 .SYNOPSIS
-    Get Storagepool Status
-    
+	Get Storagepool Status
+
 .DESCRIPTION
-    List any health conditions detected.
+	List any health conditions detected.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7156,17 +7578,16 @@ function Get-isiStoragepoolStatus{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/status" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/status" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolStatus
@@ -7174,10 +7595,10 @@ Export-ModuleMember -Function Get-isiStoragepoolStatus
 function Get-isiStoragepools{
 <#
 .SYNOPSIS
-    Get Storagepools
-    
+	Get Storagepools
+
 .DESCRIPTION
-    List all storage pools.
+	List all storage pools.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7187,17 +7608,16 @@ function Get-isiStoragepools{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/storagepools" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/storagepools" -Cluster $Cluster
 			$ISIObject.storagepools
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepools
@@ -7205,13 +7625,16 @@ Export-ModuleMember -Function Get-isiStoragepools
 function Get-isiStoragepoolSuggestedProtection{
 <#
 .SYNOPSIS
-    Get Storagepool Suggested Protection
-    
+	Get Storagepool Suggested Protection
+
 .DESCRIPTION
-    Retrieve the suggested protection policy.
+	Retrieve the suggested protection policy.
 
 .PARAMETER id
-	Nodepool ID
+	Nodepool id
+
+.PARAMETER name
+	Nodepool name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7219,20 +7642,25 @@ function Get-isiStoragepoolSuggestedProtection{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/suggested_protection/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/suggested_protection/$parameter1" -Cluster $Cluster
 			$ISIObject.suggested_protection
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolSuggestedProtection
@@ -7240,10 +7668,10 @@ Export-ModuleMember -Function Get-isiStoragepoolSuggestedProtection
 function Get-isiStoragepoolTiers{
 <#
 .SYNOPSIS
-    Get Storagepool Tiers
-    
+	Get Storagepool Tiers
+
 .DESCRIPTION
-    List all tiers.
+	List all tiers.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7253,17 +7681,16 @@ function Get-isiStoragepoolTiers{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers" -Cluster $Cluster
 			$ISIObject.tiers
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolTiers
@@ -7271,13 +7698,16 @@ Export-ModuleMember -Function Get-isiStoragepoolTiers
 function Get-isiStoragepoolTier{
 <#
 .SYNOPSIS
-    Get Storagepool Tier
-    
+	Get Storagepool Tier
+
 .DESCRIPTION
-    Retrieve tier information.
+	Retrieve tier information.
 
 .PARAMETER id
-	Tier ID
+	Tier id
+
+.PARAMETER name
+	Tier name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7285,20 +7715,25 @@ function Get-isiStoragepoolTier{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers/$parameter1" -Cluster $Cluster
 			$ISIObject.tiers
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolTier
@@ -7306,10 +7741,10 @@ Export-ModuleMember -Function Get-isiStoragepoolTier
 function Get-isiStoragepoolUnprovisioned{
 <#
 .SYNOPSIS
-    Get Storagepool Unprovisioned
-    
+	Get Storagepool Unprovisioned
+
 .DESCRIPTION
-    Get the uprovisioned nodes and drives
+	Get the uprovisioned nodes and drives
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7319,17 +7754,16 @@ function Get-isiStoragepoolUnprovisioned{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/unprovisioned" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/unprovisioned" -Cluster $Cluster
 			$ISIObject.unprovisioned
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiStoragepoolUnprovisioned
@@ -7337,10 +7771,10 @@ Export-ModuleMember -Function Get-isiStoragepoolUnprovisioned
 function Get-isiSyncHistoryFile{
 <#
 .SYNOPSIS
-    Get Sync History File
-    
+	Get Sync History File
+
 .DESCRIPTION
-    List file operations performance data.
+	List file operations performance data.
 
 .PARAMETER begin
 	Begin timestamp for time-series report.
@@ -7358,9 +7792,8 @@ function Get-isiSyncHistoryFile{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][int]$begin,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$end,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7374,11 +7807,11 @@ function Get-isiSyncHistoryFile{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/file" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/file" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.statistics
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncHistoryFile
@@ -7386,10 +7819,10 @@ Export-ModuleMember -Function Get-isiSyncHistoryFile
 function Get-isiSyncHistoryNetwork{
 <#
 .SYNOPSIS
-    Get Sync History Network
-    
+	Get Sync History Network
+
 .DESCRIPTION
-    List network operations performance data.
+	List network operations performance data.
 
 .PARAMETER begin
 	Begin timestamp for time-series report.
@@ -7407,9 +7840,8 @@ function Get-isiSyncHistoryNetwork{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][int]$begin,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$end,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7423,11 +7855,11 @@ function Get-isiSyncHistoryNetwork{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/network" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/network" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.statistics
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncHistoryNetwork
@@ -7435,10 +7867,10 @@ Export-ModuleMember -Function Get-isiSyncHistoryNetwork
 function Get-isiSyncJobs{
 <#
 .SYNOPSIS
-    Get Sync Jobs
-    
+	Get Sync Jobs
+
 .DESCRIPTION
-    Get a list of SyncIQ jobs.
+	Get a list of SyncIQ jobs.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -7474,9 +7906,8 @@ function Get-isiSyncJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7499,14 +7930,14 @@ function Get-isiSyncJobs{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/jobs" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/jobs" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.jobs
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncJobs
@@ -7514,13 +7945,16 @@ Export-ModuleMember -Function Get-isiSyncJobs
 function Get-isiSyncJob{
 <#
 .SYNOPSIS
-    Get Sync Job
-    
+	Get Sync Job
+
 .DESCRIPTION
-    View a single SyncIQ job.
+	View a single SyncIQ job.
 
 .PARAMETER id
-	Job ID
+	Job id
+
+.PARAMETER name
+	Job name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7528,20 +7962,25 @@ function Get-isiSyncJob{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/jobs/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/jobs/$parameter1" -Cluster $Cluster
 			$ISIObject.jobs
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncJob
@@ -7549,10 +7988,10 @@ Export-ModuleMember -Function Get-isiSyncJob
 function Get-isiSyncLicense{
 <#
 .SYNOPSIS
-    Get Sync License
-    
+	Get Sync License
+
 .DESCRIPTION
-    Retrieve license information.
+	Retrieve license information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7562,17 +8001,16 @@ function Get-isiSyncLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/license" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/license" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncLicense
@@ -7580,10 +8018,10 @@ Export-ModuleMember -Function Get-isiSyncLicense
 function Get-isiSyncPolicies{
 <#
 .SYNOPSIS
-    Get Sync Policies
-    
+	Get Sync Policies
+
 .DESCRIPTION
-    List all SyncIQ policies.
+	List all SyncIQ policies.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -7623,9 +8061,8 @@ function Get-isiSyncPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][bool]$summary,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7651,14 +8088,14 @@ function Get-isiSyncPolicies{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/policies" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/policies" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.policies
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncPolicies
@@ -7666,13 +8103,16 @@ Export-ModuleMember -Function Get-isiSyncPolicies
 function Get-isiSyncPolicy{
 <#
 .SYNOPSIS
-    Get Sync Policy
-    
+	Get Sync Policy
+
 .DESCRIPTION
-    View a single SyncIQ policy.
+	View a single SyncIQ policy.
 
 .PARAMETER id
-	Policy ID
+	Policy id
+
+.PARAMETER name
+	Policy name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7680,20 +8120,25 @@ function Get-isiSyncPolicy{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/policies/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/policies/$parameter1" -Cluster $Cluster
 			$ISIObject.policies
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncPolicy
@@ -7701,10 +8146,10 @@ Export-ModuleMember -Function Get-isiSyncPolicy
 function Get-isiSyncReports{
 <#
 .SYNOPSIS
-    Get Sync Reports
-    
+	Get Sync Reports
+
 .DESCRIPTION
-    Get a list of SyncIQ reports.  By default 10 reports are returned per policy, unless otherwise specified by 'reports_per_policy'.
+	Get a list of SyncIQ reports.  By default 10 reports are returned per policy, unless otherwise specified by 'reports_per_policy'.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -7752,9 +8197,8 @@ function Get-isiSyncReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7786,14 +8230,14 @@ function Get-isiSyncReports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncReports
@@ -7801,10 +8245,10 @@ Export-ModuleMember -Function Get-isiSyncReports
 function Get-isiSyncReportsRotate{
 <#
 .SYNOPSIS
-    Get Sync Reports Rotate
-    
+	Get Sync Reports Rotate
+
 .DESCRIPTION
-    Whether the rotation is still running or not.
+	Whether the rotation is still running or not.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7814,17 +8258,16 @@ function Get-isiSyncReportsRotate{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports-rotate" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports-rotate" -Cluster $Cluster
 			$ISIObject
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncReportsRotate
@@ -7832,13 +8275,16 @@ Export-ModuleMember -Function Get-isiSyncReportsRotate
 function Get-isiSyncReport{
 <#
 .SYNOPSIS
-    Get Sync Report
-    
+	Get Sync Report
+
 .DESCRIPTION
-    View a single SyncIQ report.
+	View a single SyncIQ report.
 
 .PARAMETER id
-	Rid ID
+	Rid id
+
+.PARAMETER name
+	Rid name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7846,20 +8292,25 @@ function Get-isiSyncReport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$parameter1" -Cluster $Cluster
 			$ISIObject.reports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncReport
@@ -7867,13 +8318,16 @@ Export-ModuleMember -Function Get-isiSyncReport
 function Get-isiSyncReportSubreports{
 <#
 .SYNOPSIS
-    Get Sync Report Subreports
-    
-.DESCRIPTION
-    Get a list of SyncIQ subreports for a report.
+	Get Sync Report Subreports
 
-.PARAMETER id
-	Report ID
+.DESCRIPTION
+	Get a list of SyncIQ subreports for a report.
+
+.PARAMETER report_id
+	Report report_id
+
+.PARAMETER report_name
+	Report report_name
 
 .PARAMETER dir
 	The direction of the sort.
@@ -7904,9 +8358,10 @@ function Get-isiSyncReportSubreports{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$report_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][int]$newer_than,
@@ -7914,9 +8369,8 @@ function Get-isiSyncReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -7939,17 +8393,22 @@ function Get-isiSyncReportSubreports{
 			if ($state){
 				$queryArguments += 'state=' + $state
 			}
+			if ($report_id){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports/$id/subreports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.subreports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncReportSubreports
@@ -7957,16 +8416,22 @@ Export-ModuleMember -Function Get-isiSyncReportSubreports
 function Get-isiSyncReportSubreport{
 <#
 .SYNOPSIS
-    Get Sync Report Subreport
-    
+	Get Sync Report Subreport
+
 .DESCRIPTION
-    View a single SyncIQ subreport.
+	View a single SyncIQ subreport.
+
+.PARAMETER report_id
+	Report report_id
+
+.PARAMETER report_name
+	Report report_name
 
 .PARAMETER id
-	Report ID
+	 id
 
-.PARAMETER id2
-	Subeport ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7974,21 +8439,32 @@ function Get-isiSyncReportSubreport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$report_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$id/subreports/$id2" 
+			if ($report_id){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$parameter1/subreports/$parameter2" -Cluster $Cluster
 			$ISIObject.subreports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncReportSubreport
@@ -7996,10 +8472,10 @@ Export-ModuleMember -Function Get-isiSyncReportSubreport
 function Get-isiSyncRules{
 <#
 .SYNOPSIS
-    Get Sync Rules
-    
+	Get Sync Rules
+
 .DESCRIPTION
-    List all SyncIQ performance rules.
+	List all SyncIQ performance rules.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -8035,9 +8511,8 @@ function Get-isiSyncRules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('bandwidth','file_count','cpu')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -8060,14 +8535,14 @@ function Get-isiSyncRules{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/rules" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/rules" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.rules
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncRules
@@ -8075,13 +8550,16 @@ Export-ModuleMember -Function Get-isiSyncRules
 function Get-isiSyncRule{
 <#
 .SYNOPSIS
-    Get Sync Rule
-    
+	Get Sync Rule
+
 .DESCRIPTION
-    View a single SyncIQ performance rule.
+	View a single SyncIQ performance rule.
 
 .PARAMETER id
-	Rule ID
+	Rule id
+
+.PARAMETER name
+	Rule name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8089,20 +8567,25 @@ function Get-isiSyncRule{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/rules/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/rules/$parameter1" -Cluster $Cluster
 			$ISIObject.rules
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncRule
@@ -8110,10 +8593,10 @@ Export-ModuleMember -Function Get-isiSyncRule
 function Get-isiSyncSettings{
 <#
 .SYNOPSIS
-    Get Sync Settings
-    
+	Get Sync Settings
+
 .DESCRIPTION
-    Retrieve the global SyncIQ settings.
+	Retrieve the global SyncIQ settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8123,17 +8606,16 @@ function Get-isiSyncSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncSettings
@@ -8141,10 +8623,10 @@ Export-ModuleMember -Function Get-isiSyncSettings
 function Get-isiSyncTargetPolicies{
 <#
 .SYNOPSIS
-    Get Sync Target Policies
-    
+	Get Sync Target Policies
+
 .DESCRIPTION
-    List all SyncIQ target policies.
+	List all SyncIQ target policies.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -8179,9 +8661,8 @@ function Get-isiSyncTargetPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$target_path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -8204,14 +8685,14 @@ function Get-isiSyncTargetPolicies{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/policies" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/policies" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.policies
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetPolicies
@@ -8219,13 +8700,16 @@ Export-ModuleMember -Function Get-isiSyncTargetPolicies
 function Get-isiSyncTargetPolicy{
 <#
 .SYNOPSIS
-    Get Sync Target Policy
-    
+	Get Sync Target Policy
+
 .DESCRIPTION
-    View a single SyncIQ target policy.
+	View a single SyncIQ target policy.
 
 .PARAMETER id
-	Policy ID
+	Policy id
+
+.PARAMETER name
+	Policy name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8233,20 +8717,25 @@ function Get-isiSyncTargetPolicy{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/policies/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/policies/$parameter1" -Cluster $Cluster
 			$ISIObject.policies
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetPolicy
@@ -8254,10 +8743,10 @@ Export-ModuleMember -Function Get-isiSyncTargetPolicy
 function Get-isiSyncTargetReports{
 <#
 .SYNOPSIS
-    Get Sync Target Reports
-    
+	Get Sync Target Reports
+
 .DESCRIPTION
-    Get a list of SyncIQ target reports.  By default 10 reports are returned per policy, unless otherwise specified by 'reports_per_policy'.
+	Get a list of SyncIQ target reports.  By default 10 reports are returned per policy, unless otherwise specified by 'reports_per_policy'.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -8305,9 +8794,8 @@ function Get-isiSyncTargetReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -8339,14 +8827,14 @@ function Get-isiSyncTargetReports{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.reports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetReports
@@ -8354,13 +8842,16 @@ Export-ModuleMember -Function Get-isiSyncTargetReports
 function Get-isiSyncTargetReport{
 <#
 .SYNOPSIS
-    Get Sync Target Report
-    
+	Get Sync Target Report
+
 .DESCRIPTION
-    View a single SyncIQ target report.
+	View a single SyncIQ target report.
 
 .PARAMETER id
-	Report ID
+	Report id
+
+.PARAMETER name
+	Report name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8368,20 +8859,25 @@ function Get-isiSyncTargetReport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$parameter1" -Cluster $Cluster
 			$ISIObject.reports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetReport
@@ -8389,13 +8885,16 @@ Export-ModuleMember -Function Get-isiSyncTargetReport
 function Get-isiSyncTargetReportSubreports{
 <#
 .SYNOPSIS
-    Get Sync Target Report Subreports
-    
-.DESCRIPTION
-    Get a list of SyncIQ target subreports for a report.
+	Get Sync Target Report Subreports
 
-.PARAMETER id
-	Report ID
+.DESCRIPTION
+	Get a list of SyncIQ target subreports for a report.
+
+.PARAMETER report_id
+	Report report_id
+
+.PARAMETER report_name
+	Report report_name
 
 .PARAMETER dir
 	The direction of the sort.
@@ -8426,9 +8925,10 @@ function Get-isiSyncTargetReportSubreports{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$report_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][int]$newer_than,
@@ -8436,9 +8936,8 @@ function Get-isiSyncTargetReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -8461,17 +8960,22 @@ function Get-isiSyncTargetReportSubreports{
 			if ($state){
 				$queryArguments += 'state=' + $state
 			}
+			if ($report_id){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports/$id/subreports" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.subreports
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetReportSubreports
@@ -8479,16 +8983,22 @@ Export-ModuleMember -Function Get-isiSyncTargetReportSubreports
 function Get-isiSyncTargetReportSubreport{
 <#
 .SYNOPSIS
-    Get Sync Target Report Subreport
-    
+	Get Sync Target Report Subreport
+
 .DESCRIPTION
-    View a single SyncIQ target subreport.
+	View a single SyncIQ target subreport.
+
+.PARAMETER report_id
+	Report report_id
+
+.PARAMETER report_name
+	Report report_name
 
 .PARAMETER id
-	Report ID
+	 id
 
-.PARAMETER id2
-	Subeport ID
+.PARAMETER name
+	 name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8496,21 +9006,32 @@ function Get-isiSyncTargetReportSubreport{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$report_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$id/subreports/$id2" 
+			if ($report_id){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
+			if ($id){
+				$parameter2 = $id
+			} else {
+				$parameter2 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$parameter1/subreports/$parameter2" -Cluster $Cluster
 			$ISIObject.subreports
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiSyncTargetReportSubreport
@@ -8518,10 +9039,10 @@ Export-ModuleMember -Function Get-isiSyncTargetReportSubreport
 function Get-isiWormDomains{
 <#
 .SYNOPSIS
-    Get Worm Domains
-    
+	Get Worm Domains
+
 .DESCRIPTION
-    List all WORM domains.
+	List all WORM domains.
 
 .PARAMETER dir
 	The direction of the sort.
@@ -8552,9 +9073,8 @@ function Get-isiWormDomains{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
@@ -8574,14 +9094,14 @@ function Get-isiWormDomains{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/worm/domains" + "$queryArguments")
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/worm/domains" + "$queryArguments") -Cluster $Cluster
 			$ISIObject.domains
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiWormDomains
@@ -8589,13 +9109,16 @@ Export-ModuleMember -Function Get-isiWormDomains
 function Get-isiWormDomain{
 <#
 .SYNOPSIS
-    Get Worm Domain
-    
+	Get Worm Domain
+
 .DESCRIPTION
-    View a single WORM domain.
+	View a single WORM domain.
 
 .PARAMETER id
-	Domain ID
+	Domain id
+
+.PARAMETER name
+	Domain name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8603,20 +9126,25 @@ function Get-isiWormDomain{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/domains/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/domains/$parameter1" -Cluster $Cluster
 			$ISIObject.domains
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiWormDomain
@@ -8624,10 +9152,10 @@ Export-ModuleMember -Function Get-isiWormDomain
 function Get-isiWormSettings{
 <#
 .SYNOPSIS
-    Get Worm Settings
-    
+	Get Worm Settings
+
 .DESCRIPTION
-    Get the global WORM settings.
+	Get the global WORM settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8637,17 +9165,16 @@ function Get-isiWormSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/settings" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/settings" -Cluster $Cluster
 			$ISIObject.settings
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiWormSettings
@@ -8655,10 +9182,10 @@ Export-ModuleMember -Function Get-isiWormSettings
 function Get-isiZones{
 <#
 .SYNOPSIS
-    Get Zones
-    
+	Get Zones
+
 .DESCRIPTION
-    List all access zones.
+	List all access zones.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8668,17 +9195,16 @@ function Get-isiZones{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones" -Cluster $Cluster
 			$ISIObject.zones
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiZones
@@ -8686,10 +9212,10 @@ Export-ModuleMember -Function Get-isiZones
 function Get-isiZonesSummary{
 <#
 .SYNOPSIS
-    Get Zones Summary
-    
+	Get Zones Summary
+
 .DESCRIPTION
-    Retrieve access zone summary information.
+	Retrieve access zone summary information.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8699,17 +9225,16 @@ function Get-isiZonesSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary" 
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiZonesSummary
@@ -8717,13 +9242,16 @@ Export-ModuleMember -Function Get-isiZonesSummary
 function Get-isiZoneSummary{
 <#
 .SYNOPSIS
-    Get Zone Summary
-    
+	Get Zone Summary
+
 .DESCRIPTION
-    Retrieve non-privileged access zone information.
+	Retrieve non-privileged access zone information.
 
 .PARAMETER id
-	Zone ID
+	Zone id
+
+.PARAMETER name
+	Zone name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8731,20 +9259,25 @@ function Get-isiZoneSummary{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary/$parameter1" -Cluster $Cluster
 			$ISIObject.summary
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiZoneSummary
@@ -8752,13 +9285,16 @@ Export-ModuleMember -Function Get-isiZoneSummary
 function Get-isiZone{
 <#
 .SYNOPSIS
-    Get Zone
-    
+	Get Zone
+
 .DESCRIPTION
-    Retrieve the access zone information.
+	Retrieve the access zone information.
 
 .PARAMETER id
-	Zone ID
+	Zone id
+
+.PARAMETER name
+	Zone name
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8766,20 +9302,25 @@ function Get-isiZone{
 .NOTES
 
 #>
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-
-)
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones/$id" 
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones/$parameter1" -Cluster $Cluster
 			$ISIObject.zones
-    }
-    End{
-    }
+	}
+	End{
+	}
 }
 
 Export-ModuleMember -Function Get-isiZone
