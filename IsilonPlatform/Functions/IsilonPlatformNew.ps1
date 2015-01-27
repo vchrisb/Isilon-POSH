@@ -32,7 +32,7 @@ function New-isiAuditTopics{
 	Get Audit Topics
 
 .DESCRIPTION
-	Retrieve a list of audit topics.
+	Create a new audit topic.
 
 .PARAMETER max_cached_messages
 	Maximum number of messages held in internal queues.
@@ -72,7 +72,7 @@ function New-isiAuthGroups{
 	Get Auth Groups
 
 .DESCRIPTION
-	List all groups.
+	Create a new group.
 
 .PARAMETER provider
 	Optional provider type.
@@ -140,7 +140,7 @@ function New-isiAuthGroupMembers{
 	Get Auth Group Members
 
 .DESCRIPTION
-	List all the members of the group.
+	Add a member to the group.
 
 .PARAMETER group_id
 	Group group_id
@@ -220,7 +220,7 @@ function New-isiAuthMappingIdentities{
 	Get Auth Mapping Identities
 
 .DESCRIPTION
-	
+	Manually set or modify a mapping between two personae.
 
 .PARAMETER 2way
 	Create a bi-directional mapping from source to target and target to source.
@@ -288,7 +288,7 @@ function New-isiAuthMappingIdentities{
 	Get Auth Mapping Identity
 
 .DESCRIPTION
-	Retrieve all identity mappings (uid, gid, sid, and on-disk) for the supplied source persona.
+	Manually set or modify a mapping between two personae.
 
 .PARAMETER id
 	Source id
@@ -356,7 +356,7 @@ function New-isiAuthProvidersAds{
 	Get Auth Providers Ads
 
 .DESCRIPTION
-	List all ADS providers.
+	Create a new ADS provider.
 
 .PARAMETER account
 	Machine account name to use in AD. Default is the cluster name.
@@ -529,7 +529,7 @@ function New-isiAuthProvidersFile{
 	Get Auth Providers File
 
 .DESCRIPTION
-	List all file providers.
+	Create a new file provider.
 
 .PARAMETER authentication
 	Enables use of provider for authentication as well as identity.
@@ -694,7 +694,7 @@ function New-isiAuthProvidersKrb5{
 	Get Auth Providers Krb5
 
 .DESCRIPTION
-	List all KRB5 providers.
+	Create a new KRB5 provider.
 
 .PARAMETER keytab_entries
 	
@@ -754,7 +754,7 @@ function New-isiAuthProvidersLdap{
 	Get Auth Providers Ldap
 
 .DESCRIPTION
-	List all LDAP providers.
+	Create a new LDAP provider.
 
 .PARAMETER alternate_security_identities_attribute
 	Specifies attribute name used when searching for alternate security identities.
@@ -1044,7 +1044,7 @@ function New-isiAuthProvidersNis{
 	Get Auth Providers Nis
 
 .DESCRIPTION
-	List all NIS providers.
+	Create a new NIS provider.
 
 .PARAMETER authentication
 	Enables use of provider for authentication as well as identity.
@@ -1209,7 +1209,7 @@ function New-isiAuthRoles{
 	Get Auth Roles
 
 .DESCRIPTION
-	List all roles.
+	Create a new role.
 
 .PARAMETER description
 	The description of the role.
@@ -1257,7 +1257,7 @@ function New-isiAuthRoleMembers{
 	Get Auth Role Members
 
 .DESCRIPTION
-	List all the members of the role.
+	Add a member to the role.
 
 .PARAMETER role_id
 	Role role_id
@@ -1317,7 +1317,7 @@ function New-isiAuthRolePrivileges{
 	Get Auth Role Privileges
 
 .DESCRIPTION
-	List all privileges in the role.
+	Add a privilege to the role.
 
 .PARAMETER role_id
 	Role role_id
@@ -1376,7 +1376,7 @@ function New-isiAuthSettingsKrb5Domains{
 	Get Auth Settings Krb5 Domains
 
 .DESCRIPTION
-	Retrieve the krb5 settings for domains.
+	Create a new krb5 domain.
 
 .PARAMETER domain
 	Name of the domain
@@ -1416,7 +1416,7 @@ function New-isiAuthSettingsKrb5Realms{
 	Get Auth Settings Krb5 Realms
 
 .DESCRIPTION
-	Retrieve the krb5 settings for realms.
+	Create a new krb5 realm.
 
 .PARAMETER admin_server
 	administrative server hostname
@@ -1468,7 +1468,7 @@ function New-isiAuthUsers{
 	Get Auth Users
 
 .DESCRIPTION
-	List all users.
+	Create a new user.
 
 .PARAMETER provider
 	Optional provider type.
@@ -1576,7 +1576,7 @@ function New-isiAuthUserMemberOfGroups{
 	Get Auth User Member Of Groups
 
 .DESCRIPTION
-	List all groups the user is a member of.
+	Add the user to a group.
 
 .PARAMETER user_id
 	User user_id
@@ -1656,7 +1656,7 @@ function New-isiCloudAccounts{
 	Get Cloud Accounts
 
 .DESCRIPTION
-	List all accounts.
+	Create a new account.
 
 .PARAMETER account_username
 	The username required to authenticate against the cloud service
@@ -1713,7 +1713,7 @@ function New-isiCloudJobs{
 	Get Cloud Jobs
 
 .DESCRIPTION
-	List all cloudpools jobs.
+	Create a new job.
 
 .PARAMETER directories
 	Directories addressed by this job
@@ -1766,7 +1766,7 @@ function New-isiCloudPools{
 	Get Cloud Pools
 
 .DESCRIPTION
-	List all pools.
+	Create a new pool.
 
 .PARAMETER accounts
 	A list of valid names for the accounts in this pool
@@ -1819,7 +1819,7 @@ function New-isiCloudSettingsEncryptionKey{
 	Get Cloud Settings Encryption Key
 
 .DESCRIPTION
-	
+	Regenerate master encryption key.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -1851,7 +1851,7 @@ function New-isiFilepoolPolicies{
 	Get Filepool Policies
 
 .DESCRIPTION
-	List all policies.
+	Create a new policy.
 
 .PARAMETER actions
 	A list of actions to be taken for matching files
@@ -1903,7 +1903,7 @@ function New-isiJobs{
 	Get Jobs
 
 .DESCRIPTION
-	List running and paused jobs.
+	Queue a new instance of a job type.
 
 .PARAMETER allow_dup
 	Whether or not to queue the job if one of the same type is already running or queued.
@@ -1971,7 +1971,7 @@ function New-isiJobPolicies{
 	Get Job Policies
 
 .DESCRIPTION
-	List job impact policies.
+	Create a new job impact policy.
 
 .PARAMETER description
 	A helpful human-readable description of the impact policy.
@@ -2015,7 +2015,7 @@ function New-isiLicenses{
 	Get Licenses
 
 .DESCRIPTION
-	Retrieve license information for all licensable products.
+	Install a new license key.
 
 .PARAMETER key
 	New license key.
@@ -2051,7 +2051,7 @@ function New-isiHdfsProxyUsers{
 	Get Hdfs Proxyusers
 
 .DESCRIPTION
-	List all proxyusers.
+	Create a new HDFS proxyuser.
 
 .PARAMETER id
 	The ID of the role.
@@ -2095,7 +2095,7 @@ function New-isiHdfsProxyUserMembers{
 	Get Hdfs Proxyuser Members
 
 .DESCRIPTION
-	List all the members of the HDFS proxyuser.
+	Add a member to the HDFS proxyuser.
 
 .PARAMETER proxyuser_id
 	Proxyuser proxyuser_id
@@ -2155,7 +2155,7 @@ function New-isiHdfsRacks{
 	Get Hdfs Racks
 
 .DESCRIPTION
-	List all racks.
+	Create a new HDFS rack.
 
 .PARAMETER client_ip_ranges
 	Array of IP ranges. Clients from one of these IP ranges are served by corresponding nodes from ip_pools array.
@@ -2199,7 +2199,7 @@ function New-isiNfsExports{
 	Get Nfs Exports
 
 .DESCRIPTION
-	List all NFS exports.
+	Create a new NFS export.
 
 .PARAMETER force
 	If true, the export will be created even if it conflicts with another export.
@@ -2399,7 +2399,7 @@ function New-isiNfsReload{
 	Get Nfs Reload
 
 .DESCRIPTION
-	
+	Reload default NFS export configuration.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2431,7 +2431,7 @@ function New-isiSmbShares{
 	Get Smb Shares
 
 .DESCRIPTION
-	List all shares.
+	Create a new share.
 
 .PARAMETER access_based_enumeration
 	Only enumerate files and folders the requesting user has access to.
@@ -2599,7 +2599,7 @@ function New-isiQuotas{
 	Get Quotas
 
 .DESCRIPTION
-	List all or matching quotas. Can also be used to retrieve quota state from existing reports. For any query argument not supplied, the default behavior is return all.
+	Create a new quota.
 
 .PARAMETER zone
 	Optional named zone to use for user and group resolution.
@@ -2680,7 +2680,7 @@ function New-isiQuotaNotifications{
 	Get Quota Notifications
 
 .DESCRIPTION
-	List all rules.
+	Create a new notification rule specific to this quota.
 
 .PARAMETER quota_id
 	Quota quota_id
@@ -2761,7 +2761,7 @@ function New-isiQuotaReports{
 	Get Quota Reports
 
 .DESCRIPTION
-	List all or matching reports.
+	Create a new report. The type of this report is 'manual'; it is also sometimes called 'live' or 'ad-hoc'.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2793,7 +2793,7 @@ function New-isiQuotaSettingsMappings{
 	Get Quota Settings Mappings
 
 .DESCRIPTION
-	List all rules.
+	Create a new rule. The new rule must not conflict with an existing rule (e.g. match both the type and domain fields).
 
 .PARAMETER domain
 	The FQDN of the source domain to map.
@@ -2838,7 +2838,7 @@ function New-isiQuotaSettingsNotifications{
 	Get Quota Settings Notifications
 
 .DESCRIPTION
-	List all rules.
+	Create a new global notification rule.
 
 .PARAMETER action_alert
 	Send alert when rule matches.
@@ -2904,7 +2904,7 @@ function New-isiSnapshotAliases{
 	Get Snapshot Aliases
 
 .DESCRIPTION
-	List all or matching snapshot aliases.
+	Create a new snapshot alias.
 
 .PARAMETER name
 	The user or system supplied snapshot name.
@@ -2944,7 +2944,7 @@ function New-isiSnapshotSchedules{
 	Get Snapshot Schedules
 
 .DESCRIPTION
-	List all or matching schedules.
+	Create a new schedule.
 
 .PARAMETER alias
 	Alias name to create for each snapshot.
@@ -3000,7 +3000,7 @@ function New-isiSnapshots{
 	Get Snapshots
 
 .DESCRIPTION
-	List all or matching snapshots.
+	Create a new snapshot.
 
 .PARAMETER alias
 	Alias name to create for this snapshot. If null, remove any alias.
@@ -3048,7 +3048,7 @@ function New-isiSnapshotLocks{
 	Get Snapshot Locks
 
 .DESCRIPTION
-	List all locks.
+	Create a new lock on this snapshot.
 
 .PARAMETER snapshot_id
 	Snapshot snapshot_id
@@ -3103,7 +3103,7 @@ function New-isiStoragepoolCompatibilitiesActive{
 	Get Storagepool Compatibilities Active
 
 .DESCRIPTION
-	Get a list of active compatibilities
+	Create a new compatibility
 
 .PARAMETER assess
 	Do we want to actually create the compatibility or just see it it's possible. Not present is seen as false
@@ -3147,7 +3147,7 @@ function New-isiStoragepoolNodepools{
 	Get Storagepool Nodepools
 
 .DESCRIPTION
-	List all node pools.
+	Create a new node pool.
 
 .PARAMETER l3
 	Use SSDs in this node pool for L3 cache.
@@ -3199,7 +3199,7 @@ function New-isiStoragepoolTiers{
 	Get Storagepool Tiers
 
 .DESCRIPTION
-	List all tiers.
+	Create a new tier.
 
 .PARAMETER children
 	The names or IDs of the tier's children.
@@ -3239,7 +3239,7 @@ function New-isiSyncJobs{
 	Get Sync Jobs
 
 .DESCRIPTION
-	Get a list of SyncIQ jobs.
+	Start a SyncIQ job.
 
 .PARAMETER action
 	The action to be taken by this job.
@@ -3293,7 +3293,7 @@ function New-isiSyncPolicies{
 	Get Sync Policies
 
 .DESCRIPTION
-	List all SyncIQ policies.
+	Create a SyncIQ policy.
 
 .PARAMETER action
 	If 'copy', source files will be copied to the target cluster.  If 'sync', the target directory will be made an image of the source directory:  Files and directories that have been deleted on the source, have been moved within the target directory, or no longer match the selection criteria will be deleted from the target directory.
@@ -3475,7 +3475,7 @@ function New-isiSyncPolicyReset{
 	Get Sync Policy Reset
 
 .DESCRIPTION
-	
+	Reset a SyncIQ policy incremental state and force a full sync/copy.
 
 .PARAMETER id
 	Policy id
@@ -3522,7 +3522,7 @@ function New-isiSyncReportsRotate{
 	Get Sync Reports Rotate
 
 .DESCRIPTION
-	Whether the rotation is still running or not.
+	Rotate the records in the database(s).
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3554,7 +3554,7 @@ function New-isiSyncRules{
 	Get Sync Rules
 
 .DESCRIPTION
-	List all SyncIQ performance rules.
+	Create a new SyncIQ performance rule.
 
 .PARAMETER description
 	User-entered description of this performance rule.
@@ -3607,7 +3607,7 @@ function New-isiSyncTargetPolicyCancel{
 	Get Sync Target Policy Cancel
 
 .DESCRIPTION
-	
+	Cancel the most recent SyncIQ job for this policy from the target side.
 
 .PARAMETER id
 	Policy id
@@ -3654,7 +3654,7 @@ function New-isiWormDomains{
 	Get Worm Domains
 
 .DESCRIPTION
-	List all WORM domains.
+	Create a WORM domain.
 
 .PARAMETER autocommit_offset
 	The autocommit time period in seconds for the domain.  After a file exists in this domain without being modified for the specified time period, the file is automatically committed the next time the file is accessed.  If null, there is no autocommit time so files must be manually committed.
@@ -3720,7 +3720,7 @@ function New-isiZones{
 	Get Zones
 
 .DESCRIPTION
-	List all access zones.
+	Create a new access zone.
 
 .PARAMETER all_auth_providers
 	Use all authentication providers available.
