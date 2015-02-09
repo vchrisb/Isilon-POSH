@@ -3106,10 +3106,7 @@ function Set-isiNfsExport{
 	Modify the export. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER enforce
 	If true, the export will be updated even if that change conflicts with another export.
@@ -3243,7 +3240,6 @@ function Set-isiNfsExport{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$all_dirs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$block_size,
@@ -3292,13 +3288,8 @@ function Set-isiNfsExport{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
-				$parameter1 = $id
-				$BoundParameters.Remove('id') | out-null
-			} else {
-				$parameter1 = $name
-				$BoundParameters.Remove('name') | out-null
-			}
+			$parameter1 = $id
+			$BoundParameters.Remove('id') | out-null
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
@@ -5879,10 +5870,7 @@ function Set-isiNfsExportV2{
 	Modify the export. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER enforce
 	If true, the export will be updated even if that change conflicts with another export.
@@ -6046,7 +6034,6 @@ function Set-isiNfsExportV2{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$all_dirs,
@@ -6105,13 +6092,8 @@ function Set-isiNfsExportV2{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
-				$parameter1 = $id
-				$BoundParameters.Remove('id') | out-null
-			} else {
-				$parameter1 = $name
-				$BoundParameters.Remove('name') | out-null
-			}
+			$parameter1 = $id
+			$BoundParameters.Remove('id') | out-null
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce

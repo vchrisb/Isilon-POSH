@@ -1669,10 +1669,7 @@ function Remove-isiNfsExport{
 	Delete the export.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER Force
 	Force deletion of object without prompt
@@ -1686,18 +1683,13 @@ function Remove-isiNfsExport{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
+			$parameter1 = $id
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsExport')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/1/protocols/nfs/exports/$parameter1" -Cluster $Cluster
 			}
@@ -3473,10 +3465,7 @@ function Remove-isiNfsExportV2{
 	Delete the export.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER zone
 	Access zone
@@ -3493,7 +3482,6 @@ function Remove-isiNfsExportV2{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
@@ -3505,11 +3493,7 @@ function Remove-isiNfsExportV2{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
+			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}

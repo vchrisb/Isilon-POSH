@@ -2462,11 +2462,7 @@ function Get-isiAuthWellknown{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $
-			}
+			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -4639,10 +4635,7 @@ function Get-isiNfsExport{
 	Retrieve export information.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER scope
 	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
@@ -4657,7 +4650,6 @@ function Get-isiNfsExport{
 	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
 		)
@@ -4668,11 +4660,7 @@ function Get-isiNfsExport{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
+			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -9837,10 +9825,7 @@ function Get-isiNfsExportV2{
 	Retrieve export information.
 
 .PARAMETER id
-	Export id
-
-.PARAMETER name
-	Export name
+	 id
 
 .PARAMETER scope
 	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
@@ -9858,7 +9843,6 @@ function Get-isiNfsExportV2{
 	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
@@ -9873,11 +9857,7 @@ function Get-isiNfsExportV2{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
+			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
