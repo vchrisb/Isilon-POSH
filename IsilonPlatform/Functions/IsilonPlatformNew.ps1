@@ -116,11 +116,11 @@ function New-isiAuthGroups{
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
+				$BoundParameters.Remove('provider') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -189,11 +189,11 @@ function New-isiAuthGroupMembers{
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
+				$BoundParameters.Remove('provider') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($group_id){
 				$parameter1 = $group_id
@@ -260,15 +260,15 @@ function New-isiAuthMappingIdentities{
 			$queryArguments = @()
 			if ($2way){
 				$queryArguments += '2way=' + $2way
-				$BoundParameters = $BoundParameters.Remove('$2way')
+				$BoundParameters.Remove('2way') | out-null
 			}
 			if ($replace){
 				$queryArguments += 'replace=' + $replace
-				$BoundParameters = $BoundParameters.Remove('$replace')
+				$BoundParameters.Remove('replace') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -325,11 +325,11 @@ function New-isiAuthMappingIdentities{
 			$queryArguments = @()
 			if ($type){
 				$queryArguments += 'type=' + $type
-				$BoundParameters = $BoundParameters.Remove('$type')
+				$BoundParameters.Remove('type') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($id){
 				$parameter1 = $id
@@ -1552,11 +1552,11 @@ function New-isiAuthUsers{
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
+				$BoundParameters.Remove('provider') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1625,11 +1625,11 @@ function New-isiAuthUserMemberOfGroups{
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
+				$BoundParameters.Remove('provider') | out-null
 			}
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($user_id){
 				$parameter1 = $user_id
@@ -2379,7 +2379,7 @@ function New-isiNfsExports{
 			$queryArguments = @()
 			if ($force){
 				$queryArguments += 'force=' + $force
-				$BoundParameters = $BoundParameters.Remove('$force')
+				$BoundParameters.Remove('force') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2432,6 +2432,9 @@ function New-isiSmbShares{
 
 .DESCRIPTION
 	Create a new share.
+
+.PARAMETER zone
+	Zone which contains this share.
 
 .PARAMETER access_based_enumeration
 	Only enumerate files and folders the requesting user has access to.
@@ -2530,9 +2533,6 @@ function New-isiSmbShares{
 .PARAMETER strict_locking
 	Specifies whether byte range locks contend against SMB I/O.
 
-.PARAMETER zone
-	Name of the access zone to which to move this SMB share
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -2541,38 +2541,38 @@ function New-isiSmbShares{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_enumeration,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration_root_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allow_delete_readonly,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_execute_always,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_variable_expansion,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$auto_create_directory,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$browsable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('all','norecurse','none')][string]$change_notify,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$create_path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$directory_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$directory_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$file_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$file_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$hide_dot_files,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][array]$host_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$impersonate_user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$inheritable_path_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$mangle_byte_start,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][array]$mangle_map,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$ntfs_acl_support,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$oplocks,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$run_as_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$strict_flush,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$allow_variable_expansion,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$auto_create_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$browsable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$create_path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$inheritable_path_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$mangle_map,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$oplocks,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$run_as_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$strict_locking,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
 		)
 	Begin{
@@ -2581,6 +2581,10 @@ function New-isiSmbShares{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+				$BoundParameters.Remove('zone') | out-null
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -2660,7 +2664,7 @@ function New-isiQuotas{
 			$queryArguments = @()
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+				$BoundParameters.Remove('zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
