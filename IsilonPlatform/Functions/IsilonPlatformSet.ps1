@@ -5781,3 +5781,711 @@ function Set-isiZone{
 
 Export-ModuleMember -Function Set-isiZone
 
+function Set-isiNfsAliasV2{
+<#
+.SYNOPSIS
+	Get Nfs Aliase
+
+.DESCRIPTION
+	Modify the alias. All input fields are optional, but one or more must be supplied.
+
+.PARAMETER id
+	Aid id
+
+.PARAMETER name
+	Aid name
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER health
+	The health of the alias.
+
+.PARAMETER new_name
+	The name by which the alias can be referenced
+
+.PARAMETER path
+	The path to which the alias points
+
+.PARAMETER new_zone
+	The zone in which the alias is valid
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$health,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters
+			$BoundParameters.Remove('Cluster') | out-null
+			if ($id){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+				$BoundParameters = $BoundParameters.Remove('$zone')
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($new_zone){
+				$BoundParameters.Remove('new_zone') | out-null
+				$BoundParameters.Add('zone',$new_zone)
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsAliasV2')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			}
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNfsAliasV2
+
+function Set-isiNfsExportV2{
+<#
+.SYNOPSIS
+	Get Nfs Export
+
+.DESCRIPTION
+	Modify the export. All input fields are optional, but one or more must be supplied.
+
+.PARAMETER id
+	Export id
+
+.PARAMETER name
+	Export name
+
+.PARAMETER enforce
+	If true, the export will be updated even if that change conflicts with another export.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER all_dirs
+	 If true, all directories under the specified paths are mountable.
+
+.PARAMETER block_size
+	 The block size returned by the NFS STATFS procedure.
+
+.PARAMETER can_set_time
+	 If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
+
+.PARAMETER case_insensitive
+	 If true, the server will report that it ignores case for file names.
+
+.PARAMETER case_preserving
+	 If true, the server will report that it always preserves case for file names.
+
+.PARAMETER chown_restricted
+	 If true, the server will report that only the superuser may change file ownership.
+
+.PARAMETER clients
+	 Clients that have access to the export.
+
+.PARAMETER commit_asynchronous
+	 If true, allows NFS  commit  requests to  execute asynchronously.
+
+.PARAMETER description
+	A human readable description of the export.
+
+.PARAMETER directory_transfer_size
+	 The preferred size for directory read operations.  This option is advisory.
+
+.PARAMETER encoding
+	 The character encoding of clients connecting to the export.
+
+.PARAMETER link_max
+	 The reported maximum number of links to a file.
+
+.PARAMETER map_all
+	User and group mapping.
+
+.PARAMETER map_failure
+	User and group mapping.
+
+.PARAMETER map_full
+	 If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
+
+.PARAMETER map_lookup_uid
+	 If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
+
+.PARAMETER map_non_root
+	User and group mapping.
+
+.PARAMETER map_retry
+	 Determines whether lookups for users specified in map_all, map_root or map_nonroot are retried if the look fails.
+
+.PARAMETER map_root
+	User and group mapping.
+
+.PARAMETER max_file_size
+	 The maximum file size in the export.
+
+.PARAMETER name_max_size
+	 The reported maximum length of a file name.
+
+.PARAMETER no_truncate
+	 If true, report that too-long file names result in an error
+
+.PARAMETER paths
+	 The paths under /ifs that are exported.
+
+.PARAMETER readdirplus
+	 If true, readdirplus requests are enabled.
+
+.PARAMETER readdirplus_prefetch
+	 This field is deprecated and does not do anything.
+
+.PARAMETER read_only
+	 If true, the export is read-only.
+
+.PARAMETER read_only_clients
+	 Clients that have read only access to the export.
+
+.PARAMETER read_transfer_max_size
+	 The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
+
+.PARAMETER read_transfer_multiple
+	 The preferred multiple size for NFS read requests.  This option is advisory.
+
+.PARAMETER read_transfer_size
+	 The optimal size for NFS read requests.  This option is advisory.
+
+.PARAMETER read_write_clients
+	 Clients that have read and write access to the export, even if the export is read-only.
+
+.PARAMETER return_32bit_file_ids
+	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+
+.PARAMETER root_clients
+	 Clients that have root access to the export.
+
+.PARAMETER security_flavors
+	 The authentication flavors that are supported for this export.
+
+.PARAMETER setattr_asynchronous
+	 If true, allows setattr operations to execute asynchronously.
+
+.PARAMETER snapshot
+	 Use this snapshot for all mounts.
+
+.PARAMETER symlinks
+	 If true, paths reachable by symlinks are exported.
+
+.PARAMETER time_delta
+	 The resolution of all time values that are returned to clients.
+
+.PARAMETER write_datasync_action
+	The synchronization type.
+
+.PARAMETER write_datasync_reply
+	The synchronization type.
+
+.PARAMETER write_filesync_action
+	The synchronization type.
+
+.PARAMETER write_filesync_reply
+	The synchronization type.
+
+.PARAMETER write_transfer_max_size
+	 The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
+
+.PARAMETER write_transfer_multiple
+	 The preferred multiple size for NFS write requests.  This option is advisory.
+
+.PARAMETER write_transfer_size
+	 The optimal size for NFS read requests.  This option is advisory.
+
+.PARAMETER write_unstable_action
+	The synchronization type.
+
+.PARAMETER write_unstable_reply
+	The synchronization type.
+
+.PARAMETER new_zone
+	 The zone in which the export is valid
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$all_dirs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$can_set_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$case_insensitive,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$case_preserving,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$chown_restricted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][array]$clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$commit_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$directory_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$encoding,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$link_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][object]$map_all,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][object]$map_failure,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$map_full,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$map_lookup_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][object]$map_non_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$map_retry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][object]$map_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$max_file_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$name_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$no_truncate,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][array]$paths,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$readdirplus,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][int]$readdirplus_prefetch,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$read_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$read_only_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][int]$read_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][int]$read_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][int]$read_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$read_write_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][bool]$return_32bit_file_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][array]$root_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][array]$security_flavors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$setattr_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$snapshot,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][bool]$symlinks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][object]$time_delta,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][int]$write_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][int]$write_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][int]$write_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=51)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters
+			$BoundParameters.Remove('Cluster') | out-null
+			if ($id){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters = $BoundParameters.Remove('$enforce')
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+				$BoundParameters = $BoundParameters.Remove('$zone')
+			}
+			if ($new_zone){
+				$BoundParameters.Remove('new_zone') | out-null
+				$BoundParameters.Add('zone',$new_zone)
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExportV2')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			}
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNfsExportV2
+
+function Set-isiNfsSettingsExportV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Export
+
+.DESCRIPTION
+	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER all_dirs
+	 If true, all directories under the specified paths are mountable.
+
+.PARAMETER block_size
+	 The block size returned by the NFS STATFS procedure.
+
+.PARAMETER can_set_time
+	 If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
+
+.PARAMETER case_insensitive
+	 If true, the server will report that it ignores case for file names.
+
+.PARAMETER case_preserving
+	 If true, the server will report that it always preserves case for file names.
+
+.PARAMETER chown_restricted
+	 If true, the server will report that only the superuser may change file ownership.
+
+.PARAMETER commit_asynchronous
+	 If true, allows NFS  commit  requests to  execute asynchronously.
+
+.PARAMETER directory_transfer_size
+	 The preferred size for directory read operations.  This option is advisory.
+
+.PARAMETER encoding
+	 The character encoding of clients connecting to the export.
+
+.PARAMETER link_max
+	 The reported maximum number of links to a file.
+
+.PARAMETER map_all
+	User and group mapping.
+
+.PARAMETER map_failure
+	User and group mapping.
+
+.PARAMETER map_full
+	 If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
+
+.PARAMETER map_lookup_uid
+	 If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
+
+.PARAMETER map_non_root
+	User and group mapping.
+
+.PARAMETER map_retry
+	 Determines whether lookups for users specified in map_all, map_root or map_nonroot are retried if the look fails.
+
+.PARAMETER map_root
+	User and group mapping.
+
+.PARAMETER max_file_size
+	 The maximum file size in the export.
+
+.PARAMETER name_max_size
+	 The reported maximum length of a file name.
+
+.PARAMETER no_truncate
+	 If true, report that too-long file names result in an error
+
+.PARAMETER readdirplus
+	 If true, readdirplus requests are enabled.
+
+.PARAMETER readdirplus_prefetch
+	 This field is deprecated and does not do anything.
+
+.PARAMETER read_only
+	 If true, the export is read-only.
+
+.PARAMETER read_transfer_max_size
+	 The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
+
+.PARAMETER read_transfer_multiple
+	 The preferred multiple size for NFS read requests.  This option is advisory.
+
+.PARAMETER read_transfer_size
+	 The optimal size for NFS read requests.  This option is advisory.
+
+.PARAMETER return_32bit_file_ids
+	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+
+.PARAMETER security_flavors
+	 The authentication flavors that are supported for this export.
+
+.PARAMETER setattr_asynchronous
+	 If true, allows setattr operations to execute asynchronously.
+
+.PARAMETER snapshot
+	 Use this snapshot for all mounts.
+
+.PARAMETER symlinks
+	 If true, paths reachable by symlinks are exported.
+
+.PARAMETER time_delta
+	 The resolution of all time values that are returned to clients.
+
+.PARAMETER write_datasync_action
+	The synchronization type.
+
+.PARAMETER write_datasync_reply
+	The synchronization type.
+
+.PARAMETER write_filesync_action
+	The synchronization type.
+
+.PARAMETER write_filesync_reply
+	The synchronization type.
+
+.PARAMETER write_transfer_max_size
+	 The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
+
+.PARAMETER write_transfer_multiple
+	 The preferred multiple size for NFS write requests.  This option is advisory.
+
+.PARAMETER write_transfer_size
+	 The optimal size for NFS read requests.  This option is advisory.
+
+.PARAMETER write_unstable_action
+	The synchronization type.
+
+.PARAMETER write_unstable_reply
+	The synchronization type.
+
+.PARAMETER new_zone
+	 The zone in which the export is valid
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$case_insensitive,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$case_preserving,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$chown_restricted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$commit_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$directory_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$encoding,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$link_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][object]$map_all,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][object]$map_failure,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$map_full,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][bool]$map_lookup_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][object]$map_non_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$map_retry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][object]$map_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$max_file_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][int]$name_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$no_truncate,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$readdirplus,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$readdirplus_prefetch,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$read_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$read_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$read_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][int]$read_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$return_32bit_file_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$security_flavors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$setattr_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][string]$snapshot,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$symlinks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][object]$time_delta,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][int]$write_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][int]$write_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][int]$write_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=43)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters
+			$BoundParameters.Remove('Cluster') | out-null
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+				$BoundParameters = $BoundParameters.Remove('$zone')
+			}
+			if ($new_zone){
+				$BoundParameters.Remove('new_zone') | out-null
+				$BoundParameters.Add('zone',$new_zone)
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExportV2')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			}
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNfsSettingsExportV2
+
+function Set-isiNfsSettingsGlobalV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Global
+
+.DESCRIPTION
+	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
+
+.PARAMETER lock_protection
+	
+
+.PARAMETER nfsv3_enabled
+	Enable or disable NFSv3.
+
+.PARAMETER nfsv4_enabled
+	Enable or disable NFSv4.
+
+.PARAMETER rpc_maxthreads
+	Maximum number of threads in the nfs server thread pool.
+
+.PARAMETER rpc_minthreads
+	Minimum number of threads in the nfs server thread pool.
+
+.PARAMETER service
+	Enable or disable the nfs service.
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$lock_protection,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$nfsv3_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$nfsv4_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$rpc_maxthreads,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$rpc_minthreads,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters
+			$BoundParameters.Remove('Cluster') | out-null
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsGlobalV2')){
+			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNfsSettingsGlobalV2
+
+function Set-isiNfsSettingsZoneV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Zone
+
+.DESCRIPTION
+	Modify the NFS server settings for this zone.
+
+.PARAMETER nfsv4_allow_numeric_ids
+	 Send owners/groups as UIDs/GIDs when lookups fail or if no_names=1 (v4)
+
+.PARAMETER nfsv4_domain
+	 The domain or realm used to associate users and groups.
+
+.PARAMETER nfsv4_no_domain
+	 Send owners/groups without domainname (v4)
+
+.PARAMETER nfsv4_no_domain_uids
+	 Send UIDs/GIDs without domainname (v4)
+
+.PARAMETER nfsv4_no_names
+	 Always send owners/groups as UIDs/GIDs (v4)
+
+.PARAMETER nfsv4_replace_domain
+	 Replace owner/group domain with nfs domainname. (v4)
+
+.PARAMETER zone
+	 The zone in which these settings apply
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$nfsv4_allow_numeric_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$nfsv4_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$nfsv4_no_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$nfsv4_no_domain_uids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$nfsv4_no_names,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$nfsv4_replace_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters
+			$BoundParameters.Remove('Cluster') | out-null
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsZoneV2')){
+			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/zone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNfsSettingsZoneV2
+

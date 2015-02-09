@@ -9325,3 +9325,887 @@ function Get-isiZone{
 
 Export-ModuleMember -Function Get-isiZone
 
+function Get-isiEventsV2{
+<#
+.SYNOPSIS
+	Get Events
+
+.DESCRIPTION
+	Retrieve event information.
+
+.PARAMETER acknowledged
+	If true, only return events that have been acknowledged.
+
+.PARAMETER begin
+	Specifies the earliest time to query events from.
+
+.PARAMETER coalesced
+	If true, only return events that have been coalesced.
+
+.PARAMETER coalescing
+	If true, only return coalescing events.
+
+.PARAMETER count
+	If true, return a count of events.
+
+.PARAMETER devid
+	Specifies the devid of events to query for.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER end
+	Specifies the latest time to query events from.
+
+.PARAMETER ended
+	If true, only return events that have ended.
+
+.PARAMETER event_type
+	Specifies the event_id of events to query for.
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER severity
+	Specifies the severity of events to query for.
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$acknowledged,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$begin,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$coalesced,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$coalescing,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][bool]$count,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][array]$devid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][int]$end,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][bool]$ended,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][array]$event_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][array]$severity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($acknowledged){
+				$queryArguments += 'acknowledged=' + $acknowledged
+			}
+			if ($begin){
+				$queryArguments += 'begin=' + $begin
+			}
+			if ($coalesced){
+				$queryArguments += 'coalesced=' + $coalesced
+			}
+			if ($coalescing){
+				$queryArguments += 'coalescing=' + $coalescing
+			}
+			if ($count){
+				$queryArguments += 'count=' + $count
+			}
+			if ($devid){
+				$queryArguments += 'devid=' + $devid
+			}
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($end){
+				$queryArguments += 'end=' + $end
+			}
+			if ($ended){
+				$queryArguments += 'ended=' + $ended
+			}
+			if ($event_type){
+				$queryArguments += 'event_type=' + $event_type
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($severity){
+				$queryArguments += 'severity=' + $severity
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/event/events" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.events
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiEventsV2
+
+function Get-isiEventV2{
+<#
+.SYNOPSIS
+	Get Event
+
+.DESCRIPTION
+	Retrieve event information.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/event/events/$parameter1" -Cluster $Cluster
+			$ISIObject.events
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiEventV2
+
+function Get-isiNfsAliasesV2{
+<#
+.SYNOPSIS
+	Get Nfs Aliases
+
+.DESCRIPTION
+	List all NFS aliases.
+
+.PARAMETER check
+	Check for conflicts when listing exports.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$check,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($check){
+				$queryArguments += 'check=' + $check
+			}
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/aliases" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.aliases
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsAliasesV2
+
+function Get-isiNfsAliasV2{
+<#
+.SYNOPSIS
+	Get Nfs Aliase
+
+.DESCRIPTION
+	Retrieve export information.
+
+.PARAMETER id
+	Aid id
+
+.PARAMETER name
+	Aid name
+
+.PARAMETER scope
+	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
+	Valid inputs: effective,user
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.aliases
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsAliasV2
+
+function Get-isiNfsCheckV2{
+<#
+.SYNOPSIS
+	Get Nfs Check
+
+.DESCRIPTION
+	Retrieve NFS export validation information.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/check" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.checks
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsCheckV2
+
+function Get-isiNfsExportsV2{
+<#
+.SYNOPSIS
+	Get Nfs Exports
+
+.DESCRIPTION
+	List all NFS exports.
+
+.PARAMETER check
+	Check for conflicts when listing exports.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER scope
+	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
+	Valid inputs: effective,user
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$check,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($check){
+				$queryArguments += 'check=' + $check
+			}
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.exports
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsExportsV2
+
+function Get-isiNfsExportsSummaryV2{
+<#
+.SYNOPSIS
+	Get Nfs Exports Summary
+
+.DESCRIPTION
+	Retrieve NFS export summary information.
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports-summary" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.summary
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsExportsSummaryV2
+
+function Get-isiNfsExportV2{
+<#
+.SYNOPSIS
+	Get Nfs Export
+
+.DESCRIPTION
+	Retrieve export information.
+
+.PARAMETER id
+	Export id
+
+.PARAMETER name
+	Export name
+
+.PARAMETER scope
+	If specified as effective or not specified, all export fields are shown.  If specified as user, only fields with non-default values are shown.
+	Valid inputs: effective,user
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.exports
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsExportV2
+
+function Get-isiNfsNlmLocksV2{
+<#
+.SYNOPSIS
+	Get Nfs Nlm Locks
+
+.DESCRIPTION
+	List all NLM locks.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.locks
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsNlmLocksV2
+
+function Get-isiNfsNlmSessionsV2{
+<#
+.SYNOPSIS
+	Get Nfs Nlm Sessions
+
+.DESCRIPTION
+	List all NLM sessions.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.sessions
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsNlmSessionsV2
+
+function Get-isiNfsNlmWaitersV2{
+<#
+.SYNOPSIS
+	Get Nfs Nlm Waiters
+
+.DESCRIPTION
+	List all NLM lock waiters.
+
+.PARAMETER dir
+	The direction of the sort.
+	Valid inputs: ASC,DESC
+
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
+
+.PARAMETER sort
+	The field that will be used for sorting.
+
+.PARAMETER resumeToken
+	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($dir){
+				$queryArguments += 'dir=' + $dir
+			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
+			}
+			if ($sort){
+				$queryArguments += 'sort=' + $sort
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.waiters
+			if ($resumeToken -and $ISIObject.resume){
+				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsNlmWaitersV2
+
+function Get-isiNfsSettingsExportV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Export
+
+.DESCRIPTION
+	Retrieve export information.
+
+.PARAMETER scope
+	If specified as "effective" or not specified, all fields are returned.  If specified as "user", only fields with non-default values are shown.  If specified as "default", the original values are returned.
+	Valid inputs: user,default,effective
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
+			}
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -Cluster $Cluster
+			$ISIObject.settings
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsSettingsExportV2
+
+function Get-isiNfsSettingsGlobalV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Global
+
+.DESCRIPTION
+	Retrieve the NFS configuration.
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/protocols/nfs/settings/global" -Cluster $Cluster
+			$ISIObject.settings
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsSettingsGlobalV2
+
+function Get-isiNfsSettingsZoneV2{
+<#
+.SYNOPSIS
+	Get Nfs Settings Zone
+
+.DESCRIPTION
+	Retrieve the NFS server settings for this zone.
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/protocols/nfs/settings/zone" -Cluster $Cluster
+			$ISIObject.settings
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiNfsSettingsZoneV2
+

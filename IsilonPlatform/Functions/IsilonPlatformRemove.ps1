@@ -3405,3 +3405,169 @@ function Remove-isiZone{
 
 Export-ModuleMember -Function Remove-isiZone
 
+function Remove-isiNfsAliasV2{
+<#
+.SYNOPSIS
+	Get Nfs Aliase
+
+.DESCRIPTION
+	Delete the export.
+
+.PARAMETER id
+	Aid id
+
+.PARAMETER name
+	Aid name
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsAliasV2')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiNfsAliasV2
+
+function Remove-isiNfsExportV2{
+<#
+.SYNOPSIS
+	Get Nfs Export
+
+.DESCRIPTION
+	Delete the export.
+
+.PARAMETER id
+	Export id
+
+.PARAMETER name
+	Export name
+
+.PARAMETER zone
+	Access zone
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($zone){
+				$queryArguments += 'zone=' + $zone
+			}
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsExportV2')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiNfsExportV2
+
+function Remove-isiNfsNlmSessionV2{
+<#
+.SYNOPSIS
+	Get Nfs Nlm Session
+
+.DESCRIPTION
+	Delete an NLM session.
+
+.PARAMETER id
+	NLM Session id
+
+.PARAMETER name
+	NLM Session name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		)
+	Begin{
+	}
+	Process{
+			if ($id){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsNlmSessionV2')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/2/protocols/nfs/nlm/sessions/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiNfsNlmSessionV2
+
