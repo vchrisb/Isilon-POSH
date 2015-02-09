@@ -4,7 +4,7 @@ EMC Isilon Platform API implementation in Powershell
 
 =====
 
-This is an inofficial (not by EMC) Powershell module that allows you to manage your EMC Isilon Scale-Out NAS systems by Powershell. Only a subset of the  Isilon Platform API (REST) is currently implemented. 
+This is an inofficial (not by EMC) Powershell module that allows you to manage your EMC Isilon Scale-Out NAS systems by Powershell.
 
 More Information clould be found in these blog posts:
 * http://blog.banck.net/2013/12/isilon-rest-api-using-powershell-part-1.html
