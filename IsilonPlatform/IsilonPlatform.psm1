@@ -60,7 +60,7 @@ This variable will default to the ComputerName if not set.
     [CmdletBinding()]
     Param(
             [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string] $ComputerName, 
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=1)][PSCredential] $Credential = (Get-Credential -Message "Isilon Credential"),
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=1)][PSCredential]$Credential = (Get-Credential -Message "Isilon Credential"),
             [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster,
             [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=3)][ValidateNotNullOrEmpty()][string]$Port='8080',
             [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=4)][switch]$default)
