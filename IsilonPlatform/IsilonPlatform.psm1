@@ -37,9 +37,8 @@ function New-isiSession{
 .PARAMETER ComputerName
 IP or FQDN of an Isilon node or SmartConnect address
 
-.PARAMETER Username
-
-.PARAMETER Password
+.PARAMETER Credential
+A PSCredential to authenticate against the Isilon
 
 .PARAMETER Cluster
 This variable will default to the ComputerName if not set.
@@ -47,23 +46,24 @@ This variable will default to the ComputerName if not set.
 .PARAMETER default
 
 .EXAMPLE
-    New-isiSession -ComputerName 172.19.20.21 -Username root -Password a -Cluster Isilon1
+    New-isiSession -ComputerName 172.19.20.21 -Cluster Isilon1
 
 .EXAMPLE
-    New-isiSession -ComputerName isilon.domain.com -Username root -Password a -Cluster Isilon2 -default
+    $Credential = Get-Credential
+    New-isiSession -ComputerName isilon.domain.com -Credential $Credential -Cluster Isilon2 -default
 
 .EXAMPLE
-    "isilon1.domain.com","isilon2.domain.com" | New-isiSession -Username root -Password a
+    $Credential = Get-Credential
+    "isilon1.domain.com","isilon2.domain.com" | New-isiSession -Credential $Credential
 
 #>
     [CmdletBinding()]
     Param(
             [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string] $ComputerName, 
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=1)][ValidateNotNullOrEmpty()][string] $Username, 
-            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=2)][ValidateNotNullOrEmpty()][string] $Password,
-            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster,
-            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=4)][ValidateNotNullOrEmpty()][string]$Port='8080',
-            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=5)][switch]$default)
+            [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true,Position=1)][PSCredential] $Credential = (Get-Credential -Message "Isilon Credential"),
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster,
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=3)][ValidateNotNullOrEmpty()][string]$Port='8080',
+            [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,Position=4)][switch]$default)
 
     Begin{
         
@@ -86,7 +86,7 @@ This variable will default to the ComputerName if not set.
         $baseurl = "https://$ComputerName`:$Port"
 
         #create Jason Object for Input Values
-        $jobj = convertto-json @{username= $username;password = $password; services = ('platform','namespace')}
+        $jobj = convertto-json @{username= $Credential.UserName; password = $Credential.GetNetworkCredential().Password; services = ('platform','namespace')}
 
         #create session
         $ISIObject = Invoke-RestMethod -Uri "$baseurl/session/1/session" -Body $jobj -ContentType "application/json; charset=utf-8" -Method POST -SessionVariable session -TimeoutSec 180
