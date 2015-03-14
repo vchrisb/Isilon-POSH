@@ -257,7 +257,11 @@ function Remove-isiSession {
         }
 
         if (@($isi_sessions | where { $_.cluster -eq $isi_sessiondefault} ).count -eq 0){
-            $script:isi_sessiondefault = $isi_sessions[0].cluster
+            if ($isi_sessions) {
+                $script:isi_sessiondefault = $isi_sessions[0].cluster
+            } else {
+                $script:isi_sessiondefault = ''
+            }
         }
         
 
