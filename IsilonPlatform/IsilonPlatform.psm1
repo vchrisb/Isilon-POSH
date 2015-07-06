@@ -78,7 +78,7 @@ This variable will default to the ComputerName if not set.
     } 
     Process {
 
-        if (!$Cluster) {
+        if (!(Test-Path variable:Cluster) -or !$Cluster) {
             $Cluster = $ComputerName
         }
 
