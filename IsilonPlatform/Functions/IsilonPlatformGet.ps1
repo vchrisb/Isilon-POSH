@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_7_2_0_16(RELEASE)
+#Build using Isilon OneFS build: B_7_2_1_014(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -42,7 +42,7 @@ function Get-isiAuditSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -72,7 +72,7 @@ function Get-isiAuditTopics{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -110,12 +110,12 @@ function Get-isiAuditTopic{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -165,7 +165,7 @@ function Get-isiAuthAccess{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$numeric,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -180,7 +180,7 @@ function Get-isiAuthAccess{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -253,7 +253,7 @@ function Get-isiAuthGroups{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -341,7 +341,7 @@ function Get-isiAuthGroup{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -359,7 +359,7 @@ function Get-isiAuthGroup{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -416,7 +416,7 @@ function Get-isiAuthGroupMembers{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -434,7 +434,7 @@ function Get-isiAuthGroupMembers{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($group_id){
+			if ($psBoundParameters.ContainsKey('group_id')){
 				$parameter1 = $group_id
 			} else {
 				$parameter1 = $group_name
@@ -467,7 +467,7 @@ function Get-isiAuthId{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -513,7 +513,7 @@ function Get-isiAuthMappingIdentities{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$nocreate,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -525,7 +525,7 @@ function Get-isiAuthMappingIdentities{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -578,7 +578,7 @@ function Get-isiAuthMappingUsersLookup{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$uid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$user,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -631,7 +631,7 @@ function Get-isiAuthMappingUsersRules{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -692,7 +692,7 @@ function Get-isiAuthNetgroup{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$recursive,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -710,7 +710,7 @@ function Get-isiAuthNetgroup{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -743,7 +743,7 @@ function Get-isiAuthPrivileges{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -778,7 +778,7 @@ function Get-isiAuthProvidersAds{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -828,7 +828,7 @@ function Get-isiAuthProviderAds{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -837,7 +837,7 @@ function Get-isiAuthProviderAds{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -878,12 +878,12 @@ function Get-isiAuthProviderAdsControllers{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -926,7 +926,7 @@ function Get-isiAuthProviderAdsDomains{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$ads_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$ads_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -935,7 +935,7 @@ function Get-isiAuthProviderAdsDomains{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($ads_id){
+			if ($psBoundParameters.ContainsKey('ads_id')){
 				$parameter1 = $ads_id
 			} else {
 				$parameter1 = $ads_name
@@ -984,17 +984,17 @@ function Get-isiAuthProviderAdsDomain{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$ads_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($ads_id){
+			if ($psBoundParameters.ContainsKey('ads_id')){
 				$parameter1 = $ads_id
 			} else {
 				$parameter1 = $ads_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -1072,7 +1072,7 @@ function Get-isiAuthProviderAdsSearch{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][bool]$search_users,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$user,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1105,7 +1105,7 @@ function Get-isiAuthProviderAdsSearch{
 			if ($user){
 				$queryArguments += 'user=' + $user
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1146,7 +1146,7 @@ function Get-isiAuthProvidersFile{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1196,7 +1196,7 @@ function Get-isiAuthProviderFile{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1205,7 +1205,7 @@ function Get-isiAuthProviderFile{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1243,7 +1243,7 @@ function Get-isiAuthProvidersKrb5{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1293,7 +1293,7 @@ function Get-isiAuthProviderKrb5{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1302,7 +1302,7 @@ function Get-isiAuthProviderKrb5{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1340,7 +1340,7 @@ function Get-isiAuthProvidersLdap{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1390,7 +1390,7 @@ function Get-isiAuthProviderLdap{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1399,7 +1399,7 @@ function Get-isiAuthProviderLdap{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1437,7 +1437,7 @@ function Get-isiAuthProvidersLocal{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1487,7 +1487,7 @@ function Get-isiAuthProviderLocal{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1496,7 +1496,7 @@ function Get-isiAuthProviderLocal{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1534,7 +1534,7 @@ function Get-isiAuthProvidersNis{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1584,7 +1584,7 @@ function Get-isiAuthProviderNis{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1593,7 +1593,7 @@ function Get-isiAuthProviderNis{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1626,7 +1626,7 @@ function Get-isiAuthProvidersSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1669,7 +1669,7 @@ function Get-isiAuthRoles{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1724,7 +1724,7 @@ function Get-isiAuthRole{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1733,7 +1733,7 @@ function Get-isiAuthRole{
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -1778,7 +1778,7 @@ function Get-isiAuthRoleMembers{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$role_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1787,7 +1787,7 @@ function Get-isiAuthRoleMembers{
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
 			}
-			if ($role_id){
+			if ($psBoundParameters.ContainsKey('role_id')){
 				$parameter1 = $role_id
 			} else {
 				$parameter1 = $role_name
@@ -1828,12 +1828,12 @@ function Get-isiAuthRolePrivileges{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$role_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($role_id){
+			if ($psBoundParameters.ContainsKey('role_id')){
 				$parameter1 = $role_id
 			} else {
 				$parameter1 = $role_name
@@ -1872,7 +1872,7 @@ function Get-isiAuthSettingsGlobal{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1912,7 +1912,7 @@ function Get-isiAuthSettingsKrb5Defaults{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1942,13 +1942,13 @@ function Get-isiAuthSettingsKrb5Domains{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains" -Cluster $Cluster
-			$ISIObject.domains
+			$ISIObject.domain
 	}
 	End{
 	}
@@ -1980,12 +1980,12 @@ function Get-isiAuthSettingsKrb5Domain{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2015,7 +2015,7 @@ function Get-isiAuthSettingsKrb5Realms{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2053,12 +2053,12 @@ function Get-isiAuthSettingsKrb5Realm{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2097,7 +2097,7 @@ function Get-isiAuthSettingsMapping{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2137,7 +2137,7 @@ function Get-isiAuthShells{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2207,7 +2207,7 @@ function Get-isiAuthUsers{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2295,7 +2295,7 @@ function Get-isiAuthUser{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2313,7 +2313,7 @@ function Get-isiAuthUser{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2366,7 +2366,7 @@ function Get-isiAuthUserMemberOfGroups{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2381,7 +2381,7 @@ function Get-isiAuthUserMemberOfGroups{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($user_id){
+			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
 			} else {
 				$parameter1 = $user_name
@@ -2414,7 +2414,7 @@ function Get-isiAuthWellknowns{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2453,7 +2453,7 @@ function Get-isiAuthWellknown{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2504,7 +2504,7 @@ function Get-isiCloudAccounts{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2555,12 +2555,12 @@ function Get-isiCloudAccount{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2603,7 +2603,7 @@ function Get-isiCloudJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2654,13 +2654,13 @@ function Get-isiCloudJobsFile{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2701,13 +2701,13 @@ function Get-isiCloudJob{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2753,7 +2753,7 @@ function Get-isiCloudPools{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2804,12 +2804,12 @@ function Get-isiCloudPool{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -2839,7 +2839,7 @@ function Get-isiCloudSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2869,7 +2869,7 @@ function Get-isiClusterConfig{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2899,7 +2899,7 @@ function Get-isiClusterExternalIPs{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2929,7 +2929,7 @@ function Get-isiClusterIdentity{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2959,7 +2959,7 @@ function Get-isiClusterFsStats{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2989,7 +2989,7 @@ function Get-isiClusterTime{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3019,7 +3019,7 @@ function Get-isiDebugStats{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3049,7 +3049,7 @@ function Get-isiDedupeDedupeSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3118,7 +3118,7 @@ function Get-isiDedupeReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('id','start_time','end_time')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3192,7 +3192,7 @@ function Get-isiDedupeReport{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3201,7 +3201,7 @@ function Get-isiDedupeReport{
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3234,7 +3234,7 @@ function Get-isiDedupeSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3264,7 +3264,7 @@ function Get-isiFilepoolDefaultPolicy{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3298,7 +3298,7 @@ function Get-isiFilepoolPolicies{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3340,12 +3340,12 @@ function Get-isiFilepoolPolicy{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3375,7 +3375,7 @@ function Get-isiFilepoolTemplates{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3417,13 +3417,13 @@ function Get-isiFilepoolTemplate{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3439,6 +3439,66 @@ function Get-isiFilepoolTemplate{
 }
 
 Export-ModuleMember -Function Get-isiFilepoolTemplate
+
+function Get-isiFilesystemAccessTime{
+<#
+.SYNOPSIS
+	Get Filesystem Access Time
+
+.DESCRIPTION
+	Retrieve settings for access time.
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filesystem/settings/access-time" -Cluster $Cluster
+			$ISIObject.access_time
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiFilesystemAccessTime
+
+function Get-isiFilesystemCharacterEncoding{
+<#
+.SYNOPSIS
+	Get Filesystem Character Encoding
+
+.DESCRIPTION
+	Retrieve current cluster character encoding settings.
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filesystem/settings/character-encodings" -Cluster $Cluster
+			$ISIObject.'character-encodings'
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiFilesystemCharacterEncoding
 
 function Get-isiFsaPath{
 <#
@@ -3456,7 +3516,7 @@ function Get-isiFsaPath{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3486,7 +3546,7 @@ function Get-isiFsaResults{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3524,12 +3584,12 @@ function Get-isiFsaResult{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3559,7 +3619,7 @@ function Get-isiFsaSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3622,7 +3682,7 @@ function Get-isiJobEvents{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority','cancelled_user','cancelled_system','failed','succeeded','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3680,7 +3740,7 @@ function Get-isiJobSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3740,7 +3800,7 @@ function Get-isiJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3803,12 +3863,12 @@ function Get-isiJob{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3859,7 +3919,7 @@ function Get-isiJobPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3916,12 +3976,12 @@ function Get-isiJobPolicy{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -3979,7 +4039,7 @@ function Get-isiJobReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4034,7 +4094,7 @@ function Get-isiJobStatistics{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4077,7 +4137,7 @@ function Get-isiJobTypes{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$show_all,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4128,12 +4188,12 @@ function Get-isiJobType{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -4163,7 +4223,7 @@ function Get-isiEula{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4193,7 +4253,7 @@ function Get-isiLicenses{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4231,12 +4291,12 @@ function Get-isiLicense{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -4266,7 +4326,7 @@ function Get-isiHdfsProxyUsers{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4308,13 +4368,13 @@ function Get-isiHdfsProxyUser{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
 			$queryArguments = @()
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -4355,12 +4415,12 @@ function Get-isiHdfsProxyUserMembers{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$proxyuser_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$proxyuser_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($proxyuser_id){
+			if ($psBoundParameters.ContainsKey('proxyuser_id')){
 				$parameter1 = $proxyuser_id
 			} else {
 				$parameter1 = $proxyuser_name
@@ -4390,7 +4450,7 @@ function Get-isiHdfsRacks{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4432,12 +4492,12 @@ function Get-isiHdfsRack{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -4467,7 +4527,7 @@ function Get-isiHdfsSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4497,7 +4557,7 @@ function Get-isiNfsCheck{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4557,7 +4617,7 @@ function Get-isiNfsExports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4612,7 +4672,7 @@ function Get-isiNfsExportsSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4651,7 +4711,7 @@ function Get-isiNfsExport{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4710,7 +4770,7 @@ function Get-isiNfsNlmLocks{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4780,7 +4840,7 @@ function Get-isiNfsNlmSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4850,7 +4910,7 @@ function Get-isiNfsNlmWaiters{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4904,7 +4964,7 @@ function Get-isiNfsSettingsExport{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('effective','user','default')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4941,7 +5001,7 @@ function Get-isiNfsSettingsGlobal{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4993,7 +5053,7 @@ function Get-isiSmbOpenfiles{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('id','file','user','locks')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5064,7 +5124,7 @@ function Get-isiSmbSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('computer','user','client_type','openfiles','active_time','idle_time','guest_login','encryption')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5118,7 +5178,7 @@ function Get-isiSmbSettingsGlobal{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5164,7 +5224,7 @@ function Get-isiSmbSettingsShare{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5239,7 +5299,7 @@ function Get-isiSmbShares{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('id','name','path','description')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5297,7 +5357,7 @@ function Get-isiSmbSharesSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5348,7 +5408,7 @@ function Get-isiSmbShare{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5363,7 +5423,7 @@ function Get-isiSmbShare{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -5396,7 +5456,7 @@ function Get-isiQuotaLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5484,7 +5544,7 @@ function Get-isiQuotas{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][ValidateSet('directory','user','group','default-user','default-group')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5560,7 +5620,7 @@ function Get-isiQuotasSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5606,7 +5666,7 @@ function Get-isiQuota{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5618,7 +5678,7 @@ function Get-isiQuota{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -5659,12 +5719,12 @@ function Get-isiQuotaNotifications{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$quota_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($quota_id){
+			if ($psBoundParameters.ContainsKey('quota_id')){
 				$parameter1 = $quota_id
 			} else {
 				$parameter1 = $quota_name
@@ -5710,17 +5770,17 @@ function Get-isiQuotaNotification{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($quota_id){
+			if ($psBoundParameters.ContainsKey('quota_id')){
 				$parameter1 = $quota_id
 			} else {
 				$parameter1 = $quota_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -5782,7 +5842,7 @@ function Get-isiQuotaReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('time','generated','type')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('summary','detail','all')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5849,7 +5909,7 @@ function Get-isiQuotaReport{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$contents,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5858,7 +5918,7 @@ function Get-isiQuotaReport{
 			if ($contents){
 				$queryArguments += 'contents=' + $contents
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -5899,12 +5959,12 @@ function Get-isiQuotaReportAbout{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -5934,7 +5994,7 @@ function Get-isiQuotaSettingsMappings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5972,12 +6032,12 @@ function Get-isiQuotaSettingsMapping{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6007,7 +6067,7 @@ function Get-isiQuotaSettingsNotifications{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6045,12 +6105,12 @@ function Get-isiQuotaSettingsNotification{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6080,7 +6140,7 @@ function Get-isiQuotaSettingsReports{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6110,7 +6170,7 @@ function Get-isiRemoteSupport{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6161,7 +6221,7 @@ function Get-isiSnapshotAliases{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6183,7 +6243,7 @@ function Get-isiSnapshotAliases{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/aliases" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.snapshots
+			$ISIObject.aliases
 			if ($resumeToken -and $ISIObject.resume){
 				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
 			}
@@ -6218,12 +6278,12 @@ function Get-isiSnapshotAlias{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6253,7 +6313,7 @@ function Get-isiSnapshotChangelists{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6291,12 +6351,12 @@ function Get-isiSnapshotChangelist{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6334,12 +6394,12 @@ function Get-isiSnapshotChangelistLins{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$changelist_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$changelist_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($changelist_id){
+			if ($psBoundParameters.ContainsKey('changelist_id')){
 				$parameter1 = $changelist_id
 			} else {
 				$parameter1 = $changelist_name
@@ -6385,17 +6445,17 @@ function Get-isiSnapshotChangelistLin{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$changelist_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($changelist_id){
+			if ($psBoundParameters.ContainsKey('changelist_id')){
 				$parameter1 = $changelist_id
 			} else {
 				$parameter1 = $changelist_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -6425,7 +6485,7 @@ function Get-isiSnapshotLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6479,7 +6539,7 @@ function Get-isiSnapshotPending{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6531,7 +6591,7 @@ function Get-isiSnapshotRepstates{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6569,12 +6629,12 @@ function Get-isiSnapshotRepstate{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6625,7 +6685,7 @@ function Get-isiSnapshotSchedules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6682,12 +6742,12 @@ function Get-isiSnapshotSchedule{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6717,7 +6777,7 @@ function Get-isiSnapshotSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6782,7 +6842,7 @@ function Get-isiSnapshots{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('all','active','deleting')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('all','alias','real')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6840,7 +6900,7 @@ function Get-isiSnapshotsSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6878,12 +6938,12 @@ function Get-isiSnapshot{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -6942,7 +7002,7 @@ function Get-isiSnapshotLocks{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6960,7 +7020,7 @@ function Get-isiSnapshotLocks{
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
 			}
-			if ($snapshot_id){
+			if ($psBoundParameters.ContainsKey('snapshot_id')){
 				$parameter1 = $snapshot_id
 			} else {
 				$parameter1 = $snapshot_name
@@ -7012,17 +7072,17 @@ function Get-isiSnapshotLock{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$snapshot_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($snapshot_id){
+			if ($psBoundParameters.ContainsKey('snapshot_id')){
 				$parameter1 = $snapshot_id
 			} else {
 				$parameter1 = $snapshot_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -7072,7 +7132,7 @@ function Get-isiStatisticsCurrent{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$expand_clientid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][array]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7157,7 +7217,7 @@ function Get-isiStatisticsHistory{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][array]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][bool]$memory_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][int]$timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7238,7 +7298,7 @@ function Get-isiStatisticsKeys{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$queryable,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7295,12 +7355,12 @@ function Get-isiStatisticsKey{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -7330,7 +7390,7 @@ function Get-isiStatisticsProtocols{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7344,10 +7404,10 @@ function Get-isiStatisticsProtocols{
 
 Export-ModuleMember -Function Get-isiStatisticsProtocols
 
-function Get-isiStoragepoolCompatibilitiesActive{
+function Get-isiStoragepoolCompatibilitiesClassActive{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities Active
+	Get Storagepool Compatibilities Class Active
 
 .DESCRIPTION
 	Get a list of active compatibilities
@@ -7360,33 +7420,30 @@ function Get-isiStoragepoolCompatibilitiesActive{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active" -Cluster $Cluster
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/active" -Cluster $Cluster
 			$ISIObject.active
 	}
 	End{
 	}
 }
 
-Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActive
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesClassActive
 
-function Get-isiStoragepoolCompatibilitiesActiveId{
+function Get-isiStoragepoolCompatibilitiesClassActiveId{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities Active ID
+	Get Storagepool Compatibilities Class Active ID
 
 .DESCRIPTION
-	Get a an active compatibilities by id
+	Get an active compatibilities by id
 
 .PARAMETER id
-	Active Compatibilities id
-
-.PARAMETER name
-	Active Compatibilities name
+	Active Class id
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7397,30 +7454,25 @@ function Get-isiStoragepoolCompatibilitiesActiveId{
 	[CmdletBinding(DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/active/$parameter1" -Cluster $Cluster
+			$parameter1 = $id
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/active/<ID>" -Cluster $Cluster
 			$ISIObject.active
 	}
 	End{
 	}
 }
 
-Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesActiveId
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesClassActiveId
 
-function Get-isiStoragepoolCompatibilitiesAvailable{
+function Get-isiStoragepoolCompatibilitiesClassAvailable{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities Available
+	Get Storagepool Compatibilities Class Available
 
 .DESCRIPTION
 	Get a list of available compatibilities
@@ -7433,19 +7485,114 @@ function Get-isiStoragepoolCompatibilitiesAvailable{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/available" -Cluster $Cluster
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/available" -Cluster $Cluster
 			$ISIObject.available
 	}
 	End{
 	}
 }
 
-Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesAvailable
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesClassAvailable
+
+function Get-isiStoragepoolCompatibilitiesSSDActive{
+<#
+.SYNOPSIS
+	Get Storagepool Compatibilities SSD Active
+
+.DESCRIPTION
+	Get a list of active ssd compatibilities
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/active" -Cluster $Cluster
+			$ISIObject.active
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesSSDActive
+
+function Get-isiStoragepoolCompatibilitiesSSDActiveId{
+<#
+.SYNOPSIS
+	Get Storagepool Compatibilities SSD Active ID
+
+.DESCRIPTION
+	Get a active ssd compatibilities by id
+
+.PARAMETER id
+	Active SSD id
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$parameter1 = $id
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/active/<ID>" -Cluster $Cluster
+			$ISIObject.active
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesSSDActiveId
+
+function Get-isiStoragepoolCompatibilitiesSSDAvailable{
+<#
+.SYNOPSIS
+	Get Storagepool Compatibilities SSD Available
+
+.DESCRIPTION
+	Get a list of available ssd compatibilities
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/available" -Cluster $Cluster
+			$ISIObject.available
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiStoragepoolCompatibilitiesSSDAvailable
 
 function Get-isiStoragepoolNodepools{
 <#
@@ -7463,7 +7610,7 @@ function Get-isiStoragepoolNodepools{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7501,12 +7648,12 @@ function Get-isiStoragepoolNodepool{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -7536,7 +7683,7 @@ function Get-isiStoragepoolSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7566,7 +7713,7 @@ function Get-isiStoragepoolStatus{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7596,7 +7743,7 @@ function Get-isiStoragepools{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7634,12 +7781,12 @@ function Get-isiStoragepoolSuggestedProtection{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -7669,7 +7816,7 @@ function Get-isiStoragepoolTiers{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7707,12 +7854,12 @@ function Get-isiStoragepoolTier{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -7742,7 +7889,7 @@ function Get-isiStoragepoolUnprovisioned{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7780,7 +7927,7 @@ function Get-isiSyncHistoryFile{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][int]$begin,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$end,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7828,7 +7975,7 @@ function Get-isiSyncHistoryNetwork{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][int]$begin,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$end,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7894,7 +8041,7 @@ function Get-isiSyncJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7954,12 +8101,12 @@ function Get-isiSyncJob{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -7989,7 +8136,7 @@ function Get-isiSyncLicense{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8049,7 +8196,7 @@ function Get-isiSyncPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][bool]$summary,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8112,12 +8259,12 @@ function Get-isiSyncPolicy{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -8185,7 +8332,7 @@ function Get-isiSyncReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8246,7 +8393,7 @@ function Get-isiSyncReportsRotate{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8284,12 +8431,12 @@ function Get-isiSyncReport{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -8357,7 +8504,7 @@ function Get-isiSyncReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8381,7 +8528,7 @@ function Get-isiSyncReportSubreports{
 			if ($state){
 				$queryArguments += 'state=' + $state
 			}
-			if ($report_id){
+			if ($psBoundParameters.ContainsKey('report_id')){
 				$parameter1 = $report_id
 			} else {
 				$parameter1 = $report_name
@@ -8433,17 +8580,17 @@ function Get-isiSyncReportSubreport{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($report_id){
+			if ($psBoundParameters.ContainsKey('report_id')){
 				$parameter1 = $report_id
 			} else {
 				$parameter1 = $report_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -8499,7 +8646,7 @@ function Get-isiSyncRules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('bandwidth','file_count','cpu')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8559,12 +8706,12 @@ function Get-isiSyncRule{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -8594,7 +8741,7 @@ function Get-isiSyncSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8649,7 +8796,7 @@ function Get-isiSyncTargetPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$target_path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8709,12 +8856,12 @@ function Get-isiSyncTargetPolicy{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -8782,7 +8929,7 @@ function Get-isiSyncTargetReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8851,12 +8998,12 @@ function Get-isiSyncTargetReport{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -8924,7 +9071,7 @@ function Get-isiSyncTargetReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8948,7 +9095,7 @@ function Get-isiSyncTargetReportSubreports{
 			if ($state){
 				$queryArguments += 'state=' + $state
 			}
-			if ($report_id){
+			if ($psBoundParameters.ContainsKey('report_id')){
 				$parameter1 = $report_id
 			} else {
 				$parameter1 = $report_name
@@ -9000,17 +9147,17 @@ function Get-isiSyncTargetReportSubreport{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$report_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($report_id){
+			if ($psBoundParameters.ContainsKey('report_id')){
 				$parameter1 = $report_id
 			} else {
 				$parameter1 = $report_name
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
@@ -9061,7 +9208,7 @@ function Get-isiWormDomains{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9118,12 +9265,12 @@ function Get-isiWormDomain{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -9153,7 +9300,7 @@ function Get-isiWormSettings{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9183,7 +9330,7 @@ function Get-isiZones{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9213,7 +9360,7 @@ function Get-isiZonesSummary{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9251,12 +9398,12 @@ function Get-isiZoneSummary{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -9294,12 +9441,12 @@ function Get-isiZone{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -9312,6 +9459,36 @@ function Get-isiZone{
 }
 
 Export-ModuleMember -Function Get-isiZone
+
+function Get-isiClusterExternalIPsV2{
+<#
+.SYNOPSIS
+	Get Cluster External IPs
+
+.DESCRIPTION
+	Retrieve the cluster IP addresses including IPV4 and IPV6.
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/cluster/external-ips" -Cluster $Cluster
+			$ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Get-isiClusterExternalIPsV2
 
 function Get-isiEventsV2{
 <#
@@ -9390,7 +9567,7 @@ function Get-isiEventsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][array]$severity,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9477,12 +9654,12 @@ function Get-isiEventV2{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
 	Process{
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -9541,7 +9718,7 @@ function Get-isiNfsAliasesV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9613,7 +9790,7 @@ function Get-isiNfsAliasV2{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9625,7 +9802,7 @@ function Get-isiNfsAliasV2{
 			if ($zone){
 				$queryArguments += 'zone=' + $zone
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
@@ -9662,7 +9839,7 @@ function Get-isiNfsCheckV2{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9733,7 +9910,7 @@ function Get-isiNfsExportsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9795,7 +9972,7 @@ function Get-isiNfsExportsSummaryV2{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9845,7 +10022,7 @@ function Get-isiNfsExportV2{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9907,7 +10084,7 @@ function Get-isiNfsNlmLocksV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9977,7 +10154,7 @@ function Get-isiNfsNlmSessionsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10047,7 +10224,7 @@ function Get-isiNfsNlmWaitersV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10105,7 +10282,7 @@ function Get-isiNfsSettingsExportV2{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10145,7 +10322,7 @@ function Get-isiNfsSettingsGlobalV2{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10175,7 +10352,7 @@ function Get-isiNfsSettingsZoneV2{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=$isi_sessiondefault
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}

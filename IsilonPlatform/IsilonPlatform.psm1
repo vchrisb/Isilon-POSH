@@ -68,11 +68,11 @@ This variable will default to the ComputerName if not set.
     Begin{
         
         # test if the isi_session variables already exists
-        if(!(test-path ('variable:\isi_sessions')) ){
+        if(!(Test-Path variable:isi_sessions) ){
             $script:isi_sessions = @()
         }
-        if(!(test-path ('variable:\isi_sessiondefault')) ){
-            $script:isi_sessiondefault = $Cluster
+        if(!(Test-Path variable:isi_sessiondefault) ){
+            $script:isi_sessiondefault = ''
         }
 
     } 
@@ -95,7 +95,7 @@ This variable will default to the ComputerName if not set.
         Clear-isiSession -Cluster $Cluster
         
         #add new cluster
-        $script:isi_sessions += New-Object -TypeName psObject -Property @{cluster = $Cluster; url=$baseurl; session= $session; timeout_absolute=(Get-Date).AddSeconds($ISIObject.timeout_absolute); timeout=(Get-Date).AddSeconds($ISIObject.timeout_inactive); timeout_inactive=$ISIObject.timeout_inactive;username=$ISIObject.username}
+        $script:isi_sessions += New-Object -TypeName psObject -Property @{Cluster = $Cluster; url=$baseurl; session= $session; timeout_absolute=(Get-Date).AddSeconds($ISIObject.timeout_absolute); timeout=(Get-Date).AddSeconds($ISIObject.timeout_inactive); timeout_inactive=$ISIObject.timeout_inactive;username=$ISIObject.username}
 
         #if default $true or default cluster not present set current cluster 
         if ($default -or (@($isi_sessions | where { $_.cluster -eq $isi_sessiondefault} ).count -eq 0)){
@@ -136,10 +136,17 @@ function Get-isiSessionInfo {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster=$isi_sessiondefault)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster)
 
     Begin{
-
+        if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+            Write-Verbose "No Isilon Cluster connected"
+            break
+        }
+        if ( !$psBoundParameters.ContainsKey('Cluster') ) {
+            Write-Verbose "No Cluster specified. Selecting session default: $isi_sessiondefault"
+            $Cluster = $isi_sessiondefault
+        }
     }
     Process{
         Send-isiAPI -Method 'GET' -Resource "/session/1/session" -Cluster $Cluster
@@ -171,12 +178,19 @@ function Get-isiSession {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster)
 
-    if($Cluster){
-        $isi_sessions | where { $_.cluster -eq $Cluster }
-    }else{
-        $isi_sessions
+    if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+        Write-Verbose "No Isilon Cluster connected!"
+        return
+    }
+
+    if($isi_sessions){
+        if($Cluster){
+            $isi_sessions | where { $_.cluster -eq $Cluster }
+        }else{
+            $isi_sessions    
+        }
     }
 }
 
@@ -201,7 +215,11 @@ function Clear-isiSession {
 
 #>
     [CmdletBinding()]
-    param ([Parameter(Mandatory=$False,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true,Position=0)][string]$Cluster)
+    param ([Parameter(Mandatory=$False,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster)
+
+    if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+        Write-Error "No Isilon Cluster connected!"
+    }
 
     if($Cluster){
 
@@ -239,10 +257,17 @@ function Remove-isiSession {
 
 #>
     [CmdletBinding()]
-    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][string]$Cluster=$isi_sessiondefault)
+    Param([Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true,ValueFromPipeline=$true,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster)
 
     Begin{
-
+        if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+            Write-Error "No Isilon Cluster connected"
+            break
+        }
+        if ( !$psBoundParameters.ContainsKey('Cluster') ) {
+            Write-Verbose "No Cluster specified. Selecting session default: $isi_sessiondefault"
+            $Cluster = $isi_sessiondefault
+        }
     }
 
     Process{        
@@ -260,7 +285,7 @@ function Remove-isiSession {
             if ($isi_sessions) {
                 $script:isi_sessiondefault = $isi_sessions[0].cluster
             } else {
-                $script:isi_sessiondefault = ''
+                Remove-Variable -scope script isi_sessiondefault
             }
         }
         
@@ -288,7 +313,11 @@ function Get-isiSessionDefault {
 
 #>
 
-        $script:isi_sessiondefault
+    if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+        Write-Error "No Isilon Cluster connected!"
+    }
+
+    $script:isi_sessiondefault
 }
 
 function Set-isiSessionDefault {
@@ -311,7 +340,9 @@ function Set-isiSessionDefault {
     Param([Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0)][string]$Cluster)
 
     Begin{
-
+        if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+            Write-Error "No Isilon Cluster connected!"
+        }
     }
 
     Process{        
@@ -359,7 +390,16 @@ function Send-isiAPI{
     [Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=0)][string]$Resource,
     [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=1)][ValidateSet('GET_JSON','GET','POST','PUT','DELETE','POST')][string]$Method="GET",
     [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=2)][string]$body,
-    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=3)][string]$Cluster=$isi_sessiondefault)
+    [Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$false,Position=3)][string]$Cluster)
+
+    if(!(Test-Path variable:isi_sessions) -or !(Test-Path variable:isi_sessiondefault)){
+        Write-Error "No Isilon Cluster connected"
+        break
+    }
+    if ( !$psBoundParameters.ContainsKey('Cluster') -or !$Cluster) {
+        Write-Verbose "No Cluster specified. Selecting session default: $isi_sessiondefault"
+        $Cluster = $isi_sessiondefault
+    }
 
     $isi_session = Get-isiSession -Cluster $Cluster
     $url = $isi_session.url + $Resource
