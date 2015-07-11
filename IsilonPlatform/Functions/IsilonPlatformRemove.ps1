@@ -29,7 +29,7 @@ $ErrorActionPreference = "Stop"
 function Remove-isiAuditTopic{
 <#
 .SYNOPSIS
-	Get Audit Topic
+	Remove Audit Topic
 
 .DESCRIPTION
 	Delete the audit topic.
@@ -77,7 +77,7 @@ Export-ModuleMember -Function Remove-isiAuditTopic
 function Remove-isiAuthGroups{
 <#
 .SYNOPSIS
-	Get Auth Groups
+	Remove Auth Groups
 
 .DESCRIPTION
 	Flush the groups cache.
@@ -137,7 +137,7 @@ Export-ModuleMember -Function Remove-isiAuthGroups
 function Remove-isiAuthGroup{
 <#
 .SYNOPSIS
-	Get Auth Group
+	Remove Auth Group
 
 .DESCRIPTION
 	Delete the group.
@@ -210,7 +210,7 @@ Export-ModuleMember -Function Remove-isiAuthGroup
 function Remove-isiAuthGroupMember{
 <#
 .SYNOPSIS
-	Get Auth Group Member
+	Remove Auth Group Member
 
 .DESCRIPTION
 	Remove the member from the group.
@@ -289,7 +289,7 @@ Export-ModuleMember -Function Remove-isiAuthGroupMember
 function Remove-isiAuthMappingIdentities{
 <#
 .SYNOPSIS
-	Get Auth Mapping Identities
+	Remove Auth Mapping Identities
 
 .DESCRIPTION
 	Flush the entire idmap cache.
@@ -350,7 +350,7 @@ Export-ModuleMember -Function Remove-isiAuthMappingIdentities
 function Remove-isiAuthMappingIdentities{
 <#
 .SYNOPSIS
-	Get Auth Mapping Identity
+	Remove Auth Mapping Identity
 
 .DESCRIPTION
 	Flush the entire idmap cache.
@@ -430,7 +430,7 @@ Export-ModuleMember -Function Remove-isiAuthMappingIdentities
 function Remove-isiAuthProviderAds{
 <#
 .SYNOPSIS
-	Get Auth Provider Ads
+	Remove Auth Provider Ads
 
 .DESCRIPTION
 	Delete the ADS provider.
@@ -478,7 +478,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderAds
 function Remove-isiAuthProviderFile{
 <#
 .SYNOPSIS
-	Get Auth Provider File
+	Remove Auth Provider File
 
 .DESCRIPTION
 	Delete the file provider.
@@ -526,7 +526,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderFile
 function Remove-isiAuthProviderKrb5{
 <#
 .SYNOPSIS
-	Get Auth Provider Krb5
+	Remove Auth Provider Krb5
 
 .DESCRIPTION
 	Delete the KRB5 provider.
@@ -574,7 +574,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderKrb5
 function Remove-isiAuthProviderLdap{
 <#
 .SYNOPSIS
-	Get Auth Provider Ldap
+	Remove Auth Provider Ldap
 
 .DESCRIPTION
 	Delete the LDAP provider.
@@ -622,7 +622,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderLdap
 function Remove-isiAuthProviderLocal{
 <#
 .SYNOPSIS
-	Get Auth Provider Local
+	Remove Auth Provider Local
 
 .DESCRIPTION
 	Delete the local provider.
@@ -670,7 +670,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderLocal
 function Remove-isiAuthProviderNis{
 <#
 .SYNOPSIS
-	Get Auth Provider Nis
+	Remove Auth Provider Nis
 
 .DESCRIPTION
 	Delete the NIS provider.
@@ -718,7 +718,7 @@ Export-ModuleMember -Function Remove-isiAuthProviderNis
 function Remove-isiAuthRole{
 <#
 .SYNOPSIS
-	Get Auth Role
+	Remove Auth Role
 
 .DESCRIPTION
 	Delete the role.
@@ -766,7 +766,7 @@ Export-ModuleMember -Function Remove-isiAuthRole
 function Remove-isiAuthRoleMember{
 <#
 .SYNOPSIS
-	Get Auth Role Member
+	Remove Auth Role Member
 
 .DESCRIPTION
 	Remove a member from the role.
@@ -827,7 +827,7 @@ Export-ModuleMember -Function Remove-isiAuthRoleMember
 function Remove-isiAuthRolePrivilege{
 <#
 .SYNOPSIS
-	Get Auth Role Privilege
+	Remove Auth Role Privilege
 
 .DESCRIPTION
 	Remove a privilege from a role.
@@ -888,7 +888,7 @@ Export-ModuleMember -Function Remove-isiAuthRolePrivilege
 function Remove-isiAuthSettingsKrb5Domain{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Domain
+	Remove Auth Settings Krb5 Domain
 
 .DESCRIPTION
 	Remove a krb5 domain.
@@ -936,7 +936,7 @@ Export-ModuleMember -Function Remove-isiAuthSettingsKrb5Domain
 function Remove-isiAuthSettingsKrb5Realm{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Realm
+	Remove Auth Settings Krb5 Realm
 
 .DESCRIPTION
 	Remove a realm.
@@ -984,7 +984,7 @@ Export-ModuleMember -Function Remove-isiAuthSettingsKrb5Realm
 function Remove-isiAuthUsers{
 <#
 .SYNOPSIS
-	Get Auth Users
+	Remove Auth Users
 
 .DESCRIPTION
 	Flush the users cache.
@@ -1044,7 +1044,7 @@ Export-ModuleMember -Function Remove-isiAuthUsers
 function Remove-isiAuthUser{
 <#
 .SYNOPSIS
-	Get Auth User
+	Remove Auth User
 
 .DESCRIPTION
 	Delete the user.
@@ -1117,7 +1117,7 @@ Export-ModuleMember -Function Remove-isiAuthUser
 function Remove-isiAuthUserMemberOfGroup{
 <#
 .SYNOPSIS
-	Get Auth User Member Of Group
+	Remove Auth User Member Of Group
 
 .DESCRIPTION
 	Remove the user from the group.
@@ -1196,7 +1196,7 @@ Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroup
 function Remove-isiCloudAccount{
 <#
 .SYNOPSIS
-	Get Cloud Account
+	Remove Cloud Account
 
 .DESCRIPTION
 	Delete cloud account.
@@ -1244,7 +1244,7 @@ Export-ModuleMember -Function Remove-isiCloudAccount
 function Remove-isiCloudPool{
 <#
 .SYNOPSIS
-	Get Cloud Pool
+	Remove Cloud Pool
 
 .DESCRIPTION
 	Delete a cloud pool.
@@ -1292,7 +1292,7 @@ Export-ModuleMember -Function Remove-isiCloudPool
 function Remove-isiDebugStats{
 <#
 .SYNOPSIS
-	Get Debug Stats
+	Remove Debug Stats
 
 .DESCRIPTION
 	Clear per-resource statistics counters.
@@ -1327,7 +1327,7 @@ Export-ModuleMember -Function Remove-isiDebugStats
 function Remove-isiFilepoolPolicy{
 <#
 .SYNOPSIS
-	Get Filepool Policy
+	Remove Filepool Policy
 
 .DESCRIPTION
 	Delete file pool policy.
@@ -1375,7 +1375,7 @@ Export-ModuleMember -Function Remove-isiFilepoolPolicy
 function Remove-isiFsaResult{
 <#
 .SYNOPSIS
-	Get Fsa Result
+	Remove Fsa Result
 
 .DESCRIPTION
 	Delete the result set.
@@ -1423,7 +1423,7 @@ Export-ModuleMember -Function Remove-isiFsaResult
 function Remove-isiFsaSettings{
 <#
 .SYNOPSIS
-	Get Fsa Settings
+	Remove Fsa Settings
 
 .DESCRIPTION
 	Revert all settings to their defaults.
@@ -1458,7 +1458,7 @@ Export-ModuleMember -Function Remove-isiFsaSettings
 function Remove-isiJobPolicy{
 <#
 .SYNOPSIS
-	Get Job Policy
+	Remove Job Policy
 
 .DESCRIPTION
 	Delete a job impact policy.  System policies may not be deleted.
@@ -1506,7 +1506,7 @@ Export-ModuleMember -Function Remove-isiJobPolicy
 function Remove-isiHdfsProxyUser{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyuser
+	Remove Hdfs Proxyuser
 
 .DESCRIPTION
 	Delete a a HDFS proxyuser.
@@ -1554,7 +1554,7 @@ Export-ModuleMember -Function Remove-isiHdfsProxyUser
 function Remove-isiHdfsProxyUserMember{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyuser Member
+	Remove Hdfs Proxyuser Member
 
 .DESCRIPTION
 	Remove a member from the HDFS proxyuser.
@@ -1615,7 +1615,7 @@ Export-ModuleMember -Function Remove-isiHdfsProxyUserMember
 function Remove-isiHdfsRack{
 <#
 .SYNOPSIS
-	Get Hdfs Rack
+	Remove Hdfs Rack
 
 .DESCRIPTION
 	Delete the HDFS rack.
@@ -1663,7 +1663,7 @@ Export-ModuleMember -Function Remove-isiHdfsRack
 function Remove-isiNfsExport{
 <#
 .SYNOPSIS
-	Get Nfs Export
+	Remove Nfs Export
 
 .DESCRIPTION
 	Delete the export.
@@ -1703,7 +1703,7 @@ Export-ModuleMember -Function Remove-isiNfsExport
 function Remove-isiNfsNlmSession{
 <#
 .SYNOPSIS
-	Get Nfs Nlm Session
+	Remove Nfs Nlm Session
 
 .DESCRIPTION
 	Delete an NLM session.
@@ -1751,7 +1751,7 @@ Export-ModuleMember -Function Remove-isiNfsNlmSession
 function Remove-isiSmbOpenfile{
 <#
 .SYNOPSIS
-	Get Smb Openfile
+	Remove Smb Openfile
 
 .DESCRIPTION
 	Close the file in the SMB server.
@@ -1791,7 +1791,7 @@ Export-ModuleMember -Function Remove-isiSmbOpenfile
 function Remove-isiSmbSessionComputer{
 <#
 .SYNOPSIS
-	Get Smb Session
+	Remove Smb Session
 
 .DESCRIPTION
 	Close the SMB session.
@@ -1839,7 +1839,7 @@ Export-ModuleMember -Function Remove-isiSmbSessionComputer
 function Remove-isiSmbSessionUser{
 <#
 .SYNOPSIS
-	Get Smb Session User
+	Remove Smb Session User
 
 .DESCRIPTION
 	Close the SMB session.
@@ -1892,7 +1892,7 @@ Export-ModuleMember -Function Remove-isiSmbSessionUser
 function Remove-isiSmbShares{
 <#
 .SYNOPSIS
-	Get Smb Shares
+	Remove Smb Shares
 
 .DESCRIPTION
 	Delete multiple smb shares.
@@ -1927,7 +1927,7 @@ Export-ModuleMember -Function Remove-isiSmbShares
 function Remove-isiSmbShare{
 <#
 .SYNOPSIS
-	Get Smb Share
+	Remove Smb Share
 
 .DESCRIPTION
 	Delete the share.
@@ -1986,7 +1986,7 @@ Export-ModuleMember -Function Remove-isiSmbShare
 function Remove-isiQuotas{
 <#
 .SYNOPSIS
-	Get Quotas
+	Remove Quotas
 
 .DESCRIPTION
 	Delete all or matching quotas.
@@ -2075,7 +2075,7 @@ Export-ModuleMember -Function Remove-isiQuotas
 function Remove-isiQuota{
 <#
 .SYNOPSIS
-	Get Quota
+	Remove Quota
 
 .DESCRIPTION
 	Delete the quota.
@@ -2123,7 +2123,7 @@ Export-ModuleMember -Function Remove-isiQuota
 function Remove-isiQuotaNotifications{
 <#
 .SYNOPSIS
-	Get Quota Notifications
+	Remove Quota Notifications
 
 .DESCRIPTION
 	Delete all quota specific rules. The quota will then use the global rules.
@@ -2171,7 +2171,7 @@ Export-ModuleMember -Function Remove-isiQuotaNotifications
 function Remove-isiQuotaNotification{
 <#
 .SYNOPSIS
-	Get Quota Notification
+	Remove Quota Notification
 
 .DESCRIPTION
 	Delete the notification rule.
@@ -2232,7 +2232,7 @@ Export-ModuleMember -Function Remove-isiQuotaNotification
 function Remove-isiQuotaReport{
 <#
 .SYNOPSIS
-	Get Quota Report
+	Remove Quota Report
 
 .DESCRIPTION
 	Delete the report.
@@ -2280,7 +2280,7 @@ Export-ModuleMember -Function Remove-isiQuotaReport
 function Remove-isiQuotaSettingsMappings{
 <#
 .SYNOPSIS
-	Get Quota Settings Mappings
+	Remove Quota Settings Mappings
 
 .DESCRIPTION
 	Delete all rules.
@@ -2315,7 +2315,7 @@ Export-ModuleMember -Function Remove-isiQuotaSettingsMappings
 function Remove-isiQuotaSettingsMapping{
 <#
 .SYNOPSIS
-	Get Quota Settings Mapping
+	Remove Quota Settings Mapping
 
 .DESCRIPTION
 	Delete the mapping.
@@ -2363,7 +2363,7 @@ Export-ModuleMember -Function Remove-isiQuotaSettingsMapping
 function Remove-isiQuotaSettingsNotifications{
 <#
 .SYNOPSIS
-	Get Quota Settings Notifications
+	Remove Quota Settings Notifications
 
 .DESCRIPTION
 	Delete all rules.
@@ -2398,7 +2398,7 @@ Export-ModuleMember -Function Remove-isiQuotaSettingsNotifications
 function Remove-isiQuotaSettingsNotification{
 <#
 .SYNOPSIS
-	Get Quota Settings Notification
+	Remove Quota Settings Notification
 
 .DESCRIPTION
 	Delete the notification rule.
@@ -2446,7 +2446,7 @@ Export-ModuleMember -Function Remove-isiQuotaSettingsNotification
 function Remove-isiSnapshotAliases{
 <#
 .SYNOPSIS
-	Get Snapshot Aliases
+	Remove Snapshot Aliases
 
 .DESCRIPTION
 	Delete all or matching snapshot aliases.
@@ -2481,7 +2481,7 @@ Export-ModuleMember -Function Remove-isiSnapshotAliases
 function Remove-isiSnapshotAlias{
 <#
 .SYNOPSIS
-	Get Snapshot Aliase
+	Remove Snapshot Aliase
 
 .DESCRIPTION
 	Delete the snapshot alias
@@ -2529,7 +2529,7 @@ Export-ModuleMember -Function Remove-isiSnapshotAlias
 function Remove-isiSnapshotChangelist{
 <#
 .SYNOPSIS
-	Get Snapshot Changelist
+	Remove Snapshot Changelist
 
 .DESCRIPTION
 	Delete the specified changelist.
@@ -2577,7 +2577,7 @@ Export-ModuleMember -Function Remove-isiSnapshotChangelist
 function Remove-isiSnapshotRepstate{
 <#
 .SYNOPSIS
-	Get Snapshot Repstate
+	Remove Snapshot Repstate
 
 .DESCRIPTION
 	Delete the specified repstate.
@@ -2625,7 +2625,7 @@ Export-ModuleMember -Function Remove-isiSnapshotRepstate
 function Remove-isiSnapshotSchedule{
 <#
 .SYNOPSIS
-	Get Snapshot Schedule
+	Remove Snapshot Schedule
 
 .DESCRIPTION
 	Delete the schedule. This does not affect already created snapshots.
@@ -2673,7 +2673,7 @@ Export-ModuleMember -Function Remove-isiSnapshotSchedule
 function Remove-isiSnapshots{
 <#
 .SYNOPSIS
-	Get Snapshots
+	Remove Snapshots
 
 .DESCRIPTION
 	Delete all or matching snapshots.
@@ -2727,7 +2727,7 @@ Export-ModuleMember -Function Remove-isiSnapshots
 function Remove-isiSnapshot{
 <#
 .SYNOPSIS
-	Get Snapshot
+	Remove Snapshot
 
 .DESCRIPTION
 	Delete the snapshot. Deleted snapshots will be placed into a deleting state until the system can reclaim the space used by the snapshot.
@@ -2775,7 +2775,7 @@ Export-ModuleMember -Function Remove-isiSnapshot
 function Remove-isiSnapshotLocks{
 <#
 .SYNOPSIS
-	Get Snapshot Locks
+	Remove Snapshot Locks
 
 .DESCRIPTION
 	Delete all locks. Will try to drain count of recursively held locks so that the snapshot can be deleted.
@@ -2823,7 +2823,7 @@ Export-ModuleMember -Function Remove-isiSnapshotLocks
 function Remove-isiSnapshotLock{
 <#
 .SYNOPSIS
-	Get Snapshot Lock
+	Remove Snapshot Lock
 
 .DESCRIPTION
 	Delete the snapshot lock.
@@ -2884,7 +2884,7 @@ Export-ModuleMember -Function Remove-isiSnapshotLock
 function Remove-isiStoragepoolCompatibilitiesClassActiveId{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities Class Active ID
+	Remove Storagepool Compatibilities Class Active ID
 
 .DESCRIPTION
 	Delete an active compatibility by id
@@ -2924,7 +2924,7 @@ Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesClassActiveId
 function Remove-isiStoragepoolCompatibilitiesSSDActiveId{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities SSD Active ID
+	Remove Storagepool Compatibilities SSD Active ID
 
 .DESCRIPTION
 	Delete an active ssd compatibility by id
@@ -2964,7 +2964,7 @@ Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesSSDActiveId
 function Remove-isiStoragepoolNodepool{
 <#
 .SYNOPSIS
-	Get Storagepool Nodepool
+	Remove Storagepool Nodepool
 
 .DESCRIPTION
 	Delete node pool.
@@ -3012,7 +3012,7 @@ Export-ModuleMember -Function Remove-isiStoragepoolNodepool
 function Remove-isiStoragepoolTiers{
 <#
 .SYNOPSIS
-	Get Storagepool Tiers
+	Remove Storagepool Tiers
 
 .DESCRIPTION
 	Delete all tiers.
@@ -3047,7 +3047,7 @@ Export-ModuleMember -Function Remove-isiStoragepoolTiers
 function Remove-isiStoragepoolTier{
 <#
 .SYNOPSIS
-	Get Storagepool Tier
+	Remove Storagepool Tier
 
 .DESCRIPTION
 	Delete tier.
@@ -3095,7 +3095,7 @@ Export-ModuleMember -Function Remove-isiStoragepoolTier
 function Remove-isiSyncPolicies{
 <#
 .SYNOPSIS
-	Get Sync Policies
+	Remove Sync Policies
 
 .DESCRIPTION
 	Delete all SyncIQ policies.
@@ -3148,7 +3148,7 @@ Export-ModuleMember -Function Remove-isiSyncPolicies
 function Remove-isiSyncPolicy{
 <#
 .SYNOPSIS
-	Get Sync Policy
+	Remove Sync Policy
 
 .DESCRIPTION
 	Delete a single SyncIQ policy.
@@ -3214,7 +3214,7 @@ Export-ModuleMember -Function Remove-isiSyncPolicy
 function Remove-isiSyncRules{
 <#
 .SYNOPSIS
-	Get Sync Rules
+	Remove Sync Rules
 
 .DESCRIPTION
 	Delete all SyncIQ performance rules or all rules of a specified type.
@@ -3261,7 +3261,7 @@ Export-ModuleMember -Function Remove-isiSyncRules
 function Remove-isiSyncRule{
 <#
 .SYNOPSIS
-	Get Sync Rule
+	Remove Sync Rule
 
 .DESCRIPTION
 	Delete a single SyncIQ performance rule.
@@ -3309,7 +3309,7 @@ Export-ModuleMember -Function Remove-isiSyncRule
 function Remove-isiSyncTargetPolicy{
 <#
 .SYNOPSIS
-	Get Sync Target Policy
+	Remove Sync Target Policy
 
 .DESCRIPTION
 	Break the target association with this cluster for this policy.
@@ -3368,7 +3368,7 @@ Export-ModuleMember -Function Remove-isiSyncTargetPolicy
 function Remove-isiZone{
 <#
 .SYNOPSIS
-	Get Zone
+	Remove Zone
 
 .DESCRIPTION
 	Delete the access zone.
@@ -3416,7 +3416,7 @@ Export-ModuleMember -Function Remove-isiZone
 function Remove-isiNfsAliasV2{
 <#
 .SYNOPSIS
-	Get Nfs Aliase
+	Remove Nfs Aliase
 
 .DESCRIPTION
 	Delete the export.
@@ -3475,7 +3475,7 @@ Export-ModuleMember -Function Remove-isiNfsAliasV2
 function Remove-isiNfsExportV2{
 <#
 .SYNOPSIS
-	Get Nfs Export
+	Remove Nfs Export
 
 .DESCRIPTION
 	Delete the export.
@@ -3526,7 +3526,7 @@ Export-ModuleMember -Function Remove-isiNfsExportV2
 function Remove-isiNfsNlmSessionV2{
 <#
 .SYNOPSIS
-	Get Nfs Nlm Session
+	Remove Nfs Nlm Session
 
 .DESCRIPTION
 	Delete an NLM session.

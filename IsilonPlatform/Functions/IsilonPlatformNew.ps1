@@ -29,7 +29,7 @@ $ErrorActionPreference = "Stop"
 function New-isiAuditTopics{
 <#
 .SYNOPSIS
-	Get Audit Topics
+	New Audit Topics
 
 .DESCRIPTION
 	Create a new audit topic.
@@ -69,7 +69,7 @@ Export-ModuleMember -Function New-isiAuditTopics
 function New-isiAuthGroups{
 <#
 .SYNOPSIS
-	Get Auth Groups
+	New Auth Groups
 
 .DESCRIPTION
 	Create a new group.
@@ -137,7 +137,7 @@ Export-ModuleMember -Function New-isiAuthGroups
 function New-isiAuthGroupMembers{
 <#
 .SYNOPSIS
-	Get Auth Group Members
+	New Auth Group Members
 
 .DESCRIPTION
 	Add a member to the group.
@@ -217,7 +217,7 @@ Export-ModuleMember -Function New-isiAuthGroupMembers
 function New-isiAuthMappingIdentities{
 <#
 .SYNOPSIS
-	Get Auth Mapping Identities
+	New Auth Mapping Identities
 
 .DESCRIPTION
 	Manually set or modify a mapping between two personae.
@@ -285,7 +285,7 @@ Export-ModuleMember -Function New-isiAuthMappingIdentities
 function New-isiAuthMappingIdentities{
 <#
 .SYNOPSIS
-	Get Auth Mapping Identity
+	New Auth Mapping Identity
 
 .DESCRIPTION
 	Manually set or modify a mapping between two personae.
@@ -353,7 +353,7 @@ Export-ModuleMember -Function New-isiAuthMappingIdentities
 function New-isiAuthProvidersAds{
 <#
 .SYNOPSIS
-	Get Auth Providers Ads
+	New Auth Providers Ads
 
 .DESCRIPTION
 	Create a new ADS provider.
@@ -526,7 +526,7 @@ Export-ModuleMember -Function New-isiAuthProvidersAds
 function New-isiAuthProvidersFile{
 <#
 .SYNOPSIS
-	Get Auth Providers File
+	New Auth Providers File
 
 .DESCRIPTION
 	Create a new file provider.
@@ -691,7 +691,7 @@ Export-ModuleMember -Function New-isiAuthProvidersFile
 function New-isiAuthProvidersKrb5{
 <#
 .SYNOPSIS
-	Get Auth Providers Krb5
+	New Auth Providers Krb5
 
 .DESCRIPTION
 	Create a new KRB5 provider.
@@ -751,7 +751,7 @@ Export-ModuleMember -Function New-isiAuthProvidersKrb5
 function New-isiAuthProvidersLdap{
 <#
 .SYNOPSIS
-	Get Auth Providers Ldap
+	New Auth Providers Ldap
 
 .DESCRIPTION
 	Create a new LDAP provider.
@@ -1041,7 +1041,7 @@ Export-ModuleMember -Function New-isiAuthProvidersLdap
 function New-isiAuthProvidersNis{
 <#
 .SYNOPSIS
-	Get Auth Providers Nis
+	New Auth Providers Nis
 
 .DESCRIPTION
 	Create a new NIS provider.
@@ -1206,7 +1206,7 @@ Export-ModuleMember -Function New-isiAuthProvidersNis
 function New-isiAuthRoles{
 <#
 .SYNOPSIS
-	Get Auth Roles
+	New Auth Roles
 
 .DESCRIPTION
 	Create a new role.
@@ -1254,7 +1254,7 @@ Export-ModuleMember -Function New-isiAuthRoles
 function New-isiAuthRoleMembers{
 <#
 .SYNOPSIS
-	Get Auth Role Members
+	New Auth Role Members
 
 .DESCRIPTION
 	Add a member to the role.
@@ -1314,7 +1314,7 @@ Export-ModuleMember -Function New-isiAuthRoleMembers
 function New-isiAuthRolePrivileges{
 <#
 .SYNOPSIS
-	Get Auth Role Privileges
+	New Auth Role Privileges
 
 .DESCRIPTION
 	Add a privilege to the role.
@@ -1373,7 +1373,7 @@ Export-ModuleMember -Function New-isiAuthRolePrivileges
 function New-isiAuthSettingsKrb5Domains{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Domains
+	New Auth Settings Krb5 Domains
 
 .DESCRIPTION
 	Create a new krb5 domain.
@@ -1413,7 +1413,7 @@ Export-ModuleMember -Function New-isiAuthSettingsKrb5Domains
 function New-isiAuthSettingsKrb5Realms{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Realms
+	New Auth Settings Krb5 Realms
 
 .DESCRIPTION
 	Create a new krb5 realm.
@@ -1465,7 +1465,7 @@ Export-ModuleMember -Function New-isiAuthSettingsKrb5Realms
 function New-isiAuthUsers{
 <#
 .SYNOPSIS
-	Get Auth Users
+	New Auth Users
 
 .DESCRIPTION
 	Create a new user.
@@ -1573,7 +1573,7 @@ Export-ModuleMember -Function New-isiAuthUsers
 function New-isiAuthUserMemberOfGroups{
 <#
 .SYNOPSIS
-	Get Auth User Member Of Groups
+	New Auth User Member Of Groups
 
 .DESCRIPTION
 	Add the user to a group.
@@ -1653,7 +1653,7 @@ Export-ModuleMember -Function New-isiAuthUserMemberOfGroups
 function New-isiCloudAccounts{
 <#
 .SYNOPSIS
-	Get Cloud Accounts
+	New Cloud Accounts
 
 .DESCRIPTION
 	Create a new account.
@@ -1710,7 +1710,7 @@ Export-ModuleMember -Function New-isiCloudAccounts
 function New-isiCloudJobs{
 <#
 .SYNOPSIS
-	Get Cloud Jobs
+	New Cloud Jobs
 
 .DESCRIPTION
 	Create a new job.
@@ -1763,7 +1763,7 @@ Export-ModuleMember -Function New-isiCloudJobs
 function New-isiCloudPools{
 <#
 .SYNOPSIS
-	Get Cloud Pools
+	New Cloud Pools
 
 .DESCRIPTION
 	Create a new pool.
@@ -1816,7 +1816,7 @@ Export-ModuleMember -Function New-isiCloudPools
 function New-isiCloudSettingsEncryptionKey{
 <#
 .SYNOPSIS
-	Get Cloud Settings Encryption Key
+	New Cloud Settings Encryption Key
 
 .DESCRIPTION
 	Regenerate master encryption key.
@@ -1848,7 +1848,7 @@ Export-ModuleMember -Function New-isiCloudSettingsEncryptionKey
 function New-isiFilepoolPolicies{
 <#
 .SYNOPSIS
-	Get Filepool Policies
+	New Filepool Policies
 
 .DESCRIPTION
 	Create a new policy.
@@ -1900,7 +1900,7 @@ Export-ModuleMember -Function New-isiFilepoolPolicies
 function New-isiJobs{
 <#
 .SYNOPSIS
-	Get Jobs
+	New Jobs
 
 .DESCRIPTION
 	Queue a new instance of a job type.
@@ -1968,7 +1968,7 @@ Export-ModuleMember -Function New-isiJobs
 function New-isiJobPolicies{
 <#
 .SYNOPSIS
-	Get Job Policies
+	New Job Policies
 
 .DESCRIPTION
 	Create a new job impact policy.
@@ -2012,7 +2012,7 @@ Export-ModuleMember -Function New-isiJobPolicies
 function New-isiLicenses{
 <#
 .SYNOPSIS
-	Get Licenses
+	New Licenses
 
 .DESCRIPTION
 	Install a new license key.
@@ -2048,7 +2048,7 @@ Export-ModuleMember -Function New-isiLicenses
 function New-isiHdfsProxyUsers{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyusers
+	New Hdfs Proxyusers
 
 .DESCRIPTION
 	Create a new HDFS proxyuser.
@@ -2092,7 +2092,7 @@ Export-ModuleMember -Function New-isiHdfsProxyUsers
 function New-isiHdfsProxyUserMembers{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyuser Members
+	New Hdfs Proxyuser Members
 
 .DESCRIPTION
 	Add a member to the HDFS proxyuser.
@@ -2152,7 +2152,7 @@ Export-ModuleMember -Function New-isiHdfsProxyUserMembers
 function New-isiHdfsRacks{
 <#
 .SYNOPSIS
-	Get Hdfs Racks
+	New Hdfs Racks
 
 .DESCRIPTION
 	Create a new HDFS rack.
@@ -2196,7 +2196,7 @@ Export-ModuleMember -Function New-isiHdfsRacks
 function New-isiNfsExports{
 <#
 .SYNOPSIS
-	Get Nfs Exports
+	New Nfs Exports
 
 .DESCRIPTION
 	Create a new NFS export.
@@ -2396,7 +2396,7 @@ Export-ModuleMember -Function New-isiNfsExports
 function New-isiNfsReload{
 <#
 .SYNOPSIS
-	Get Nfs Reload
+	New Nfs Reload
 
 .DESCRIPTION
 	Reload default NFS export configuration.
@@ -2428,7 +2428,7 @@ Export-ModuleMember -Function New-isiNfsReload
 function New-isiSmbShares{
 <#
 .SYNOPSIS
-	Get Smb Shares
+	New Smb Shares
 
 .DESCRIPTION
 	Create a new share.
@@ -2600,7 +2600,7 @@ Export-ModuleMember -Function New-isiSmbShares
 function New-isiQuotas{
 <#
 .SYNOPSIS
-	Get Quotas
+	New Quotas
 
 .DESCRIPTION
 	Create a new quota.
@@ -2681,7 +2681,7 @@ Export-ModuleMember -Function New-isiQuotas
 function New-isiQuotaNotifications{
 <#
 .SYNOPSIS
-	Get Quota Notifications
+	New Quota Notifications
 
 .DESCRIPTION
 	Create a new notification rule specific to this quota.
@@ -2762,7 +2762,7 @@ Export-ModuleMember -Function New-isiQuotaNotifications
 function New-isiQuotaReports{
 <#
 .SYNOPSIS
-	Get Quota Reports
+	New Quota Reports
 
 .DESCRIPTION
 	Create a new report. The type of this report is 'manual'; it is also sometimes called 'live' or 'ad-hoc'.
@@ -2794,7 +2794,7 @@ Export-ModuleMember -Function New-isiQuotaReports
 function New-isiQuotaSettingsMappings{
 <#
 .SYNOPSIS
-	Get Quota Settings Mappings
+	New Quota Settings Mappings
 
 .DESCRIPTION
 	Create a new rule. The new rule must not conflict with an existing rule (e.g. match both the type and domain fields).
@@ -2839,7 +2839,7 @@ Export-ModuleMember -Function New-isiQuotaSettingsMappings
 function New-isiQuotaSettingsNotifications{
 <#
 .SYNOPSIS
-	Get Quota Settings Notifications
+	New Quota Settings Notifications
 
 .DESCRIPTION
 	Create a new global notification rule.
@@ -2905,7 +2905,7 @@ Export-ModuleMember -Function New-isiQuotaSettingsNotifications
 function New-isiSnapshotAliases{
 <#
 .SYNOPSIS
-	Get Snapshot Aliases
+	New Snapshot Aliases
 
 .DESCRIPTION
 	Create a new snapshot alias.
@@ -2945,7 +2945,7 @@ Export-ModuleMember -Function New-isiSnapshotAliases
 function New-isiSnapshotSchedules{
 <#
 .SYNOPSIS
-	Get Snapshot Schedules
+	New Snapshot Schedules
 
 .DESCRIPTION
 	Create a new schedule.
@@ -3001,7 +3001,7 @@ Export-ModuleMember -Function New-isiSnapshotSchedules
 function New-isiSnapshots{
 <#
 .SYNOPSIS
-	Get Snapshots
+	New Snapshots
 
 .DESCRIPTION
 	Create a new snapshot.
@@ -3049,7 +3049,7 @@ Export-ModuleMember -Function New-isiSnapshots
 function New-isiSnapshotLocks{
 <#
 .SYNOPSIS
-	Get Snapshot Locks
+	New Snapshot Locks
 
 .DESCRIPTION
 	Create a new lock on this snapshot.
@@ -3104,7 +3104,7 @@ Export-ModuleMember -Function New-isiSnapshotLocks
 function New-isiStoragepoolCompatibilitiesClassActive{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities Class Active
+	New Storagepool Compatibilities Class Active
 
 .DESCRIPTION
 	Create a new compatibility
@@ -3148,7 +3148,7 @@ Export-ModuleMember -Function New-isiStoragepoolCompatibilitiesClassActive
 function New-isiStoragepoolCompatibilitiesSSDActive{
 <#
 .SYNOPSIS
-	Get Storagepool Compatibilities SSD Active
+	New Storagepool Compatibilities SSD Active
 
 .DESCRIPTION
 	Create a new ssd compatibility
@@ -3192,7 +3192,7 @@ Export-ModuleMember -Function New-isiStoragepoolCompatibilitiesSSDActive
 function New-isiStoragepoolNodepools{
 <#
 .SYNOPSIS
-	Get Storagepool Nodepools
+	New Storagepool Nodepools
 
 .DESCRIPTION
 	Create a new node pool.
@@ -3244,7 +3244,7 @@ Export-ModuleMember -Function New-isiStoragepoolNodepools
 function New-isiStoragepoolTiers{
 <#
 .SYNOPSIS
-	Get Storagepool Tiers
+	New Storagepool Tiers
 
 .DESCRIPTION
 	Create a new tier.
@@ -3284,7 +3284,7 @@ Export-ModuleMember -Function New-isiStoragepoolTiers
 function New-isiSyncJobs{
 <#
 .SYNOPSIS
-	Get Sync Jobs
+	New Sync Jobs
 
 .DESCRIPTION
 	Start a SyncIQ job.
@@ -3338,7 +3338,7 @@ Export-ModuleMember -Function New-isiSyncJobs
 function New-isiSyncPolicies{
 <#
 .SYNOPSIS
-	Get Sync Policies
+	New Sync Policies
 
 .DESCRIPTION
 	Create a SyncIQ policy.
@@ -3520,7 +3520,7 @@ Export-ModuleMember -Function New-isiSyncPolicies
 function New-isiSyncPolicyReset{
 <#
 .SYNOPSIS
-	Get Sync Policy Reset
+	New Sync Policy Reset
 
 .DESCRIPTION
 	Reset a SyncIQ policy incremental state and force a full sync/copy.
@@ -3567,7 +3567,7 @@ Export-ModuleMember -Function New-isiSyncPolicyReset
 function New-isiSyncReportsRotate{
 <#
 .SYNOPSIS
-	Get Sync Reports Rotate
+	New Sync Reports Rotate
 
 .DESCRIPTION
 	Rotate the records in the database(s).
@@ -3599,7 +3599,7 @@ Export-ModuleMember -Function New-isiSyncReportsRotate
 function New-isiSyncRules{
 <#
 .SYNOPSIS
-	Get Sync Rules
+	New Sync Rules
 
 .DESCRIPTION
 	Create a new SyncIQ performance rule.
@@ -3652,7 +3652,7 @@ Export-ModuleMember -Function New-isiSyncRules
 function New-isiSyncTargetPolicyCancel{
 <#
 .SYNOPSIS
-	Get Sync Target Policy Cancel
+	New Sync Target Policy Cancel
 
 .DESCRIPTION
 	Cancel the most recent SyncIQ job for this policy from the target side.
@@ -3699,7 +3699,7 @@ Export-ModuleMember -Function New-isiSyncTargetPolicyCancel
 function New-isiWormDomains{
 <#
 .SYNOPSIS
-	Get Worm Domains
+	New Worm Domains
 
 .DESCRIPTION
 	Create a WORM domain.
@@ -3765,7 +3765,7 @@ Export-ModuleMember -Function New-isiWormDomains
 function New-isiZones{
 <#
 .SYNOPSIS
-	Get Zones
+	New Zones
 
 .DESCRIPTION
 	Create a new access zone.
@@ -3894,7 +3894,7 @@ Export-ModuleMember -Function New-isiZones
 function New-isiNfsAliasesV2{
 <#
 .SYNOPSIS
-	Get Nfs Aliases
+	New Nfs Aliases
 
 .DESCRIPTION
 	Create a new NFS alias.
@@ -3950,7 +3950,7 @@ Export-ModuleMember -Function New-isiNfsAliasesV2
 function New-isiNfsExportsV2{
 <#
 .SYNOPSIS
-	Get Nfs Exports
+	New Nfs Exports
 
 .DESCRIPTION
 	Create a new NFS export.
@@ -4190,7 +4190,7 @@ Export-ModuleMember -Function New-isiNfsExportsV2
 function New-isiNfsReloadV2{
 <#
 .SYNOPSIS
-	Get Nfs Reload
+	New Nfs Reload
 
 .DESCRIPTION
 	Reload default NFS export configuration.

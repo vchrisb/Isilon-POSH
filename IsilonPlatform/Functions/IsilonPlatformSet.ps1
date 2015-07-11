@@ -29,7 +29,7 @@ $ErrorActionPreference = "Stop"
 function Set-isiAuditSettings{
 <#
 .SYNOPSIS
-	Get Audit Settings
+	Set Audit Settings
 
 .DESCRIPTION
 	Modify the auditing global settings.  All input fields are optional, but one or more must be supplied.
@@ -99,7 +99,7 @@ Export-ModuleMember -Function Set-isiAuditSettings
 function Set-isiAuditTopic{
 <#
 .SYNOPSIS
-	Get Audit Topic
+	Set Audit Topic
 
 .DESCRIPTION
 	Modify the audit topic.
@@ -164,7 +164,7 @@ Export-ModuleMember -Function Set-isiAuditTopic
 function Set-isiAuthGroup{
 <#
 .SYNOPSIS
-	Get Auth Group
+	Set Auth Group
 
 .DESCRIPTION
 	Modify the group.
@@ -241,7 +241,7 @@ Export-ModuleMember -Function Set-isiAuthGroup
 function Set-isiAuthMappingUsersRules{
 <#
 .SYNOPSIS
-	Get Auth Mapping Users Rules
+	Set Auth Mapping Users Rules
 
 .DESCRIPTION
 	Modify the user mapping rules.
@@ -279,7 +279,7 @@ Export-ModuleMember -Function Set-isiAuthMappingUsersRules
 function Set-isiAuthProviderAds{
 <#
 .SYNOPSIS
-	Get Auth Provider Ads
+	Set Auth Provider Ads
 
 .DESCRIPTION
 	Modify the ADS provider.
@@ -448,7 +448,7 @@ Export-ModuleMember -Function Set-isiAuthProviderAds
 function Set-isiAuthProviderFile{
 <#
 .SYNOPSIS
-	Get Auth Provider File
+	Set Auth Provider File
 
 .DESCRIPTION
 	Modify the file provider.
@@ -637,7 +637,7 @@ Export-ModuleMember -Function Set-isiAuthProviderFile
 function Set-isiAuthProviderKrb5{
 <#
 .SYNOPSIS
-	Get Auth Provider Krb5
+	Set Auth Provider Krb5
 
 .DESCRIPTION
 	Modify the KRB5 provider.
@@ -726,7 +726,7 @@ Export-ModuleMember -Function Set-isiAuthProviderKrb5
 function Set-isiAuthProviderLdap{
 <#
 .SYNOPSIS
-	Get Auth Provider Ldap
+	Set Auth Provider Ldap
 
 .DESCRIPTION
 	Modify the LDAP provider.
@@ -1035,7 +1035,7 @@ Export-ModuleMember -Function Set-isiAuthProviderLdap
 function Set-isiAuthProviderLocal{
 <#
 .SYNOPSIS
-	Get Auth Provider Local
+	Set Auth Provider Local
 
 .DESCRIPTION
 	Modify the local provider.
@@ -1152,7 +1152,7 @@ Export-ModuleMember -Function Set-isiAuthProviderLocal
 function Set-isiAuthProviderNis{
 <#
 .SYNOPSIS
-	Get Auth Provider Nis
+	Set Auth Provider Nis
 
 .DESCRIPTION
 	Modify the NIS provider.
@@ -1341,7 +1341,7 @@ Export-ModuleMember -Function Set-isiAuthProviderNis
 function Set-isiAuthRole{
 <#
 .SYNOPSIS
-	Get Auth Role
+	Set Auth Role
 
 .DESCRIPTION
 	Modify the role.
@@ -1414,7 +1414,7 @@ Export-ModuleMember -Function Set-isiAuthRole
 function Set-isiAuthSettingsGlobal{
 <#
 .SYNOPSIS
-	Get Auth Settings Global
+	Set Auth Settings Global
 
 .DESCRIPTION
 	Modify the global settings.
@@ -1572,7 +1572,7 @@ Export-ModuleMember -Function Set-isiAuthSettingsGlobal
 function Set-isiAuthSettingsKrb5Defaults{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Defaults
+	Set Auth Settings Krb5 Defaults
 
 .DESCRIPTION
 	Modify the krb5 settings.
@@ -1626,7 +1626,7 @@ Export-ModuleMember -Function Set-isiAuthSettingsKrb5Defaults
 function Set-isiAuthSettingsKrb5Domain{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Domain
+	Set Auth Settings Krb5 Domain
 
 .DESCRIPTION
 	Modify the krb5 domain settings.
@@ -1687,7 +1687,7 @@ Export-ModuleMember -Function Set-isiAuthSettingsKrb5Domain
 function Set-isiAuthSettingsKrb5Realm{
 <#
 .SYNOPSIS
-	Get Auth Settings Krb5 Realm
+	Set Auth Settings Krb5 Realm
 
 .DESCRIPTION
 	Modify the krb5 realm settings.
@@ -1760,7 +1760,7 @@ Export-ModuleMember -Function Set-isiAuthSettingsKrb5Realm
 function Set-isiAuthSettingsMapping{
 <#
 .SYNOPSIS
-	Get Auth Settings Mapping
+	Set Auth Settings Mapping
 
 .DESCRIPTION
 	Modify the mapping settings.
@@ -1842,7 +1842,7 @@ Export-ModuleMember -Function Set-isiAuthSettingsMapping
 function Set-isiAuthUser{
 <#
 .SYNOPSIS
-	Get Auth User
+	Set Auth User
 
 .DESCRIPTION
 	Modify the user.
@@ -1967,7 +1967,7 @@ Export-ModuleMember -Function Set-isiAuthUser
 function Set-isiAuthUserPassword{
 <#
 .SYNOPSIS
-	Get Auth User Change Password
+	Set Auth User Change Password
 
 .DESCRIPTION
 	Change the user's password.
@@ -2028,7 +2028,7 @@ Export-ModuleMember -Function Set-isiAuthUserPassword
 function Set-isiCloudAccount{
 <#
 .SYNOPSIS
-	Get Cloud Account
+	Set Cloud Account
 
 .DESCRIPTION
 	Modify cloud account.  All fields are optional, but one or more must be supplied.
@@ -2105,7 +2105,7 @@ Export-ModuleMember -Function Set-isiCloudAccount
 function Set-isiCloudJob{
 <#
 .SYNOPSIS
-	Get Cloud Job
+	Set Cloud Job
 
 .DESCRIPTION
 	Modify a running cloudpool job.
@@ -2162,7 +2162,7 @@ Export-ModuleMember -Function Set-isiCloudJob
 function Set-isiCloudPool{
 <#
 .SYNOPSIS
-	Get Cloud Pool
+	Set Cloud Pool
 
 .DESCRIPTION
 	Modify a cloud pool.  All fields are optional, but one or more must be supplied.
@@ -2235,7 +2235,7 @@ Export-ModuleMember -Function Set-isiCloudPool
 function Set-isiCloudSettings{
 <#
 .SYNOPSIS
-	Get Cloud Settings
+	Set Cloud Settings
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -2373,7 +2373,7 @@ Export-ModuleMember -Function Set-isiCloudSettings
 function Set-isiDedupeSettings{
 <#
 .SYNOPSIS
-	Get Dedupe Settings
+	Set Dedupe Settings
 
 .DESCRIPTION
 	Modify the dedupe settings. All input fields are optional, but one or more must be supplied.
@@ -2419,7 +2419,7 @@ Export-ModuleMember -Function Set-isiDedupeSettings
 function Set-isiFilepoolDefaultPolicy{
 <#
 .SYNOPSIS
-	Get Filepool Default Policy
+	Set Filepool Default Policy
 
 .DESCRIPTION
 	Set default file pool policy.
@@ -2461,7 +2461,7 @@ Export-ModuleMember -Function Set-isiFilepoolDefaultPolicy
 function Set-isiFilepoolPolicy{
 <#
 .SYNOPSIS
-	Get Filepool Policy
+	Set Filepool Policy
 
 .DESCRIPTION
 	Modify file pool policy. All input fields are optional, but one or more must be supplied.
@@ -2538,7 +2538,7 @@ Export-ModuleMember -Function Set-isiFilepoolPolicy
 function Set-isiFilesystemAccessTime{
 <#
 .SYNOPSIS
-	Get Filesystem Access Time
+	Set Filesystem Access Time
 
 .DESCRIPTION
 	Set settings for access time.
@@ -2584,7 +2584,7 @@ Export-ModuleMember -Function Set-isiFilesystemAccessTime
 function Set-isiFilesystemCharacterEncoding{
 <#
 .SYNOPSIS
-	Get Filesystem Character Encoding
+	Set Filesystem Character Encoding
 
 .DESCRIPTION
 	Set current character encoding.
@@ -2626,7 +2626,7 @@ Export-ModuleMember -Function Set-isiFilesystemCharacterEncoding
 function Set-isiFsaResult{
 <#
 .SYNOPSIS
-	Get Fsa Result
+	Set Fsa Result
 
 .DESCRIPTION
 	Modify result set. Only the pinned property can be changed at this time.
@@ -2683,7 +2683,7 @@ Export-ModuleMember -Function Set-isiFsaResult
 function Set-isiFsaSettings{
 <#
 .SYNOPSIS
-	Get Fsa Settings
+	Set Fsa Settings
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -2749,7 +2749,7 @@ Export-ModuleMember -Function Set-isiFsaSettings
 function Set-isiJob{
 <#
 .SYNOPSIS
-	Get Job
+	Set Job
 
 .DESCRIPTION
 	Modify a running or paused job instance.  All input fields are optional, but one or more must be supplied.
@@ -2814,7 +2814,7 @@ Export-ModuleMember -Function Set-isiJob
 function Set-isiJobPolicy{
 <#
 .SYNOPSIS
-	Get Job Policy
+	Set Job Policy
 
 .DESCRIPTION
 	Modify a job impact policy.
@@ -2875,7 +2875,7 @@ Export-ModuleMember -Function Set-isiJobPolicy
 function Set-isiJobType{
 <#
 .SYNOPSIS
-	Get Job Type
+	Set Job Type
 
 .DESCRIPTION
 	Modify the job type.  All input fields are optional, but one or more must be supplied.
@@ -2944,7 +2944,7 @@ Export-ModuleMember -Function Set-isiJobType
 function Set-isiHdfsProxyUser{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyuser
+	Set Hdfs Proxyuser
 
 .DESCRIPTION
 	Create a new HDFS proxyuser.
@@ -2997,7 +2997,7 @@ Export-ModuleMember -Function Set-isiHdfsProxyUser
 function Set-isiHdfsProxyUserMember{
 <#
 .SYNOPSIS
-	Get Hdfs Proxyuser Member
+	Set Hdfs Proxyuser Member
 
 .DESCRIPTION
 	Create a new HDFS proxyuser.
@@ -3065,7 +3065,7 @@ Export-ModuleMember -Function Set-isiHdfsProxyUserMember
 function Set-isiHdfsRack{
 <#
 .SYNOPSIS
-	Get Hdfs Rack
+	Set Hdfs Rack
 
 .DESCRIPTION
 	Modify the HDFS rack
@@ -3134,7 +3134,7 @@ Export-ModuleMember -Function Set-isiHdfsRack
 function Set-isiHdfsSettings{
 <#
 .SYNOPSIS
-	Get Hdfs Settings
+	Set Hdfs Settings
 
 .DESCRIPTION
 	Modify HDFS properties.
@@ -3188,7 +3188,7 @@ Export-ModuleMember -Function Set-isiHdfsSettings
 function Set-isiNfsExport{
 <#
 .SYNOPSIS
-	Get Nfs Export
+	Set Nfs Export
 
 .DESCRIPTION
 	Modify the export. All input fields are optional, but one or more must be supplied.
@@ -3400,7 +3400,7 @@ Export-ModuleMember -Function Set-isiNfsExport
 function Set-isiNfsSettingsExport{
 <#
 .SYNOPSIS
-	Get Nfs Settings Export
+	Set Nfs Settings Export
 
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
@@ -3570,7 +3570,7 @@ Export-ModuleMember -Function Set-isiNfsSettingsExport
 function Set-isiNfsSettingsGlobal{
 <#
 .SYNOPSIS
-	Get Nfs Settings Global
+	Set Nfs Settings Global
 
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
@@ -3640,7 +3640,7 @@ Export-ModuleMember -Function Set-isiNfsSettingsGlobal
 function Set-isiSmbSettingsGlobal{
 <#
 .SYNOPSIS
-	Get Smb Settings Global
+	Set Smb Settings Global
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -3762,7 +3762,7 @@ Export-ModuleMember -Function Set-isiSmbSettingsGlobal
 function Set-isiSmbSettingsShare{
 <#
 .SYNOPSIS
-	Get Smb Settings Share
+	Set Smb Settings Share
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -3904,7 +3904,7 @@ Export-ModuleMember -Function Set-isiSmbSettingsShare
 function Set-isiSmbShare{
 <#
 .SYNOPSIS
-	Get Smb Share
+	Set Smb Share
 
 .DESCRIPTION
 	Modify share. All input fields are optional, but one or must be supplied.
@@ -4101,7 +4101,7 @@ Export-ModuleMember -Function Set-isiSmbShare
 function Set-isiQuota{
 <#
 .SYNOPSIS
-	Get Quota
+	Set Quota
 
 .DESCRIPTION
 	Modify quota. All input fields are optional, but one or more must be supplied.
@@ -4174,7 +4174,7 @@ Export-ModuleMember -Function Set-isiQuota
 function Set-isiQuotaNotifications{
 <#
 .SYNOPSIS
-	Get Quota Notifications
+	Set Quota Notifications
 
 .DESCRIPTION
 	This method creates an empty set of rules so that the global rules are not used. The input must be an empty JSON object.
@@ -4227,7 +4227,7 @@ Export-ModuleMember -Function Set-isiQuotaNotifications
 function Set-isiQuotaNotification{
 <#
 .SYNOPSIS
-	Get Quota Notification
+	Set Quota Notification
 
 .DESCRIPTION
 	Modify notification rule. All input fields are optional, but one or must be supplied.
@@ -4319,7 +4319,7 @@ Export-ModuleMember -Function Set-isiQuotaNotification
 function Set-isiQuotaSettingsMapping{
 <#
 .SYNOPSIS
-	Get Quota Settings Mapping
+	Set Quota Settings Mapping
 
 .DESCRIPTION
 	Modify the mapping.
@@ -4376,7 +4376,7 @@ Export-ModuleMember -Function Set-isiQuotaSettingsMapping
 function Set-isiQuotaSettingsNotification{
 <#
 .SYNOPSIS
-	Get Quota Settings Notification
+	Set Quota Settings Notification
 
 .DESCRIPTION
 	Modify notification rule. All input fields are optional, but one or must be supplied.
@@ -4453,7 +4453,7 @@ Export-ModuleMember -Function Set-isiQuotaSettingsNotification
 function Set-isiQuotaSettingsReports{
 <#
 .SYNOPSIS
-	Get Quota Settings Reports
+	Set Quota Settings Reports
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -4511,7 +4511,7 @@ Export-ModuleMember -Function Set-isiQuotaSettingsReports
 function Set-isiRemoteSupport{
 <#
 .SYNOPSIS
-	Get Remote Support
+	Set Remote Support
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -4573,7 +4573,7 @@ Export-ModuleMember -Function Set-isiRemoteSupport
 function Set-isiSnapshotAlias{
 <#
 .SYNOPSIS
-	Get Snapshot Aliase
+	Set Snapshot Aliase
 
 .DESCRIPTION
 	Modify snapshot alias. All input fields are optional, but one or more must be supplied.
@@ -4638,7 +4638,7 @@ Export-ModuleMember -Function Set-isiSnapshotAlias
 function Set-isiSnapshotSchedule{
 <#
 .SYNOPSIS
-	Get Snapshot Schedule
+	Set Snapshot Schedule
 
 .DESCRIPTION
 	Modify the schedule. All input fields are optional, but one or more must be supplied.
@@ -4719,7 +4719,7 @@ Export-ModuleMember -Function Set-isiSnapshotSchedule
 function Set-isiSnapshotSettings{
 <#
 .SYNOPSIS
-	Get Snapshot Settings
+	Set Snapshot Settings
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -4813,7 +4813,7 @@ Export-ModuleMember -Function Set-isiSnapshotSettings
 function Set-isiSnapshot{
 <#
 .SYNOPSIS
-	Get Snapshot
+	Set Snapshot
 
 .DESCRIPTION
 	Modify snapshot. All input fields are optional, but one or more must be supplied.
@@ -4882,7 +4882,7 @@ Export-ModuleMember -Function Set-isiSnapshot
 function Set-isiSnapshotLock{
 <#
 .SYNOPSIS
-	Get Snapshot Lock
+	Set Snapshot Lock
 
 .DESCRIPTION
 	Modify lock. All input fields are optional, but one or more must be supplied.
@@ -4954,7 +4954,7 @@ Export-ModuleMember -Function Set-isiSnapshotLock
 function Set-isiStoragepoolNodepool{
 <#
 .SYNOPSIS
-	Get Storagepool Nodepool
+	Set Storagepool Nodepool
 
 .DESCRIPTION
 	Modify node pool. All input fields are optional, but one or more must be supplied.
@@ -5031,7 +5031,7 @@ Export-ModuleMember -Function Set-isiStoragepoolNodepool
 function Set-isiStoragepoolSettings{
 <#
 .SYNOPSIS
-	Get Storagepool Settings
+	Set Storagepool Settings
 
 .DESCRIPTION
 	Modify one or more settings.
@@ -5113,7 +5113,7 @@ Export-ModuleMember -Function Set-isiStoragepoolSettings
 function Set-isiStoragepoolTier{
 <#
 .SYNOPSIS
-	Get Storagepool Tier
+	Set Storagepool Tier
 
 .DESCRIPTION
 	Modify tier. All input fields are optional, but one or more must be supplied.
@@ -5178,7 +5178,7 @@ Export-ModuleMember -Function Set-isiStoragepoolTier
 function Set-isiSyncJob{
 <#
 .SYNOPSIS
-	Get Sync Job
+	Set Sync Job
 
 .DESCRIPTION
 	Perform an action (pause, cancel, etc...) on a single job.
@@ -5235,7 +5235,7 @@ Export-ModuleMember -Function Set-isiSyncJob
 function Set-isiSyncPolicy{
 <#
 .SYNOPSIS
-	Get Sync Policy
+	Set Sync Policy
 
 .DESCRIPTION
 	Modify a single SyncIQ policy.
@@ -5444,7 +5444,7 @@ Export-ModuleMember -Function Set-isiSyncPolicy
 function Set-isiSyncRule{
 <#
 .SYNOPSIS
-	Get Sync Rule
+	Set Sync Rule
 
 .DESCRIPTION
 	Modify a single SyncIQ performance rule.
@@ -5513,7 +5513,7 @@ Export-ModuleMember -Function Set-isiSyncRule
 function Set-isiSyncSettings{
 <#
 .SYNOPSIS
-	Get Sync Settings
+	Set Sync Settings
 
 .DESCRIPTION
 	Modify the global SyncIQ settings.  All input fields are optional, but one or more must be supplied.
@@ -5587,7 +5587,7 @@ Export-ModuleMember -Function Set-isiSyncSettings
 function Set-isiWormDomain{
 <#
 .SYNOPSIS
-	Get Worm Domain
+	Set Worm Domain
 
 .DESCRIPTION
 	Modify a single WORM domain.
@@ -5668,7 +5668,7 @@ Export-ModuleMember -Function Set-isiWormDomain
 function Set-isiWormSettings{
 <#
 .SYNOPSIS
-	Get Worm Settings
+	Set Worm Settings
 
 .DESCRIPTION
 	Modify the global WORM settings.  All input fields are optional, but one or more must be supplied.
@@ -5710,7 +5710,7 @@ Export-ModuleMember -Function Set-isiWormSettings
 function Set-isiZone{
 <#
 .SYNOPSIS
-	Get Zone
+	Set Zone
 
 .DESCRIPTION
 	Modify the access zone. All input fields are optional, but one or more must be supplied.
@@ -5863,7 +5863,7 @@ Export-ModuleMember -Function Set-isiZone
 function Set-isiNfsAliasV2{
 <#
 .SYNOPSIS
-	Get Nfs Aliase
+	Set Nfs Aliase
 
 .DESCRIPTION
 	Modify the alias. All input fields are optional, but one or more must be supplied.
@@ -5952,7 +5952,7 @@ Export-ModuleMember -Function Set-isiNfsAliasV2
 function Set-isiNfsExportV2{
 <#
 .SYNOPSIS
-	Get Nfs Export
+	Set Nfs Export
 
 .DESCRIPTION
 	Modify the export. All input fields are optional, but one or more must be supplied.
@@ -6212,7 +6212,7 @@ Export-ModuleMember -Function Set-isiNfsExportV2
 function Set-isiNfsSettingsExportV2{
 <#
 .SYNOPSIS
-	Get Nfs Settings Export
+	Set Nfs Settings Export
 
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
@@ -6434,7 +6434,7 @@ Export-ModuleMember -Function Set-isiNfsSettingsExportV2
 function Set-isiNfsSettingsGlobalV2{
 <#
 .SYNOPSIS
-	Get Nfs Settings Global
+	Set Nfs Settings Global
 
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
@@ -6496,7 +6496,7 @@ Export-ModuleMember -Function Set-isiNfsSettingsGlobalV2
 function Set-isiNfsSettingsZoneV2{
 <#
 .SYNOPSIS
-	Get Nfs Settings Zone
+	Set Nfs Settings Zone
 
 .DESCRIPTION
 	Modify the NFS server settings for this zone.
