@@ -49,6 +49,9 @@ Get-isiSmbShares -Cluster isilonc2
 # Get all SMB shares for all connected cluster
 Get-isiSession | Get-isiSmbShares
 
+# Backup all SMB shares to json file for default session
+Get-isiSmbShares | ConvertTo-Json | Out-File shares.json
+
 # create new SMB share
 New-isiSmbShare -name HR -path '/ifs/data/HR'
 
