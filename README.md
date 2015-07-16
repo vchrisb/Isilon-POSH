@@ -62,6 +62,17 @@ Get-isiSmbShares | where name -like '*test*' | Set-isiSmbShare -description 'Thi
 Get-Help -Detailed New-isiSmbShares
 ```
 
+#### Known Issues
+
+**receiving large amount of data fails**  
+You may get following error:  
+`Error during serialization or deserialization using the JSON JavaScriptSerializer. The length of the string exceeds the value set on the maxJsonLength property.`  
+This is due to `ConvertFrom-Json` only supports `JSON` smallen than 2 MB and it couldn't be raised for that Cmdlet
+
+**Cmdlet `get-isiSmbOpenfiles` does return 1000 objects at max**  
+The resource `/platform/1/protocols/smb/openfiles` does return at maximum `1000` openfiles by default  
+To overcome this limitation you can use the `resume`and corresponding `resumeToken`flag
+
 #### SSL Validation
 If you are using self signed certificates on your Isilon you need to disable SSL validation in powershell.
 This could be accomplished by code from Matthew Graeber. (http://poshcode.org/3606)
