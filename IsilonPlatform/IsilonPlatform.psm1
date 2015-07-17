@@ -432,10 +432,15 @@ function Send-isiAPI{
                 }       
             } 
             catch {
-                $result = $_.Exception.Response.GetResponseStream()
-                $reader = New-Object System.IO.StreamReader($result)
-                $responseBody = $reader.ReadToEnd() | ConvertFrom-Json
-                Write-Error $responseBody.errors.message
+                # if it is an Isilon error, extract the error response from http body
+                if($_.Exception.PSObject.Properties['Response']){
+                    $result = $_.Exception.Response.GetResponseStream()
+                    $reader = New-Object System.IO.StreamReader($result)
+                    $responseBody = $reader.ReadToEnd() | ConvertFrom-Json
+                    Write-Error $responseBody.errors.message
+                } else {
+                    Write-Error $_.Exception
+                }
 
             }  
         $isi_session.timeout = (Get-Date).AddSeconds($isi_session.timeout_inactive)

@@ -88,7 +88,7 @@ function Set-isiAuditSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -153,7 +153,7 @@ function Set-isiAuditTopic{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditTopic')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/topics/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -230,7 +230,7 @@ function Set-isiAuthGroup{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthGroup')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/groups/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -268,7 +268,7 @@ function Set-isiAuthMappingUsersRules{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthMappingUsersRules')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/mapping/users/rules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -437,7 +437,7 @@ function Set-isiAuthProviderAds{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderAds')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ads/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -626,7 +626,7 @@ function Set-isiAuthProviderFile{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderFile')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/file/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -715,7 +715,7 @@ function Set-isiAuthProviderKrb5{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderKrb5')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/krb5/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1024,7 +1024,7 @@ function Set-isiAuthProviderLdap{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLdap')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1141,7 +1141,7 @@ function Set-isiAuthProviderLocal{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLocal')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/local/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1330,7 +1330,7 @@ function Set-isiAuthProviderNis{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderNis')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/nis/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1403,7 +1403,7 @@ function Set-isiAuthRole{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthRole')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/roles/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1561,7 +1561,7 @@ function Set-isiAuthSettingsGlobal{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsGlobal')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/global" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1615,7 +1615,7 @@ function Set-isiAuthSettingsKrb5Defaults{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Defaults')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/defaults" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1676,7 +1676,7 @@ function Set-isiAuthSettingsKrb5Domain{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Domain')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1749,7 +1749,7 @@ function Set-isiAuthSettingsKrb5Realm{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Realm')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/realms/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1831,7 +1831,7 @@ function Set-isiAuthSettingsMapping{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsMapping')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -1956,7 +1956,7 @@ function Set-isiAuthUser{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUser')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/users/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2017,7 +2017,7 @@ function Set-isiAuthUserPassword{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUserPassword')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/users/$parameter1/change_password" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2094,7 +2094,7 @@ function Set-isiCloudAccount{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudAccount')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cloud/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2151,7 +2151,7 @@ function Set-isiCloudJob{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudJob')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cloud/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2224,7 +2224,7 @@ function Set-isiCloudPool{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudPool')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cloud/pools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2362,7 +2362,7 @@ function Set-isiCloudSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cloud/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2408,7 +2408,7 @@ function Set-isiDedupeSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiDedupeSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/dedupe/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2450,7 +2450,7 @@ function Set-isiFilepoolDefaultPolicy{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolDefaultPolicy')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/default-policy" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2527,7 +2527,7 @@ function Set-isiFilepoolPolicy{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolPolicy')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2573,7 +2573,7 @@ function Set-isiFilesystemAccessTime{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilesystemAccessTime')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/access-time" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2615,7 +2615,7 @@ function Set-isiFilesystemCharacterEncoding{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilesystemCharacterEncoding')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/character-encodings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2672,7 +2672,7 @@ function Set-isiFsaResult{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaResult')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/results/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2738,7 +2738,7 @@ function Set-isiFsaSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2803,7 +2803,7 @@ function Set-isiJob{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJob')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2864,7 +2864,7 @@ function Set-isiJobPolicy{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJobPolicy')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2933,7 +2933,7 @@ function Set-isiJobType{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJobType')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/types/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2986,7 +2986,7 @@ function Set-isiHdfsProxyUser{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsProxyUser')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3054,7 +3054,7 @@ function Set-isiHdfsProxyUserMember{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsProxyUserMember')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1/members/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3123,7 +3123,7 @@ function Set-isiHdfsRack{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsRack')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/racks/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3177,7 +3177,7 @@ function Set-isiHdfsSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3389,7 +3389,7 @@ function Set-isiNfsExport{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExport')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3559,7 +3559,7 @@ function Set-isiNfsSettingsExport{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExport')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/nfs/settings/export" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3629,7 +3629,7 @@ function Set-isiNfsSettingsGlobal{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsGlobal')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/nfs/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3751,7 +3751,7 @@ function Set-isiSmbSettingsGlobal{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsGlobal')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/smb/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3893,7 +3893,7 @@ function Set-isiSmbSettingsShare{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsShare')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4090,7 +4090,7 @@ function Set-isiSmbShare{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbShare')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/shares/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4163,7 +4163,7 @@ function Set-isiQuota{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuota')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4216,7 +4216,7 @@ function Set-isiQuotaNotifications{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaNotifications')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4308,7 +4308,7 @@ function Set-isiQuotaNotification{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaNotification')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4365,7 +4365,7 @@ function Set-isiQuotaSettingsMapping{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsMapping')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/mappings/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4442,7 +4442,7 @@ function Set-isiQuotaSettingsNotification{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsNotification')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/notifications/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4500,7 +4500,7 @@ function Set-isiQuotaSettingsReports{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsReports')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/reports" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4562,7 +4562,7 @@ function Set-isiRemoteSupport{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiRemoteSupport')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/remotesupport/connectemc" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4627,7 +4627,7 @@ function Set-isiSnapshotAlias{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotAlias')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/aliases/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4708,7 +4708,7 @@ function Set-isiSnapshotSchedule{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotSchedule')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/schedules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4802,7 +4802,7 @@ function Set-isiSnapshotSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4871,7 +4871,7 @@ function Set-isiSnapshot{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshot')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4943,7 +4943,7 @@ function Set-isiSnapshotLock{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotLock')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1/locks/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5020,7 +5020,7 @@ function Set-isiStoragepoolNodepool{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolNodepool')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/nodepools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5102,7 +5102,7 @@ function Set-isiStoragepoolSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5167,7 +5167,7 @@ function Set-isiStoragepoolTier{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolTier')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/tiers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5224,7 +5224,7 @@ function Set-isiSyncJob{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncJob')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5433,7 +5433,7 @@ function Set-isiSyncPolicy{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncPolicy')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5502,7 +5502,7 @@ function Set-isiSyncRule{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncRule')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/rules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5576,7 +5576,7 @@ function Set-isiSyncSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5657,7 +5657,7 @@ function Set-isiWormDomain{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiWormDomain')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5699,7 +5699,7 @@ function Set-isiWormSettings{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiWormSettings')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5852,7 +5852,7 @@ function Set-isiZone{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiZone')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/zones/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5941,7 +5941,7 @@ function Set-isiNfsAliasV2{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsAliasV2')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6201,7 +6201,7 @@ function Set-isiNfsExportV2{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExportV2')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6423,7 +6423,7 @@ function Set-isiNfsSettingsExportV2{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExportV2')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6485,7 +6485,7 @@ function Set-isiNfsSettingsGlobalV2{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsGlobalV2')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6551,7 +6551,7 @@ function Set-isiNfsSettingsZoneV2{
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsZoneV2')){
 			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/zone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}

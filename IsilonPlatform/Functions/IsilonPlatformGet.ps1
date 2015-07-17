@@ -48,7 +48,7 @@ function Get-isiAuditSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -78,7 +78,7 @@ function Get-isiAuditTopics{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics" -Cluster $Cluster
-			$ISIObject.topics
+			return $ISIObject.topics
 	}
 	End{
 	}
@@ -121,7 +121,7 @@ function Get-isiAuditTopic{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/audit/topics/$parameter1" -Cluster $Cluster
-			$ISIObject.topics
+			return $ISIObject.topics
 	}
 	End{
 	}
@@ -189,7 +189,7 @@ function Get-isiAuthAccess{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/access/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.access
+			return $ISIObject.access
 	}
 	End{
 	}
@@ -232,9 +232,6 @@ function Get-isiAuthGroups{
 .PARAMETER zone
 	Filter groups by zone.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -252,8 +249,7 @@ function Get-isiAuthGroups{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -290,9 +286,10 @@ function Get-isiAuthGroups{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.groups
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.groups,$ISIObject.resume
+			}else{
+				return $ISIObject.groups
 			}
 	}
 	End{
@@ -368,7 +365,7 @@ function Get-isiAuthGroup{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.groups
+			return $ISIObject.groups
 	}
 	End{
 	}
@@ -443,7 +440,7 @@ function Get-isiAuthGroupMembers{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups/$parameter1/members" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.members
+			return $ISIObject.members
 	}
 	End{
 	}
@@ -473,7 +470,7 @@ function Get-isiAuthId{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/id" -Cluster $Cluster
-			$ISIObject.ntoken
+			return $ISIObject.ntoken
 	}
 	End{
 	}
@@ -534,7 +531,7 @@ function Get-isiAuthMappingIdentities{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/identities/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.identities
+			return $ISIObject.identities
 	}
 	End{
 	}
@@ -603,7 +600,7 @@ function Get-isiAuthMappingUsersLookup{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/lookup" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.mapping
+			return $ISIObject.mapping
 	}
 	End{
 	}
@@ -644,7 +641,7 @@ function Get-isiAuthMappingUsersRules{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/mapping/users/rules" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.rules
+			return $ISIObject.rules
 	}
 	End{
 	}
@@ -719,7 +716,7 @@ function Get-isiAuthNetgroup{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/netgroups/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.netgroups
+			return $ISIObject.netgroups
 	}
 	End{
 	}
@@ -749,7 +746,7 @@ function Get-isiAuthPrivileges{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/privileges" -Cluster $Cluster
-			$ISIObject.privileges
+			return $ISIObject.privileges
 	}
 	End{
 	}
@@ -791,7 +788,7 @@ function Get-isiAuthProvidersAds{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.ads
+			return $ISIObject.ads
 	}
 	End{
 	}
@@ -846,7 +843,7 @@ function Get-isiAuthProviderAds{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.ads
+			return $ISIObject.ads
 	}
 	End{
 	}
@@ -889,7 +886,7 @@ function Get-isiAuthProviderAdsControllers{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$parameter1/controllers" -Cluster $Cluster
-			$ISIObject.controllers
+			return $ISIObject.controllers
 	}
 	End{
 	}
@@ -944,7 +941,7 @@ function Get-isiAuthProviderAdsDomains{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1/domains" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.domains
+			return $ISIObject.domains
 	}
 	End{
 	}
@@ -1000,7 +997,7 @@ function Get-isiAuthProviderAdsDomain{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/ads/$parameter1/domains/$parameter2" -Cluster $Cluster
-			$ISIObject.domains
+			return $ISIObject.domains
 	}
 	End{
 	}
@@ -1049,9 +1046,6 @@ function Get-isiAuthProviderAdsSearch{
 .PARAMETER user
 	The user name for the domain if untrusted.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -1071,8 +1065,7 @@ function Get-isiAuthProviderAdsSearch{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][bool]$search_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][bool]$search_users,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -1114,9 +1107,10 @@ function Get-isiAuthProviderAdsSearch{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1/search" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.objects
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.objects,$ISIObject.resume
+			}else{
+				return $ISIObject.objects
 			}
 	}
 	End{
@@ -1159,7 +1153,7 @@ function Get-isiAuthProvidersFile{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.file
+			return $ISIObject.file
 	}
 	End{
 	}
@@ -1214,7 +1208,7 @@ function Get-isiAuthProviderFile{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/file/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.file
+			return $ISIObject.file
 	}
 	End{
 	}
@@ -1256,7 +1250,7 @@ function Get-isiAuthProvidersKrb5{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.krb5
+			return $ISIObject.krb5
 	}
 	End{
 	}
@@ -1311,7 +1305,7 @@ function Get-isiAuthProviderKrb5{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/krb5/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.krb5
+			return $ISIObject.krb5
 	}
 	End{
 	}
@@ -1353,7 +1347,7 @@ function Get-isiAuthProvidersLdap{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.ldap
+			return $ISIObject.ldap
 	}
 	End{
 	}
@@ -1408,7 +1402,7 @@ function Get-isiAuthProviderLdap{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ldap/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.ldap
+			return $ISIObject.ldap
 	}
 	End{
 	}
@@ -1450,7 +1444,7 @@ function Get-isiAuthProvidersLocal{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.local
+			return $ISIObject.local
 	}
 	End{
 	}
@@ -1505,7 +1499,7 @@ function Get-isiAuthProviderLocal{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/local/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.local
+			return $ISIObject.local
 	}
 	End{
 	}
@@ -1547,7 +1541,7 @@ function Get-isiAuthProvidersNis{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.nis
+			return $ISIObject.nis
 	}
 	End{
 	}
@@ -1602,7 +1596,7 @@ function Get-isiAuthProviderNis{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/nis/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.nis
+			return $ISIObject.nis
 	}
 	End{
 	}
@@ -1632,7 +1626,7 @@ function Get-isiAuthProvidersSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/providers/summary" -Cluster $Cluster
-			$ISIObject.provider_instances
+			return $ISIObject.provider_instances
 	}
 	End{
 	}
@@ -1688,7 +1682,7 @@ function Get-isiAuthRoles{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.roles
+			return $ISIObject.roles
 	}
 	End{
 	}
@@ -1742,7 +1736,7 @@ function Get-isiAuthRole{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.roles
+			return $ISIObject.roles
 	}
 	End{
 	}
@@ -1796,7 +1790,7 @@ function Get-isiAuthRoleMembers{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles/$parameter1/members" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.members
+			return $ISIObject.members
 	}
 	End{
 	}
@@ -1839,7 +1833,7 @@ function Get-isiAuthRolePrivileges{
 				$parameter1 = $role_name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/roles/$parameter1/privileges" -Cluster $Cluster
-			$ISIObject.privileges
+			return $ISIObject.privileges
 	}
 	End{
 	}
@@ -1888,7 +1882,7 @@ function Get-isiAuthSettingsGlobal{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/global" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.global_settings
+			return $ISIObject.global_settings
 	}
 	End{
 	}
@@ -1918,7 +1912,7 @@ function Get-isiAuthSettingsKrb5Defaults{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/defaults" -Cluster $Cluster
-			$ISIObject.krb5_settings
+			return $ISIObject.krb5_settings
 	}
 	End{
 	}
@@ -1948,7 +1942,7 @@ function Get-isiAuthSettingsKrb5Domains{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains" -Cluster $Cluster
-			$ISIObject.domain
+			return $ISIObject.domain
 	}
 	End{
 	}
@@ -1991,7 +1985,7 @@ function Get-isiAuthSettingsKrb5Domain{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/domains/$parameter1" -Cluster $Cluster
-			$ISIObject.domain
+			return $ISIObject.domain
 	}
 	End{
 	}
@@ -2021,7 +2015,7 @@ function Get-isiAuthSettingsKrb5Realms{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms" -Cluster $Cluster
-			$ISIObject.realm
+			return $ISIObject.realm
 	}
 	End{
 	}
@@ -2064,7 +2058,7 @@ function Get-isiAuthSettingsKrb5Realm{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/settings/krb5/realms/$parameter1" -Cluster $Cluster
-			$ISIObject.realm
+			return $ISIObject.realm
 	}
 	End{
 	}
@@ -2113,7 +2107,7 @@ function Get-isiAuthSettingsMapping{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.mapping_settings
+			return $ISIObject.mapping_settings
 	}
 	End{
 	}
@@ -2143,7 +2137,7 @@ function Get-isiAuthShells{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/shells" -Cluster $Cluster
-			$ISIObject.shells
+			return $ISIObject.shells
 	}
 	End{
 	}
@@ -2186,9 +2180,6 @@ function Get-isiAuthUsers{
 .PARAMETER zone
 	Filter users by zone.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -2206,8 +2197,7 @@ function Get-isiAuthUsers{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][bool]$resolve_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2244,9 +2234,10 @@ function Get-isiAuthUsers{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.users
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.users,$ISIObject.resume
+			}else{
+				return $ISIObject.users
 			}
 	}
 	End{
@@ -2322,7 +2313,7 @@ function Get-isiAuthUser{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.users
+			return $ISIObject.users
 	}
 	End{
 	}
@@ -2390,7 +2381,7 @@ function Get-isiAuthUserMemberOfGroups{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users/$parameter1/member_of" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.member_of
+			return $ISIObject.member_of
 	}
 	End{
 	}
@@ -2420,7 +2411,7 @@ function Get-isiAuthWellknowns{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/auth/wellknowns" -Cluster $Cluster
-			$ISIObject.wellknowns
+			return $ISIObject.wellknowns
 	}
 	End{
 	}
@@ -2467,7 +2458,7 @@ function Get-isiAuthWellknown{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/wellknowns/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.wellknowns
+			return $ISIObject.wellknowns
 	}
 	End{
 	}
@@ -2523,7 +2514,7 @@ function Get-isiCloudAccounts{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/accounts" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.accounts
+			return $ISIObject.accounts
 	}
 	End{
 	}
@@ -2566,7 +2557,7 @@ function Get-isiCloudAccount{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/accounts/$parameter1" -Cluster $Cluster
-			$ISIObject.accounts
+			return $ISIObject.accounts
 	}
 	End{
 	}
@@ -2622,7 +2613,7 @@ function Get-isiCloudJobs{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.jobs
+			return $ISIObject.jobs
 	}
 	End{
 	}
@@ -2669,7 +2660,7 @@ function Get-isiCloudJobsFile{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs-files/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.files
+			return $ISIObject.files
 	}
 	End{
 	}
@@ -2716,7 +2707,7 @@ function Get-isiCloudJob{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/jobs/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.jobs
+			return $ISIObject.jobs
 	}
 	End{
 	}
@@ -2772,7 +2763,7 @@ function Get-isiCloudPools{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/cloud/pools" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.pools
+			return $ISIObject.pools
 	}
 	End{
 	}
@@ -2815,7 +2806,7 @@ function Get-isiCloudPool{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/pools/$parameter1" -Cluster $Cluster
-			$ISIObject.pools
+			return $ISIObject.pools
 	}
 	End{
 	}
@@ -2845,7 +2836,7 @@ function Get-isiCloudSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cloud/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -2875,7 +2866,7 @@ function Get-isiClusterConfig{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/config" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2905,7 +2896,7 @@ function Get-isiClusterExternalIPs{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/external-ips" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2935,7 +2926,7 @@ function Get-isiClusterIdentity{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/identity" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2965,7 +2956,7 @@ function Get-isiClusterFsStats{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/statfs" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -2995,7 +2986,7 @@ function Get-isiClusterTime{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/cluster/time" -Cluster $Cluster
-			$ISIObject.time
+			return $ISIObject.time
 	}
 	End{
 	}
@@ -3025,7 +3016,7 @@ function Get-isiDebugStats{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/debug/stats" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3055,7 +3046,7 @@ function Get-isiDedupeDedupeSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/dedupe-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -3098,9 +3089,6 @@ function Get-isiDedupeReports{
 	The field that will be used for sorting.
 	Valid inputs: id,start_time,end_time
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3117,8 +3105,7 @@ function Get-isiDedupeReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('id','start_time','end_time')][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3152,9 +3139,10 @@ function Get-isiDedupeReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.reports,$ISIObject.resume
+			}else{
+				return $ISIObject.reports
 			}
 	}
 	End{
@@ -3210,7 +3198,7 @@ function Get-isiDedupeReport{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
+			return $ISIObject.reports
 	}
 	End{
 	}
@@ -3240,7 +3228,7 @@ function Get-isiDedupeSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/dedupe/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -3274,7 +3262,7 @@ function Get-isiFilepoolDefaultPolicy{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/default-policy" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.'default-policy'
+			return $ISIObject.'default-policy'
 	}
 	End{
 	}
@@ -3308,7 +3296,7 @@ function Get-isiFilepoolPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/policies" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.policies
+			return $ISIObject.policies
 	}
 	End{
 	}
@@ -3351,7 +3339,7 @@ function Get-isiFilepoolPolicy{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filepool/policies/$parameter1" -Cluster $Cluster
-			$ISIObject.policies
+			return $ISIObject.policies
 	}
 	End{
 	}
@@ -3385,7 +3373,7 @@ function Get-isiFilepoolTemplates{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.templates
+			return $ISIObject.templates
 	}
 	End{
 	}
@@ -3432,7 +3420,7 @@ function Get-isiFilepoolTemplate{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/filepool/templates/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.templates
+			return $ISIObject.templates
 	}
 	End{
 	}
@@ -3462,7 +3450,7 @@ function Get-isiFilesystemAccessTime{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filesystem/settings/access-time" -Cluster $Cluster
-			$ISIObject.access_time
+			return $ISIObject.access_time
 	}
 	End{
 	}
@@ -3492,7 +3480,7 @@ function Get-isiFilesystemCharacterEncoding{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/filesystem/settings/character-encodings" -Cluster $Cluster
-			$ISIObject.'character-encodings'
+			return $ISIObject.'character-encodings'
 	}
 	End{
 	}
@@ -3522,7 +3510,7 @@ function Get-isiFsaPath{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/fsa/path" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -3552,7 +3540,7 @@ function Get-isiFsaResults{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results" -Cluster $Cluster
-			$ISIObject.results
+			return $ISIObject.results
 	}
 	End{
 	}
@@ -3595,7 +3583,7 @@ function Get-isiFsaResult{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/results/$parameter1" -Cluster $Cluster
-			$ISIObject.results
+			return $ISIObject.results
 	}
 	End{
 	}
@@ -3625,7 +3613,7 @@ function Get-isiFsaSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/fsa/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -3663,9 +3651,6 @@ function Get-isiJobEvents{
 	Restrict the query to events containing the given state.
 	Valid inputs: running,paused_user,paused_system,paused_policy,paused_priority,cancelled_user,cancelled_system,failed,succeeded,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3681,8 +3666,7 @@ function Get-isiJobEvents{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority','cancelled_user','cancelled_system','failed','succeeded','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3713,9 +3697,10 @@ function Get-isiJobEvents{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/events" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.events
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.events,$ISIObject.resume
+			}else{
+				return $ISIObject.events
 			}
 	}
 	End{
@@ -3746,7 +3731,7 @@ function Get-isiJobSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/job-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -3782,9 +3767,6 @@ function Get-isiJobs{
 	Limit the results to jobs in the specified state.
 	Valid inputs: running,paused_user,paused_system,paused_policy,paused_priority
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3799,8 +3781,7 @@ function Get-isiJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('running','paused_user','paused_system','paused_policy','paused_priority')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3828,9 +3809,10 @@ function Get-isiJobs{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/jobs" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.jobs
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.jobs,$ISIObject.resume
+			}else{
+				return $ISIObject.jobs
 			}
 	}
 	End{
@@ -3874,7 +3856,7 @@ function Get-isiJob{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/jobs/$parameter1" -Cluster $Cluster
-			$ISIObject.jobs
+			return $ISIObject.jobs
 	}
 	End{
 	}
@@ -3903,9 +3885,6 @@ function Get-isiJobPolicies{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3918,8 +3897,7 @@ function Get-isiJobPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3941,9 +3919,10 @@ function Get-isiJobPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/policies" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.policies
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.policies,$ISIObject.resume
+			}else{
+				return $ISIObject.policies
 			}
 	}
 	End{
@@ -3987,7 +3966,7 @@ function Get-isiJobPolicy{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/policies/$parameter1" -Cluster $Cluster
-			$ISIObject.types
+			return $ISIObject.types
 	}
 	End{
 	}
@@ -4021,9 +4000,6 @@ function Get-isiJobReports{
 .PARAMETER resume
 	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4038,8 +4014,7 @@ function Get-isiJobReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$job_type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4067,9 +4042,10 @@ function Get-isiJobReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/reports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.reports,$ISIObject.resume
+			}else{
+				return $ISIObject.reports
 			}
 	}
 	End{
@@ -4100,7 +4076,7 @@ function Get-isiJobStatistics{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/statistics" -Cluster $Cluster
-			$ISIObject.jobs
+			return $ISIObject.jobs
 	}
 	End{
 	}
@@ -4156,7 +4132,7 @@ function Get-isiJobTypes{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/types" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.types
+			return $ISIObject.types
 	}
 	End{
 	}
@@ -4199,7 +4175,7 @@ function Get-isiJobType{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/job/types/$parameter1" -Cluster $Cluster
-			$ISIObject.types
+			return $ISIObject.types
 	}
 	End{
 	}
@@ -4229,7 +4205,7 @@ function Get-isiEula{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET_JSON -Resource "/platform/1/license/eula" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -4259,7 +4235,7 @@ function Get-isiLicenses{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses" -Cluster $Cluster
-			$ISIObject.licenses
+			return $ISIObject.licenses
 	}
 	End{
 	}
@@ -4302,7 +4278,7 @@ function Get-isiLicense{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/license/licenses/$parameter1" -Cluster $Cluster
-			$ISIObject.licenses
+			return $ISIObject.licenses
 	}
 	End{
 	}
@@ -4336,7 +4312,7 @@ function Get-isiHdfsProxyUsers{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.proxyusers
+			return $ISIObject.proxyusers
 	}
 	End{
 	}
@@ -4383,7 +4359,7 @@ function Get-isiHdfsProxyUser{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/proxyusers/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.proxyusers
+			return $ISIObject.proxyusers
 	}
 	End{
 	}
@@ -4426,7 +4402,7 @@ function Get-isiHdfsProxyUserMembers{
 				$parameter1 = $proxyuser_name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1/members" -Cluster $Cluster
-			$ISIObject.members
+			return $ISIObject.members
 	}
 	End{
 	}
@@ -4460,7 +4436,7 @@ function Get-isiHdfsRacks{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/hdfs/racks" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.racks
+			return $ISIObject.racks
 	}
 	End{
 	}
@@ -4503,7 +4479,7 @@ function Get-isiHdfsRack{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/racks/$parameter1" -Cluster $Cluster
-			$ISIObject.racks
+			return $ISIObject.racks
 	}
 	End{
 	}
@@ -4533,7 +4509,7 @@ function Get-isiHdfsSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/hdfs/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -4563,7 +4539,7 @@ function Get-isiNfsCheck{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/check" -Cluster $Cluster
-			$ISIObject.checks
+			return $ISIObject.checks
 	}
 	End{
 	}
@@ -4599,9 +4575,6 @@ function Get-isiNfsExports{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4616,8 +4589,7 @@ function Get-isiNfsExports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4645,9 +4617,10 @@ function Get-isiNfsExports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.exports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.exports,$ISIObject.resume
+			}else{
+				return $ISIObject.exports
 			}
 	}
 	End{
@@ -4678,7 +4651,7 @@ function Get-isiNfsExportsSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/exports-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -4725,7 +4698,7 @@ function Get-isiNfsExport{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.exports
+			return $ISIObject.exports
 	}
 	End{
 	}
@@ -4754,9 +4727,6 @@ function Get-isiNfsNlmLocks{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4769,8 +4739,7 @@ function Get-isiNfsNlmLocks{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4792,9 +4761,10 @@ function Get-isiNfsNlmLocks{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.locks
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.locks,$ISIObject.resume
+			}else{
+				return $ISIObject.locks
 			}
 	}
 	End{
@@ -4824,9 +4794,6 @@ function Get-isiNfsNlmSessions{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4839,8 +4806,7 @@ function Get-isiNfsNlmSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4862,9 +4828,10 @@ function Get-isiNfsNlmSessions{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.sessions
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.sessions,$ISIObject.resume
+			}else{
+				return $ISIObject.sessions
 			}
 	}
 	End{
@@ -4894,9 +4861,6 @@ function Get-isiNfsNlmWaiters{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4909,8 +4873,7 @@ function Get-isiNfsNlmWaiters{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4932,9 +4895,10 @@ function Get-isiNfsNlmWaiters{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.waiters
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.waiters,$ISIObject.resume
+			}else{
+				return $ISIObject.waiters
 			}
 	}
 	End{
@@ -4977,7 +4941,7 @@ function Get-isiNfsSettingsExport{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/settings/export" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -5007,7 +4971,7 @@ function Get-isiNfsSettingsGlobal{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/nfs/settings/global" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -5037,9 +5001,6 @@ function Get-isiSmbOpenfiles{
 	Order results by this field. Default is id.
 	Valid inputs: id,file,user,locks
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5052,8 +5013,7 @@ function Get-isiSmbOpenfiles{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('id','file','user','locks')][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5075,9 +5035,10 @@ function Get-isiSmbOpenfiles{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/openfiles" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.openfiles
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.openfiles,$ISIObject.resume
+			}else{
+				return $ISIObject.openfiles
 			}
 	}
 	End{
@@ -5108,9 +5069,6 @@ function Get-isiSmbSessions{
 	Order results by this field.
 	Valid inputs: computer,user,client_type,openfiles,active_time,idle_time,guest_login,encryption
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5123,8 +5081,7 @@ function Get-isiSmbSessions{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('computer','user','client_type','openfiles','active_time','idle_time','guest_login','encryption')][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5146,9 +5103,10 @@ function Get-isiSmbSessions{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/sessions" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.sessions
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.sessions,$ISIObject.resume
+			}else{
+				return $ISIObject.sessions
 			}
 	}
 	End{
@@ -5191,7 +5149,7 @@ function Get-isiSmbSettingsGlobal{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/global" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -5240,7 +5198,7 @@ function Get-isiSmbSettingsShare{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -5280,9 +5238,6 @@ function Get-isiSmbShares{
 .PARAMETER zone
 	Zone which contains this share.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5298,8 +5253,7 @@ function Get-isiSmbShares{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('id','name','path','description')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5330,9 +5284,10 @@ function Get-isiSmbShares{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.shares
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.shares,$ISIObject.resume
+			}else{
+				return $ISIObject.shares
 			}
 	}
 	End{
@@ -5363,7 +5318,7 @@ function Get-isiSmbSharesSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/protocols/smb/shares-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -5432,7 +5387,7 @@ function Get-isiSmbShare{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.shares
+			return $ISIObject.shares
 	}
 	End{
 	}
@@ -5462,7 +5417,7 @@ function Get-isiQuotaLicense{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/license" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -5519,9 +5474,6 @@ function Get-isiQuotas{
 .PARAMETER zone
 	Optional named zone to use for user and group resolution.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5543,8 +5495,7 @@ function Get-isiQuotas{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][ValidateSet('directory','user','group','default-user','default-group')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5593,9 +5544,10 @@ function Get-isiQuotas{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.quotas
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.quotas,$ISIObject.resume
+			}else{
+				return $ISIObject.quotas
 			}
 	}
 	End{
@@ -5626,7 +5578,7 @@ function Get-isiQuotasSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -5687,7 +5639,7 @@ function Get-isiQuota{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.quotas
+			return $ISIObject.quotas
 	}
 	End{
 	}
@@ -5730,7 +5682,7 @@ function Get-isiQuotaNotifications{
 				$parameter1 = $quota_name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$parameter1/notifications" -Cluster $Cluster
-			$ISIObject.notifications
+			return $ISIObject.notifications
 	}
 	End{
 	}
@@ -5786,7 +5738,7 @@ function Get-isiQuotaNotification{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/quotas/$parameter1/notifications/$parameter2" -Cluster $Cluster
-			$ISIObject.notifications
+			return $ISIObject.notifications
 	}
 	End{
 	}
@@ -5824,9 +5776,6 @@ function Get-isiQuotaReports{
 	Only list reports matching this type.
 	Valid inputs: summary,detail,all
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5841,8 +5790,7 @@ function Get-isiQuotaReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('time','generated','type')][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('summary','detail','all')][string]$type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5870,9 +5818,10 @@ function Get-isiQuotaReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.reports,$ISIObject.resume
+			}else{
+				return $ISIObject.reports
 			}
 	}
 	End{
@@ -5927,7 +5876,7 @@ function Get-isiQuotaReport{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
+			return $ISIObject.reports
 	}
 	End{
 	}
@@ -5970,7 +5919,7 @@ function Get-isiQuotaReportAbout{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/reports/$parameter1/about" -Cluster $Cluster
-			$ISIObject.reports
+			return $ISIObject.reports
 	}
 	End{
 	}
@@ -6000,7 +5949,7 @@ function Get-isiQuotaSettingsMappings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings" -Cluster $Cluster
-			$ISIObject.mappings
+			return $ISIObject.mappings
 	}
 	End{
 	}
@@ -6043,7 +5992,7 @@ function Get-isiQuotaSettingsMapping{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/mappings/$parameter1" -Cluster $Cluster
-			$ISIObject.mappings
+			return $ISIObject.mappings
 	}
 	End{
 	}
@@ -6073,7 +6022,7 @@ function Get-isiQuotaSettingsNotifications{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications" -Cluster $Cluster
-			$ISIObject.notifications
+			return $ISIObject.notifications
 	}
 	End{
 	}
@@ -6116,7 +6065,7 @@ function Get-isiQuotaSettingsNotification{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/notifications/$parameter1" -Cluster $Cluster
-			$ISIObject.notifications
+			return $ISIObject.notifications
 	}
 	End{
 	}
@@ -6146,7 +6095,7 @@ function Get-isiQuotaSettingsReports{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/quota/settings/reports" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -6176,7 +6125,7 @@ function Get-isiRemoteSupport{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/remotesupport/connectemc" -Cluster $Cluster
-			$ISIObject.connectemc
+			return $ISIObject.connectemc
 	}
 	End{
 	}
@@ -6205,9 +6154,6 @@ function Get-isiSnapshotAliases{
 .PARAMETER sort
 	The field that will be used for sorting.  Choices are id, name, snapshot, and created.  Default is id.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6220,8 +6166,7 @@ function Get-isiSnapshotAliases{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6243,9 +6188,10 @@ function Get-isiSnapshotAliases{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/aliases" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.aliases
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.aliases,$ISIObject.resume
+			}else{
+				return $ISIObject.aliases
 			}
 	}
 	End{
@@ -6289,7 +6235,7 @@ function Get-isiSnapshotAlias{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/aliases/$parameter1" -Cluster $Cluster
-			$ISIObject.aliases
+			return $ISIObject.aliases
 	}
 	End{
 	}
@@ -6319,7 +6265,7 @@ function Get-isiSnapshotChangelists{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists" -Cluster $Cluster
-			$ISIObject.changelists
+			return $ISIObject.changelists
 	}
 	End{
 	}
@@ -6362,7 +6308,7 @@ function Get-isiSnapshotChangelist{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6405,7 +6351,7 @@ function Get-isiSnapshotChangelistLins{
 				$parameter1 = $changelist_name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1/lins" -Cluster $Cluster
-			$ISIObject.lins
+			return $ISIObject.lins
 	}
 	End{
 	}
@@ -6461,7 +6407,7 @@ function Get-isiSnapshotChangelistLin{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/changelists/$parameter1/lins/$parameter2" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6491,7 +6437,7 @@ function Get-isiSnapshotLicense{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/license" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6522,9 +6468,6 @@ function Get-isiSnapshotPending{
 .PARAMETER schedule
 	Limit output only to the named schedule.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6538,8 +6481,7 @@ function Get-isiSnapshotPending{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$schedule,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6564,9 +6506,10 @@ function Get-isiSnapshotPending{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/pending" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.pending
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.pending,$ISIObject.resume
+			}else{
+				return $ISIObject.pending
 			}
 	}
 	End{
@@ -6597,7 +6540,7 @@ function Get-isiSnapshotRepstates{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates" -Cluster $Cluster
-			$ISIObject.repstates
+			return $ISIObject.repstates
 	}
 	End{
 	}
@@ -6640,7 +6583,7 @@ function Get-isiSnapshotRepstate{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/repstates/$parameter1" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -6669,9 +6612,6 @@ function Get-isiSnapshotSchedules{
 .PARAMETER sort
 	The field that will be used for sorting.  Choices are id, name, path, pattern, schedule, duration, alias, next_run, and next_snapshot.  Default is id.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6684,8 +6624,7 @@ function Get-isiSnapshotSchedules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6707,9 +6646,10 @@ function Get-isiSnapshotSchedules{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/schedules" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.schedules
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.schedules,$ISIObject.resume
+			}else{
+				return $ISIObject.schedules
 			}
 	}
 	End{
@@ -6753,7 +6693,7 @@ function Get-isiSnapshotSchedule{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/schedules/$parameter1" -Cluster $Cluster
-			$ISIObject.schedules
+			return $ISIObject.schedules
 	}
 	End{
 	}
@@ -6783,7 +6723,7 @@ function Get-isiSnapshotSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -6823,9 +6763,6 @@ function Get-isiSnapshots{
 	Only list snapshots matching this type.
 	Valid inputs: all,alias,real
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6841,8 +6778,7 @@ function Get-isiSnapshots{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][ValidateSet('all','active','deleting')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('all','alias','real')][string]$type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6873,9 +6809,10 @@ function Get-isiSnapshots{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.snapshots
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.snapshots,$ISIObject.resume
+			}else{
+				return $ISIObject.snapshots
 			}
 	}
 	End{
@@ -6906,7 +6843,7 @@ function Get-isiSnapshotsSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -6949,7 +6886,7 @@ function Get-isiSnapshot{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$parameter1" -Cluster $Cluster
-			$ISIObject.snapshots
+			return $ISIObject.snapshots
 	}
 	End{
 	}
@@ -6984,9 +6921,6 @@ function Get-isiSnapshotLocks{
 .PARAMETER sort
 	The field that will be used for sorting.  Choices are id, expires, and comment.  Default is id.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -7001,8 +6935,7 @@ function Get-isiSnapshotLocks{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7029,9 +6962,10 @@ function Get-isiSnapshotLocks{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots/$parameter1/locks" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.locks
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.locks,$ISIObject.resume
+			}else{
+				return $ISIObject.locks
 			}
 	}
 	End{
@@ -7088,7 +7022,7 @@ function Get-isiSnapshotLock{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/snapshot/snapshots/$parameter1/locks/$parameter2" -Cluster $Cluster
-			$ISIObject.locks
+			return $ISIObject.locks
 	}
 	End{
 	}
@@ -7157,7 +7091,7 @@ function Get-isiStatisticsCurrent{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/current" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.stats
+			return $ISIObject.stats
 	}
 	End{
 	}
@@ -7254,7 +7188,7 @@ function Get-isiStatisticsHistory{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/history" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.stats
+			return $ISIObject.stats
 	}
 	End{
 	}
@@ -7282,9 +7216,6 @@ function Get-isiStatisticsKeys{
 .PARAMETER resume
 	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -7297,8 +7228,7 @@ function Get-isiStatisticsKeys{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$queryable,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -7320,9 +7250,10 @@ function Get-isiStatisticsKeys{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/keys" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.keys
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.keys,$ISIObject.resume
+			}else{
+				return $ISIObject.keys
 			}
 	}
 	End{
@@ -7366,7 +7297,7 @@ function Get-isiStatisticsKey{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/keys/$parameter1" -Cluster $Cluster
-			$ISIObject.keys
+			return $ISIObject.keys
 	}
 	End{
 	}
@@ -7396,7 +7327,7 @@ function Get-isiStatisticsProtocols{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/statistics/protocols" -Cluster $Cluster
-			$ISIObject.protocols
+			return $ISIObject.protocols
 	}
 	End{
 	}
@@ -7426,7 +7357,7 @@ function Get-isiStoragepoolCompatibilitiesClassActive{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/active" -Cluster $Cluster
-			$ISIObject.active
+			return $ISIObject.active
 	}
 	End{
 	}
@@ -7461,7 +7392,7 @@ function Get-isiStoragepoolCompatibilitiesClassActiveId{
 	Process{
 			$parameter1 = $id
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/active/<ID>" -Cluster $Cluster
-			$ISIObject.active
+			return $ISIObject.active
 	}
 	End{
 	}
@@ -7491,7 +7422,7 @@ function Get-isiStoragepoolCompatibilitiesClassAvailable{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/class/available" -Cluster $Cluster
-			$ISIObject.available
+			return $ISIObject.available
 	}
 	End{
 	}
@@ -7521,7 +7452,7 @@ function Get-isiStoragepoolCompatibilitiesSSDActive{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/active" -Cluster $Cluster
-			$ISIObject.active
+			return $ISIObject.active
 	}
 	End{
 	}
@@ -7556,7 +7487,7 @@ function Get-isiStoragepoolCompatibilitiesSSDActiveId{
 	Process{
 			$parameter1 = $id
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/active/<ID>" -Cluster $Cluster
-			$ISIObject.active
+			return $ISIObject.active
 	}
 	End{
 	}
@@ -7586,7 +7517,7 @@ function Get-isiStoragepoolCompatibilitiesSSDAvailable{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/compatibilities/ssd/available" -Cluster $Cluster
-			$ISIObject.available
+			return $ISIObject.available
 	}
 	End{
 	}
@@ -7616,7 +7547,7 @@ function Get-isiStoragepoolNodepools{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools" -Cluster $Cluster
-			$ISIObject.nodepools
+			return $ISIObject.nodepools
 	}
 	End{
 	}
@@ -7659,7 +7590,7 @@ function Get-isiStoragepoolNodepool{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/nodepools/$parameter1" -Cluster $Cluster
-			$ISIObject.nodepools
+			return $ISIObject.nodepools
 	}
 	End{
 	}
@@ -7689,7 +7620,7 @@ function Get-isiStoragepoolSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -7719,7 +7650,7 @@ function Get-isiStoragepoolStatus{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/status" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -7749,7 +7680,7 @@ function Get-isiStoragepools{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/storagepools" -Cluster $Cluster
-			$ISIObject.storagepools
+			return $ISIObject.storagepools
 	}
 	End{
 	}
@@ -7792,7 +7723,7 @@ function Get-isiStoragepoolSuggestedProtection{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/suggested_protection/$parameter1" -Cluster $Cluster
-			$ISIObject.suggested_protection
+			return $ISIObject.suggested_protection
 	}
 	End{
 	}
@@ -7822,7 +7753,7 @@ function Get-isiStoragepoolTiers{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers" -Cluster $Cluster
-			$ISIObject.tiers
+			return $ISIObject.tiers
 	}
 	End{
 	}
@@ -7865,7 +7796,7 @@ function Get-isiStoragepoolTier{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/tiers/$parameter1" -Cluster $Cluster
-			$ISIObject.tiers
+			return $ISIObject.tiers
 	}
 	End{
 	}
@@ -7895,7 +7826,7 @@ function Get-isiStoragepoolUnprovisioned{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/storagepool/unprovisioned" -Cluster $Cluster
-			$ISIObject.unprovisioned
+			return $ISIObject.unprovisioned
 	}
 	End{
 	}
@@ -7943,7 +7874,7 @@ function Get-isiSyncHistoryFile{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/file" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.statistics
+			return $ISIObject.statistics
 	}
 	End{
 	}
@@ -7991,7 +7922,7 @@ function Get-isiSyncHistoryNetwork{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/history/network" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.statistics
+			return $ISIObject.statistics
 	}
 	End{
 	}
@@ -8024,9 +7955,6 @@ function Get-isiSyncJobs{
 	The state of the job.
 	Valid inputs: scheduled,running,paused,finished,failed,canceled,needs_attention,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8040,8 +7968,7 @@ function Get-isiSyncJobs{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8066,9 +7993,10 @@ function Get-isiSyncJobs{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/jobs" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.jobs
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.jobs,$ISIObject.resume
+			}else{
+				return $ISIObject.jobs
 			}
 	}
 	End{
@@ -8112,7 +8040,7 @@ function Get-isiSyncJob{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/jobs/$parameter1" -Cluster $Cluster
-			$ISIObject.jobs
+			return $ISIObject.jobs
 	}
 	End{
 	}
@@ -8142,7 +8070,7 @@ function Get-isiSyncLicense{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/license" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -8178,9 +8106,6 @@ function Get-isiSyncPolicies{
 .PARAMETER summary
 	Show only summary properties
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8195,8 +8120,7 @@ function Get-isiSyncPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('user','default','effective')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][bool]$summary,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8224,9 +8148,10 @@ function Get-isiSyncPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/policies" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.policies
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.policies,$ISIObject.resume
+			}else{
+				return $ISIObject.policies
 			}
 	}
 	End{
@@ -8270,7 +8195,7 @@ function Get-isiSyncPolicy{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/policies/$parameter1" -Cluster $Cluster
-			$ISIObject.policies
+			return $ISIObject.policies
 	}
 	End{
 	}
@@ -8312,9 +8237,6 @@ function Get-isiSyncReports{
 	Filter the returned reports to include only those whose jobs are in this state.
 	Valid inputs: scheduled,running,paused,finished,failed,canceled,needs_attention,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8331,8 +8253,7 @@ function Get-isiSyncReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8366,9 +8287,10 @@ function Get-isiSyncReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.reports,$ISIObject.resume
+			}else{
+				return $ISIObject.reports
 			}
 	}
 	End{
@@ -8399,7 +8321,7 @@ function Get-isiSyncReportsRotate{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports-rotate" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -8442,7 +8364,7 @@ function Get-isiSyncReport{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$parameter1" -Cluster $Cluster
-			$ISIObject.reports
+			return $ISIObject.reports
 	}
 	End{
 	}
@@ -8484,9 +8406,6 @@ function Get-isiSyncReportSubreports{
 	Filter the returned reports to include only those whose jobs are in this state.
 	Valid inputs: scheduled,running,paused,finished,failed,canceled,needs_attention,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8503,8 +8422,7 @@ function Get-isiSyncReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8537,9 +8455,10 @@ function Get-isiSyncReportSubreports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.subreports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.subreports,$ISIObject.resume
+			}else{
+				return $ISIObject.subreports
 			}
 	}
 	End{
@@ -8596,7 +8515,7 @@ function Get-isiSyncReportSubreport{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/reports/$parameter1/subreports/$parameter2" -Cluster $Cluster
-			$ISIObject.subreports
+			return $ISIObject.subreports
 	}
 	End{
 	}
@@ -8629,9 +8548,6 @@ function Get-isiSyncRules{
 	Filter the returned rules to include only those with this rule type.
 	Valid inputs: bandwidth,file_count,cpu
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8645,8 +8561,7 @@ function Get-isiSyncRules{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('bandwidth','file_count','cpu')][string]$type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8671,9 +8586,10 @@ function Get-isiSyncRules{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/rules" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.rules
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.rules,$ISIObject.resume
+			}else{
+				return $ISIObject.rules
 			}
 	}
 	End{
@@ -8717,7 +8633,7 @@ function Get-isiSyncRule{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/rules/$parameter1" -Cluster $Cluster
-			$ISIObject.rules
+			return $ISIObject.rules
 	}
 	End{
 	}
@@ -8747,7 +8663,7 @@ function Get-isiSyncSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -8779,9 +8695,6 @@ function Get-isiSyncTargetPolicies{
 .PARAMETER target_path
 	Filter the returned policies to include only those with this target path.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8795,8 +8708,7 @@ function Get-isiSyncTargetPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$target_path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8821,9 +8733,10 @@ function Get-isiSyncTargetPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/policies" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.policies
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.policies,$ISIObject.resume
+			}else{
+				return $ISIObject.policies
 			}
 	}
 	End{
@@ -8867,7 +8780,7 @@ function Get-isiSyncTargetPolicy{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/policies/$parameter1" -Cluster $Cluster
-			$ISIObject.policies
+			return $ISIObject.policies
 	}
 	End{
 	}
@@ -8909,9 +8822,6 @@ function Get-isiSyncTargetReports{
 	Filter the returned reports to include only those whose jobs are in this state.
 	Valid inputs: scheduled,running,paused,finished,failed,canceled,needs_attention,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -8928,8 +8838,7 @@ function Get-isiSyncTargetReports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -8963,9 +8872,10 @@ function Get-isiSyncTargetReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.reports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.reports,$ISIObject.resume
+			}else{
+				return $ISIObject.reports
 			}
 	}
 	End{
@@ -9009,7 +8919,7 @@ function Get-isiSyncTargetReport{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$parameter1" -Cluster $Cluster
-			$ISIObject.reports
+			return $ISIObject.reports
 	}
 	End{
 	}
@@ -9051,9 +8961,6 @@ function Get-isiSyncTargetReportSubreports{
 	Filter the returned reports to include only those whose jobs are in this state.
 	Valid inputs: scheduled,running,paused,finished,failed,canceled,needs_attention,unknown
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -9070,8 +8977,7 @@ function Get-isiSyncTargetReportSubreports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][ValidateSet('scheduled','running','paused','finished','failed','canceled','needs_attention','unknown')][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9104,9 +9010,10 @@ function Get-isiSyncTargetReportSubreports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.subreports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.subreports,$ISIObject.resume
+			}else{
+				return $ISIObject.subreports
 			}
 	}
 	End{
@@ -9163,7 +9070,7 @@ function Get-isiSyncTargetReportSubreport{
 				$parameter2 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/sync/target/reports/$parameter1/subreports/$parameter2" -Cluster $Cluster
-			$ISIObject.subreports
+			return $ISIObject.subreports
 	}
 	End{
 	}
@@ -9192,9 +9099,6 @@ function Get-isiWormDomains{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -9207,8 +9111,7 @@ function Get-isiWormDomains{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9230,9 +9133,10 @@ function Get-isiWormDomains{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/worm/domains" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.domains
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.domains,$ISIObject.resume
+			}else{
+				return $ISIObject.domains
 			}
 	}
 	End{
@@ -9276,7 +9180,7 @@ function Get-isiWormDomain{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/domains/$parameter1" -Cluster $Cluster
-			$ISIObject.domains
+			return $ISIObject.domains
 	}
 	End{
 	}
@@ -9306,7 +9210,7 @@ function Get-isiWormSettings{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/worm/settings" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -9336,7 +9240,7 @@ function Get-isiZones{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones" -Cluster $Cluster
-			$ISIObject.zones
+			return $ISIObject.zones
 	}
 	End{
 	}
@@ -9366,7 +9270,7 @@ function Get-isiZonesSummary{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -9409,7 +9313,7 @@ function Get-isiZoneSummary{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones-summary/$parameter1" -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -9452,7 +9356,7 @@ function Get-isiZone{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/1/zones/$parameter1" -Cluster $Cluster
-			$ISIObject.zones
+			return $ISIObject.zones
 	}
 	End{
 	}
@@ -9482,7 +9386,7 @@ function Get-isiClusterExternalIPsV2{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/cluster/external-ips" -Cluster $Cluster
-			$ISIObject
+			return $ISIObject
 	}
 	End{
 	}
@@ -9541,9 +9445,6 @@ function Get-isiEventsV2{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -9566,8 +9467,7 @@ function Get-isiEventsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][array]$severity,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9619,9 +9519,10 @@ function Get-isiEventsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/event/events" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.events
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.events,$ISIObject.resume
+			}else{
+				return $ISIObject.events
 			}
 	}
 	End{
@@ -9665,7 +9566,7 @@ function Get-isiEventV2{
 				$parameter1 = $name
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/event/events/$parameter1" -Cluster $Cluster
-			$ISIObject.events
+			return $ISIObject.events
 	}
 	End{
 	}
@@ -9700,9 +9601,6 @@ function Get-isiNfsAliasesV2{
 .PARAMETER zone
 	Access zone
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -9717,8 +9615,7 @@ function Get-isiNfsAliasesV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9746,9 +9643,10 @@ function Get-isiNfsAliasesV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/aliases" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.aliases
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.aliases,$ISIObject.resume
+			}else{
+				return $ISIObject.aliases
 			}
 	}
 	End{
@@ -9811,7 +9709,7 @@ function Get-isiNfsAliasV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.aliases
+			return $ISIObject.aliases
 	}
 	End{
 	}
@@ -9852,7 +9750,7 @@ function Get-isiNfsCheckV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/check" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.checks
+			return $ISIObject.checks
 	}
 	End{
 	}
@@ -9891,9 +9789,6 @@ function Get-isiNfsExportsV2{
 .PARAMETER zone
 	Access zone
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -9909,8 +9804,7 @@ function Get-isiNfsExportsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][ValidateSet('effective','user')][string]$scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$sort,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -9941,9 +9835,10 @@ function Get-isiNfsExportsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.exports
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.exports,$ISIObject.resume
+			}else{
+				return $ISIObject.exports
 			}
 	}
 	End{
@@ -9985,7 +9880,7 @@ function Get-isiNfsExportsSummaryV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports-summary" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.summary
+			return $ISIObject.summary
 	}
 	End{
 	}
@@ -10039,7 +9934,7 @@ function Get-isiNfsExportV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.exports
+			return $ISIObject.exports
 	}
 	End{
 	}
@@ -10068,9 +9963,6 @@ function Get-isiNfsNlmLocksV2{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -10083,8 +9975,7 @@ function Get-isiNfsNlmLocksV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10106,9 +9997,10 @@ function Get-isiNfsNlmLocksV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.locks
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.locks,$ISIObject.resume
+			}else{
+				return $ISIObject.locks
 			}
 	}
 	End{
@@ -10138,9 +10030,6 @@ function Get-isiNfsNlmSessionsV2{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -10153,8 +10042,7 @@ function Get-isiNfsNlmSessionsV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10176,9 +10064,10 @@ function Get-isiNfsNlmSessionsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.sessions
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.sessions,$ISIObject.resume
+			}else{
+				return $ISIObject.sessions
 			}
 	}
 	End{
@@ -10208,9 +10097,6 @@ function Get-isiNfsNlmWaitersV2{
 .PARAMETER sort
 	The field that will be used for sorting.
 
-.PARAMETER resumeToken
-	If using the parameter 'limit' enter a variable name without the dollar sign ($) to save the resume token
-
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -10223,8 +10109,7 @@ function Get-isiNfsNlmWaitersV2{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$resumeToken,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -10246,9 +10131,10 @@ function Get-isiNfsNlmWaitersV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.waiters
-			if ($resumeToken -and $ISIObject.resume){
-				Set-Variable -Name $resumeToken -scope global -Value $($ISIObject.resume)
+			if ($ISIObject.PSObject.Properties['resume']){
+				return $ISIObject.waiters,$ISIObject.resume
+			}else{
+				return $ISIObject.waiters
 			}
 	}
 	End{
@@ -10298,7 +10184,7 @@ function Get-isiNfsSettingsExportV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -10328,7 +10214,7 @@ function Get-isiNfsSettingsGlobalV2{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/protocols/nfs/settings/global" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
@@ -10358,7 +10244,7 @@ function Get-isiNfsSettingsZoneV2{
 	}
 	Process{
 			$ISIObject = Send-isiAPI -Method GET -Resource "/platform/2/protocols/nfs/settings/zone" -Cluster $Cluster
-			$ISIObject.settings
+			return $ISIObject.settings
 	}
 	End{
 	}
