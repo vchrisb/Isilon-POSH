@@ -48,7 +48,7 @@ Function Get-isiSmbOpenfilesNode{
 
         $token = ''
         # Isilon API limits returned Openfiles to 1000 by default
-        $openfiles_node, $token = Get-isiSmbOpenfiles -Cluster $Cluster
+        $openfiles_node, $token = Get-isiSmbOpenfiles -Cluster $Cluster -limit 1000
         while($token){
             $openfiles_node_resume, $token = Get-isiSmbOpenfiles -resume $token -Cluster $Cluster
             $openfiles_node += $openfiles_node_resume

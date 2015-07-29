@@ -286,7 +286,7 @@ function Get-isiAuthGroups{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/groups" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.groups,$ISIObject.resume
 			}else{
 				return $ISIObject.groups
@@ -1107,7 +1107,7 @@ function Get-isiAuthProviderAdsSearch{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/providers/ads/$parameter1/search" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.objects,$ISIObject.resume
 			}else{
 				return $ISIObject.objects
@@ -2234,7 +2234,7 @@ function Get-isiAuthUsers{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/users" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.users,$ISIObject.resume
 			}else{
 				return $ISIObject.users
@@ -3139,7 +3139,7 @@ function Get-isiDedupeReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/dedupe/reports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.reports,$ISIObject.resume
 			}else{
 				return $ISIObject.reports
@@ -3697,7 +3697,7 @@ function Get-isiJobEvents{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/events" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.events,$ISIObject.resume
 			}else{
 				return $ISIObject.events
@@ -3809,7 +3809,7 @@ function Get-isiJobs{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/jobs" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.jobs,$ISIObject.resume
 			}else{
 				return $ISIObject.jobs
@@ -3919,7 +3919,7 @@ function Get-isiJobPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/policies" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.policies,$ISIObject.resume
 			}else{
 				return $ISIObject.policies
@@ -4042,7 +4042,7 @@ function Get-isiJobReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/job/reports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.reports,$ISIObject.resume
 			}else{
 				return $ISIObject.reports
@@ -4617,7 +4617,7 @@ function Get-isiNfsExports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.exports,$ISIObject.resume
 			}else{
 				return $ISIObject.exports
@@ -4761,7 +4761,7 @@ function Get-isiNfsNlmLocks{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.locks,$ISIObject.resume
 			}else{
 				return $ISIObject.locks
@@ -4828,7 +4828,7 @@ function Get-isiNfsNlmSessions{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.sessions,$ISIObject.resume
 			}else{
 				return $ISIObject.sessions
@@ -4895,7 +4895,7 @@ function Get-isiNfsNlmWaiters{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.waiters,$ISIObject.resume
 			}else{
 				return $ISIObject.waiters
@@ -5035,7 +5035,7 @@ function Get-isiSmbOpenfiles{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/openfiles" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.openfiles,$ISIObject.resume
 			}else{
 				return $ISIObject.openfiles
@@ -5103,7 +5103,7 @@ function Get-isiSmbSessions{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/sessions" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.sessions,$ISIObject.resume
 			}else{
 				return $ISIObject.sessions
@@ -5284,7 +5284,7 @@ function Get-isiSmbShares{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/protocols/smb/shares" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.shares,$ISIObject.resume
 			}else{
 				return $ISIObject.shares
@@ -5544,7 +5544,7 @@ function Get-isiQuotas{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.quotas,$ISIObject.resume
 			}else{
 				return $ISIObject.quotas
@@ -5818,7 +5818,7 @@ function Get-isiQuotaReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/reports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.reports,$ISIObject.resume
 			}else{
 				return $ISIObject.reports
@@ -6188,7 +6188,7 @@ function Get-isiSnapshotAliases{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/aliases" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.aliases,$ISIObject.resume
 			}else{
 				return $ISIObject.aliases
@@ -6506,7 +6506,7 @@ function Get-isiSnapshotPending{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/pending" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.pending,$ISIObject.resume
 			}else{
 				return $ISIObject.pending
@@ -6646,7 +6646,7 @@ function Get-isiSnapshotSchedules{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/schedules" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.schedules,$ISIObject.resume
 			}else{
 				return $ISIObject.schedules
@@ -6809,7 +6809,7 @@ function Get-isiSnapshots{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.snapshots,$ISIObject.resume
 			}else{
 				return $ISIObject.snapshots
@@ -6962,7 +6962,7 @@ function Get-isiSnapshotLocks{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/snapshot/snapshots/$parameter1/locks" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.locks,$ISIObject.resume
 			}else{
 				return $ISIObject.locks
@@ -7250,7 +7250,7 @@ function Get-isiStatisticsKeys{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/statistics/keys" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.keys,$ISIObject.resume
 			}else{
 				return $ISIObject.keys
@@ -7993,7 +7993,7 @@ function Get-isiSyncJobs{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/jobs" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.jobs,$ISIObject.resume
 			}else{
 				return $ISIObject.jobs
@@ -8148,7 +8148,7 @@ function Get-isiSyncPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/policies" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.policies,$ISIObject.resume
 			}else{
 				return $ISIObject.policies
@@ -8287,7 +8287,7 @@ function Get-isiSyncReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.reports,$ISIObject.resume
 			}else{
 				return $ISIObject.reports
@@ -8455,7 +8455,7 @@ function Get-isiSyncReportSubreports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.subreports,$ISIObject.resume
 			}else{
 				return $ISIObject.subreports
@@ -8586,7 +8586,7 @@ function Get-isiSyncRules{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/rules" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.rules,$ISIObject.resume
 			}else{
 				return $ISIObject.rules
@@ -8733,7 +8733,7 @@ function Get-isiSyncTargetPolicies{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/policies" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.policies,$ISIObject.resume
 			}else{
 				return $ISIObject.policies
@@ -8872,7 +8872,7 @@ function Get-isiSyncTargetReports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.reports,$ISIObject.resume
 			}else{
 				return $ISIObject.reports
@@ -9010,7 +9010,7 @@ function Get-isiSyncTargetReportSubreports{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/sync/target/reports/$parameter1/subreports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.subreports,$ISIObject.resume
 			}else{
 				return $ISIObject.subreports
@@ -9133,7 +9133,7 @@ function Get-isiWormDomains{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/worm/domains" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.domains,$ISIObject.resume
 			}else{
 				return $ISIObject.domains
@@ -9519,7 +9519,7 @@ function Get-isiEventsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/event/events" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.events,$ISIObject.resume
 			}else{
 				return $ISIObject.events
@@ -9643,7 +9643,7 @@ function Get-isiNfsAliasesV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/aliases" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.aliases,$ISIObject.resume
 			}else{
 				return $ISIObject.aliases
@@ -9835,7 +9835,7 @@ function Get-isiNfsExportsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/exports" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.exports,$ISIObject.resume
 			}else{
 				return $ISIObject.exports
@@ -9997,7 +9997,7 @@ function Get-isiNfsNlmLocksV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/locks" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.locks,$ISIObject.resume
 			}else{
 				return $ISIObject.locks
@@ -10064,7 +10064,7 @@ function Get-isiNfsNlmSessionsV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/sessions" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.sessions,$ISIObject.resume
 			}else{
 				return $ISIObject.sessions
@@ -10131,7 +10131,7 @@ function Get-isiNfsNlmWaitersV2{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/2/protocols/nfs/nlm/waiters" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume']){
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
 				return $ISIObject.waiters,$ISIObject.resume
 			}else{
 				return $ISIObject.waiters
