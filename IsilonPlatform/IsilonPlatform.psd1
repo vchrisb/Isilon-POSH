@@ -30,7 +30,7 @@
 RootModule = 'IsilonPlatform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.5'
+ModuleVersion = '8.0.0'
 
 # ID used to uniquely identify this module
 GUID = '0bcb10cf-1d7e-4bad-8239-f725dcf1808f'

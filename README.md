@@ -19,7 +19,7 @@ More Information clould be found in these blog posts:
 * Websession support, no need to store password
 * PowerShell pipeline support
 * concurrently connecting to multiple Isilon clusters
-* 100% of the Platform API for OneFS v7.2 covered
+* 99% of the Platform API for OneFS v8.0 covered
 * confirmation and error handling
 
 #### Installation
@@ -89,6 +89,12 @@ The code could also be found in this repository.
 Import-Module SSLValidation
 Disable-SSLValidation
 ```
+
+#### Things to do
+* Add support for API endpoints with three parameters (e.g. `/3/network/groupnets/<GROUPNET>/subnets/<SUBNET>/pools/<POOL>`)
+* testing
+* testing
+
 
 #### DISCLAIMER
 This Powershell Module is not supported. Use at your own risk!
