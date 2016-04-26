@@ -189,7 +189,7 @@ function New-isiAuthGroups{
 .PARAMETER provider
 	Optional provider type.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER gid
@@ -213,7 +213,7 @@ function New-isiAuthGroups{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$gid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$members,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$name,
@@ -230,9 +230,9 @@ function New-isiAuthGroups{
 				$queryArguments += 'provider=' + $provider
 				$BoundParameters.Remove('provider') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -263,7 +263,7 @@ function New-isiAuthGroupMembers{
 .PARAMETER provider
 	Filter group members by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter group members by zone.
 
 .PARAMETER id
@@ -287,7 +287,7 @@ function New-isiAuthGroupMembers{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$group_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$group_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('user','group','wellknown')][string]$type,
@@ -303,9 +303,9 @@ function New-isiAuthGroupMembers{
 				$queryArguments += 'provider=' + $provider
 				$BoundParameters.Remove('provider') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($psBoundParameters.ContainsKey('group_id')){
 				$parameter1 = $group_id
@@ -340,7 +340,7 @@ function New-isiAuthMappingIdentities{
 .PARAMETER replace
 	Replace existing mappings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER source
@@ -359,7 +359,7 @@ function New-isiAuthMappingIdentities{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$2way,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$replace,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$source,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$targets,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -378,9 +378,9 @@ function New-isiAuthMappingIdentities{
 				$queryArguments += 'replace=' + $replace
 				$BoundParameters.Remove('replace') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -412,7 +412,7 @@ function New-isiAuthMappingIdentities{
 	Desired mapping target to fetch/generate.
 	Valid inputs: uid,gid,sid
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER Cluster
@@ -426,7 +426,7 @@ function New-isiAuthMappingIdentities{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][ValidateSet('uid','gid','sid')][string]$type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -439,9 +439,9 @@ function New-isiAuthMappingIdentities{
 				$queryArguments += 'type=' + $type
 				$BoundParameters.Remove('type') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -650,8 +650,10 @@ function New-isiAuthProvidersAdsv1{
 }
 
 Export-ModuleMember -Function New-isiAuthProvidersAdsv1
+Set-Alias New-isiAuthProvidersAds -Value New-isiAuthProvidersAdsv1
+Export-ModuleMember -Alias New-isiAuthProvidersAds
 
-function New-isiAuthProvidersAds{
+function New-isiAuthProvidersAdsv3{
 <#
 .SYNOPSIS
 	New Auth Providers Ads
@@ -850,7 +852,7 @@ function New-isiAuthProvidersAds{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthProvidersAds
+Export-ModuleMember -Function New-isiAuthProvidersAdsv3
 
 function New-isiAuthProvidersFile{
 <#
@@ -1022,13 +1024,13 @@ function New-isiAuthProvidersKrb5v1{
 	Create a new KRB5 provider.
 
 .PARAMETER keytab_entries
-	
+	Specifies the key information for the Kerberos SPN. 
 
 .PARAMETER keytab_file
 	Specifies the path to a keytab file to import.
 
 .PARAMETER manual_keying
-	
+	If true, keys are managed manually. If false, keys are managed through kadmin. 
 
 .PARAMETER name
 	Specifies the Kerberos provider name.
@@ -1050,9 +1052,9 @@ function New-isiAuthProvidersKrb5v1{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][object]$keytab_entries,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$keytab_entries,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$keytab_file,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$manual_keying,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$manual_keying,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$password,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$realm,
@@ -1072,8 +1074,10 @@ function New-isiAuthProvidersKrb5v1{
 }
 
 Export-ModuleMember -Function New-isiAuthProvidersKrb5v1
+Set-Alias New-isiAuthProvidersKrb5 -Value New-isiAuthProvidersKrb5v1
+Export-ModuleMember -Alias New-isiAuthProvidersKrb5
 
-function New-isiAuthProvidersKrb5{
+function New-isiAuthProvidersKrb5v3{
 <#
 .SYNOPSIS
 	New Auth Providers Krb5
@@ -1085,13 +1089,13 @@ function New-isiAuthProvidersKrb5{
 	Groupnet identifier.
 
 .PARAMETER keytab_entries
-	
+	Specifies the key information for the Kerberos SPN. 
 
 .PARAMETER keytab_file
 	Specifies the path to a keytab file to import.
 
 .PARAMETER manual_keying
-	
+	If true, keys are managed manually. If false, keys are managed through kadmin. 
 
 .PARAMETER name
 	Specifies the Kerberos provider name.
@@ -1114,9 +1118,9 @@ function New-isiAuthProvidersKrb5{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$groupnet,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$keytab_entries,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$keytab_entries,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$keytab_file,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$manual_keying,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$manual_keying,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$password,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$realm,
@@ -1135,7 +1139,7 @@ function New-isiAuthProvidersKrb5{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthProvidersKrb5
+Export-ModuleMember -Function New-isiAuthProvidersKrb5v3
 
 function New-isiAuthProvidersLdapv1{
 <#
@@ -1422,8 +1426,10 @@ function New-isiAuthProvidersLdapv1{
 }
 
 Export-ModuleMember -Function New-isiAuthProvidersLdapv1
+Set-Alias New-isiAuthProvidersLdap -Value New-isiAuthProvidersLdapv1
+Export-ModuleMember -Alias New-isiAuthProvidersLdap
 
-function New-isiAuthProvidersLdap{
+function New-isiAuthProvidersLdapv3{
 <#
 .SYNOPSIS
 	New Auth Providers Ldap
@@ -1711,7 +1717,7 @@ function New-isiAuthProvidersLdap{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthProvidersLdap
+Export-ModuleMember -Function New-isiAuthProvidersLdapv3
 
 function New-isiAuthProvidersNisv1{
 <#
@@ -1873,8 +1879,10 @@ function New-isiAuthProvidersNisv1{
 }
 
 Export-ModuleMember -Function New-isiAuthProvidersNisv1
+Set-Alias New-isiAuthProvidersNis -Value New-isiAuthProvidersNisv1
+Export-ModuleMember -Alias New-isiAuthProvidersNis
 
-function New-isiAuthProvidersNis{
+function New-isiAuthProvidersNisv3{
 <#
 .SYNOPSIS
 	New Auth Providers Nis
@@ -2037,7 +2045,7 @@ function New-isiAuthProvidersNis{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthProvidersNis
+Export-ModuleMember -Function New-isiAuthProvidersNisv3
 
 function New-isiAuthRefresh{
 <#
@@ -2341,7 +2349,7 @@ function New-isiAuthUsers{
 .PARAMETER provider
 	Optional provider type.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER email
@@ -2395,7 +2403,7 @@ function New-isiAuthUsers{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$email,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$expiry,
@@ -2422,9 +2430,9 @@ function New-isiAuthUsers{
 				$queryArguments += 'provider=' + $provider
 				$BoundParameters.Remove('provider') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2438,7 +2446,7 @@ function New-isiAuthUsers{
 
 Export-ModuleMember -Function New-isiAuthUsers
 
-function New-isiAuthUserMemberOfGroups{
+function New-isiAuthUserMemberOfGroupsv3{
 <#
 .SYNOPSIS
 	New Auth User Member Of Groups
@@ -2455,7 +2463,7 @@ function New-isiAuthUserMemberOfGroups{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER id
@@ -2479,7 +2487,7 @@ function New-isiAuthUserMemberOfGroups{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$user_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$user_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('user','group','wellknown')][string]$type,
@@ -2495,9 +2503,9 @@ function New-isiAuthUserMemberOfGroups{
 				$queryArguments += 'provider=' + $provider
 				$BoundParameters.Remove('provider') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
@@ -2516,9 +2524,9 @@ function New-isiAuthUserMemberOfGroups{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthUserMemberOfGroups
+Export-ModuleMember -Function New-isiAuthUserMemberOfGroupsv3
 
-function New-isiAuthUserMemberOfGroups{
+function New-isiAuthUserMemberOfGroupsv1{
 <#
 .SYNOPSIS
 	New Auth User Member Of Groups
@@ -2535,7 +2543,7 @@ function New-isiAuthUserMemberOfGroups{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER id
@@ -2559,7 +2567,7 @@ function New-isiAuthUserMemberOfGroups{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$user_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$user_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('user','group','wellknown')][string]$type,
@@ -2575,9 +2583,9 @@ function New-isiAuthUserMemberOfGroups{
 				$queryArguments += 'provider=' + $provider
 				$BoundParameters.Remove('provider') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
@@ -2596,7 +2604,7 @@ function New-isiAuthUserMemberOfGroups{
 	}
 }
 
-Export-ModuleMember -Function New-isiAuthUserMemberOfGroups
+Export-ModuleMember -Function New-isiAuthUserMemberOfGroupsv1
 
 function New-isiCloudAccess{
 <#
@@ -2634,7 +2642,7 @@ function New-isiCloudAccess{
 
 Export-ModuleMember -Function New-isiCloudAccess
 
-function New-isiCloudAccounts{
+function New-isiCloudAccountsv3{
 <#
 .SYNOPSIS
 	New Cloud Accounts
@@ -2691,7 +2699,7 @@ function New-isiCloudAccounts{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$key,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$skip_ssl_validation,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][object]$storage_region,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$storage_region,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$telemetry_bucket,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('isilon','ecs','ecs2','azure','s3','ran')][string]$type,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$uri,
@@ -2709,9 +2717,9 @@ function New-isiCloudAccounts{
 	}
 }
 
-Export-ModuleMember -Function New-isiCloudAccounts
+Export-ModuleMember -Function New-isiCloudAccountsv3
 
-function New-isiCloudJobs{
+function New-isiCloudJobsv3{
 <#
 .SYNOPSIS
 	New Cloud Jobs
@@ -2770,9 +2778,9 @@ function New-isiCloudJobs{
 	}
 }
 
-Export-ModuleMember -Function New-isiCloudJobs
+Export-ModuleMember -Function New-isiCloudJobsv3
 
-function New-isiCloudPools{
+function New-isiCloudPoolsv3{
 <#
 .SYNOPSIS
 	New Cloud Pools
@@ -2827,7 +2835,7 @@ function New-isiCloudPools{
 	}
 }
 
-Export-ModuleMember -Function New-isiCloudPools
+Export-ModuleMember -Function New-isiCloudPoolsv3
 
 function New-isiCloudSettingsEncryptionKey{
 <#
@@ -3619,7 +3627,7 @@ function New-isiEventChannels{
 
 Export-ModuleMember -Function New-isiEventChannels
 
-function New-isiEventEvents{
+function New-isiEventEventsv3{
 <#
 .SYNOPSIS
 	New Event Events
@@ -3653,7 +3661,7 @@ function New-isiEventEvents{
 	}
 }
 
-Export-ModuleMember -Function New-isiEventEvents
+Export-ModuleMember -Function New-isiEventEventsv3
 
 function New-isiFilepoolPolicies{
 <#
@@ -3803,7 +3811,7 @@ function New-isiHardeningRevert{
 .DESCRIPTION
 	Revert hardening on the cluster.
 
-.PARAMETER force
+.PARAMETER enforce
 	If specified, revert operation continues even in case of a failure. Default is false in which case revert stops at the first failure.
 
 .PARAMETER Cluster
@@ -3814,7 +3822,7 @@ function New-isiHardeningRevert{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3823,9 +3831,9 @@ function New-isiHardeningRevert{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($force){
-				$queryArguments += 'force=' + $force
-				$BoundParameters.Remove('force') | out-null
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3957,8 +3965,10 @@ function New-isiJobsv1{
 }
 
 Export-ModuleMember -Function New-isiJobsv1
+Set-Alias New-isiJobs -Value New-isiJobsv1
+Export-ModuleMember -Alias New-isiJobs
 
-function New-isiJobs{
+function New-isiJobsv3{
 <#
 .SYNOPSIS
 	New Job Jobs
@@ -4032,7 +4042,7 @@ function New-isiJobs{
 	}
 }
 
-Export-ModuleMember -Function New-isiJobs
+Export-ModuleMember -Function New-isiJobsv3
 
 function New-isiJobPolicies{
 <#
@@ -4306,7 +4316,7 @@ function New-isiNetworkGroupnetSubnetPools{
 .PARAMETER id
 	 id
 
-.PARAMETER force
+.PARAMETER enforce
 	force creating this pool even if it causes an MTU conflict.
 
 .PARAMETER access_zone
@@ -4373,7 +4383,7 @@ function New-isiNetworkGroupnetSubnetPools{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$groupnet_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$groupnet_name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('roundrobin','failover','lacp','fec')][string]$aggregation_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('dynamic','static')][string]$alloc_method,
@@ -4398,9 +4408,9 @@ function New-isiNetworkGroupnetSubnetPools{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($force){
-				$queryArguments += 'force=' + $force
-				$BoundParameters.Remove('force') | out-null
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
 			}
 			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
@@ -4422,159 +4432,6 @@ function New-isiNetworkGroupnetSubnetPools{
 }
 
 Export-ModuleMember -Function New-isiNetworkGroupnetSubnetPools
-
-function New-{
-<#
-.SYNOPSIS
-	New 
-
-.DESCRIPTION
-	Rebalance IP addresses in specified pool.
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding()]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			$ISIObject = Send-isiAPI -Method POST -Resource "" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
-			return $ISIObject
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function New-
-
-function New-{
-<#
-.SYNOPSIS
-	New 
-
-.DESCRIPTION
-	Create a new rule.
-
-.PARAMETER description
-	Description for the provisioning rule.
-
-.PARAMETER iface
-	Interface name the provisioning rule applies to.
-
-.PARAMETER name
-	Name of the provisioning rule.
-
-.PARAMETER node_type
-	Node type the provisioning rule applies to.
-	Valid inputs: any,storage,accelerator,storage-i,accelerator-i,backup-accelerator
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding()]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$description,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$iface,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('any','storage','accelerator','storage-i','accelerator-i','backup-accelerator')][string]$node_type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			$ISIObject = Send-isiAPI -Method POST -Resource "" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
-			return $ISIObject.id
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function New-
-
-function New-{
-<#
-.SYNOPSIS
-	New 
-
-.DESCRIPTION
-	Resume suspended nodes.
-
-.PARAMETER lnn
-	Logical node numbers of the nodes suspended/resumed.
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding()]
-		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$lnn,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			$ISIObject = Send-isiAPI -Method POST -Resource "" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
-			return $ISIObject
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function New-
-
-function New-{
-<#
-.SYNOPSIS
-	New 
-
-.DESCRIPTION
-	Suspend nodes.
-
-.PARAMETER lnn
-	Logical node numbers of the nodes suspended/resumed.
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding()]
-		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$lnn,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			$ISIObject = Send-isiAPI -Method POST -Resource "" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
-			return $ISIObject
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function New-
 
 function New-isiNetworkScRebalanceAll{
 <#
@@ -4854,7 +4711,7 @@ function New-isiNfsAliases{
 .DESCRIPTION
 	Create a new NFS alias.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER health
@@ -4866,6 +4723,9 @@ function New-isiNfsAliases{
 .PARAMETER path
 	Specifies the path to which the alias points.
 
+.PARAMETER zone
+	Specifies the zone in which the alias is valid.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -4874,11 +4734,12 @@ function New-isiNfsAliases{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$health,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -4886,9 +4747,9 @@ function New-isiNfsAliases{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -4910,7 +4771,7 @@ function New-isiNfsExportsv1{
 .DESCRIPTION
 	Create a new NFS export.
 
-.PARAMETER force
+.PARAMETER enforce
 	If true, the export will be created even if it conflicts with another export.
 
 .PARAMETER all_dirs
@@ -5038,7 +4899,7 @@ function New-isiNfsExportsv1{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
@@ -5086,9 +4947,9 @@ function New-isiNfsExportsv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($force){
-				$queryArguments += 'force=' + $force
-				$BoundParameters.Remove('force') | out-null
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5102,7 +4963,7 @@ function New-isiNfsExportsv1{
 
 Export-ModuleMember -Function New-isiNfsExportsv1
 
-function New-isiNfsExports{
+function New-isiNfsExportsv2{
 <#
 .SYNOPSIS
 	New Nfs Exports
@@ -5110,10 +4971,10 @@ function New-isiNfsExports{
 .DESCRIPTION
 	Create a new NFS export.
 
-.PARAMETER force
+.PARAMETER enforce
 	If true, the export will be created even if it conflicts with another export.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER all_dirs
@@ -5257,6 +5118,9 @@ function New-isiNfsExports{
 .PARAMETER write_unstable_reply
 	Specifies the stability disposition returned when an NFSv3+ unstable write is processed.
 
+.PARAMETER zone
+	Specifies the zone in which the export is valid.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5265,8 +5129,8 @@ function New-isiNfsExports{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$enforce,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$all_dirs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$block_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$can_set_time,
@@ -5314,7 +5178,8 @@ function New-isiNfsExports{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][int]$write_transfer_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][object]$write_unstable_action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][object]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5322,13 +5187,13 @@ function New-isiNfsExports{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($force){
-				$queryArguments += 'force=' + $force
-				$BoundParameters.Remove('force') | out-null
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5340,7 +5205,9 @@ function New-isiNfsExports{
 	}
 }
 
-Export-ModuleMember -Function New-isiNfsExports
+Export-ModuleMember -Function New-isiNfsExportsv2
+Set-Alias New-isiNfsExports -Value New-isiNfsExportsv2
+Export-ModuleMember -Alias New-isiNfsExports
 
 function New-isiNfsNetgroupCheck{
 <#
@@ -5441,7 +5308,7 @@ function New-isiNfsNlmSessionsCheck{
 .PARAMETER ip
 	An IP address for which NSM has client records
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Represents an extant auth zone
 
 .PARAMETER Cluster
@@ -5453,7 +5320,7 @@ function New-isiNfsNlmSessionsCheck{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$ip,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -5466,9 +5333,9 @@ function New-isiNfsNlmSessionsCheck{
 				$queryArguments += 'ip=' + $ip
 				$BoundParameters.Remove('ip') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5545,8 +5412,10 @@ function New-isiNfsReloadv2{
 }
 
 Export-ModuleMember -Function New-isiNfsReloadv2
+Set-Alias New-isiNfsReload -Value New-isiNfsReloadv2
+Export-ModuleMember -Alias New-isiNfsReload
 
-function New-isiNfsReload{
+function New-isiNfsReloadv3{
 <#
 .SYNOPSIS
 	New Protocols Nfs Reload
@@ -5554,7 +5423,7 @@ function New-isiNfsReload{
 .DESCRIPTION
 	Reload default NFS export configuration.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER Cluster
@@ -5565,7 +5434,7 @@ function New-isiNfsReload{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -5574,9 +5443,9 @@ function New-isiNfsReload{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5588,7 +5457,7 @@ function New-isiNfsReload{
 	}
 }
 
-Export-ModuleMember -Function New-isiNfsReload
+Export-ModuleMember -Function New-isiNfsReloadv3
 
 function New-isiNtpServers{
 <#
@@ -5612,7 +5481,7 @@ function New-isiNtpServers{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][object]$key,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$key,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -5683,7 +5552,7 @@ function New-isiSmbSharesv1{
 .DESCRIPTION
 	Create a new share.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER access_based_enumeration
@@ -5783,6 +5652,9 @@ function New-isiSmbSharesv1{
 .PARAMETER strict_locking
 	Specifies whether byte range locks contend against SMB I/O.
 
+.PARAMETER zone
+	Name of the access zone to which to move this SMB share
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5791,7 +5663,7 @@ function New-isiSmbSharesv1{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
@@ -5823,7 +5695,8 @@ function New-isiSmbSharesv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$run_as_root,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_flush,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5831,9 +5704,9 @@ function New-isiSmbSharesv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5846,8 +5719,10 @@ function New-isiSmbSharesv1{
 }
 
 Export-ModuleMember -Function New-isiSmbSharesv1
+Set-Alias New-isiSmbShares -Value New-isiSmbSharesv1
+Export-ModuleMember -Alias New-isiSmbShares
 
-function New-isiSmbShares{
+function New-isiSmbSharesv3{
 <#
 .SYNOPSIS
 	New Protocols Smb Shares
@@ -5855,7 +5730,7 @@ function New-isiSmbShares{
 .DESCRIPTION
 	Create a new share.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER Cluster
@@ -5866,7 +5741,7 @@ function New-isiSmbShares{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -5875,9 +5750,9 @@ function New-isiSmbShares{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5889,7 +5764,7 @@ function New-isiSmbShares{
 	}
 }
 
-Export-ModuleMember -Function New-isiSmbShares
+Export-ModuleMember -Function New-isiSmbSharesv3
 
 function New-isiSwiftAccounts{
 <#
@@ -5955,7 +5830,7 @@ function New-isiQuotas{
 .DESCRIPTION
 	Create a new quota.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional named zone to use for user and group resolution.
 
 .PARAMETER container
@@ -5974,7 +5849,7 @@ function New-isiQuotas{
 	The /ifs path governed.
 
 .PARAMETER persona
-	
+	Specifies properties for a persona, which consists of either a 'type' and a 'name' or an 'ID'. 
 
 .PARAMETER thresholds
 	
@@ -5994,7 +5869,7 @@ function New-isiQuotas{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$container,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enforced,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$force,
@@ -6012,9 +5887,9 @@ function New-isiQuotas{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters.Remove('zone') | out-null
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -6079,12 +5954,12 @@ function New-isiQuotaNotifications{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$quota_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$action_alert,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$action_email_address,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$action_email_address,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$action_email_owner,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('exceeded','denied','violated','expired')][string]$condition,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$email_template,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][object]$holdoff,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$email_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$holdoff,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$schedule,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('hard','soft','advisory')][string]$threshold,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6229,12 +6104,12 @@ function New-isiQuotaSettingsNotifications{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$action_alert,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$action_email_address,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$action_email_address,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$action_email_owner,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('exceeded','denied','violated','expired')][string]$condition,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$email_template,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$holdoff,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$email_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$holdoff,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$schedule,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('hard','soft','advisory')][string]$threshold,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6451,8 +6326,10 @@ function New-isiSnapshotSchedulesv1{
 }
 
 Export-ModuleMember -Function New-isiSnapshotSchedulesv1
+Set-Alias New-isiSnapshotSchedules -Value New-isiSnapshotSchedulesv1
+Export-ModuleMember -Alias New-isiSnapshotSchedules
 
-function New-isiSnapshotSchedules{
+function New-isiSnapshotSchedulesv3{
 <#
 .SYNOPSIS
 	New Snapshot Schedules
@@ -6506,7 +6383,7 @@ function New-isiSnapshotSchedules{
 	}
 }
 
-Export-ModuleMember -Function New-isiSnapshotSchedules
+Export-ModuleMember -Function New-isiSnapshotSchedulesv3
 
 function New-isiSnapshots{
 <#
@@ -6536,10 +6413,10 @@ function New-isiSnapshots{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][object]$alias,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$expires,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$alias,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$expires,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6698,8 +6575,10 @@ function New-isiStoragepoolCompatibilitiesSSDActivev1{
 }
 
 Export-ModuleMember -Function New-isiStoragepoolCompatibilitiesSSDActivev1
+Set-Alias New-isiStoragepoolCompatibilitiesSSDActive -Value New-isiStoragepoolCompatibilitiesSSDActivev1
+Export-ModuleMember -Alias New-isiStoragepoolCompatibilitiesSSDActive
 
-function New-isiStoragepoolCompatibilitiesSSDActive{
+function New-isiStoragepoolCompatibilitiesSSDActivev3{
 <#
 .SYNOPSIS
 	New Storagepool Compatibilities Ssd Active
@@ -6745,7 +6624,7 @@ function New-isiStoragepoolCompatibilitiesSSDActive{
 	}
 }
 
-Export-ModuleMember -Function New-isiStoragepoolCompatibilitiesSSDActive
+Export-ModuleMember -Function New-isiStoragepoolCompatibilitiesSSDActivev3
 
 function New-isiStoragepoolNodepoolsv1{
 <#
@@ -6782,7 +6661,7 @@ function New-isiStoragepoolNodepoolsv1{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$lnns,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$protection_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$tier,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$tier,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6798,8 +6677,10 @@ function New-isiStoragepoolNodepoolsv1{
 }
 
 Export-ModuleMember -Function New-isiStoragepoolNodepoolsv1
+Set-Alias New-isiStoragepoolNodepools -Value New-isiStoragepoolNodepoolsv1
+Export-ModuleMember -Alias New-isiStoragepoolNodepools
 
-function New-isiStoragepoolNodepools{
+function New-isiStoragepoolNodepoolsv3{
 <#
 .SYNOPSIS
 	New Storagepool Nodepools
@@ -6834,7 +6715,7 @@ function New-isiStoragepoolNodepools{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$lnns,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$protection_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$tier,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$tier,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6849,7 +6730,7 @@ function New-isiStoragepoolNodepools{
 	}
 }
 
-Export-ModuleMember -Function New-isiStoragepoolNodepools
+Export-ModuleMember -Function New-isiStoragepoolNodepoolsv3
 
 function New-isiStoragepoolTiers{
 <#
@@ -6928,7 +6809,7 @@ function New-isiSyncJobsv1{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('fatal','error','notice','info','copy','debug','trace')][string]$log_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$source_snapshot,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$workers_per_node,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$workers_per_node,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6944,8 +6825,10 @@ function New-isiSyncJobsv1{
 }
 
 Export-ModuleMember -Function New-isiSyncJobsv1
+Set-Alias New-isiSyncJobs -Value New-isiSyncJobsv1
+Export-ModuleMember -Alias New-isiSyncJobs
 
-function New-isiSyncJobs{
+function New-isiSyncJobsv3{
 <#
 .SYNOPSIS
 	New Sync Jobs
@@ -6982,7 +6865,7 @@ function New-isiSyncJobs{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('fatal','error','notice','info','copy','debug','trace')][string]$log_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$source_snapshot,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$workers_per_node,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$workers_per_node,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6997,7 +6880,7 @@ function New-isiSyncJobs{
 	}
 }
 
-Export-ModuleMember -Function New-isiSyncJobs
+Export-ModuleMember -Function New-isiSyncJobsv3
 
 function New-isiSyncPoliciesv1{
 <#
@@ -7176,8 +7059,10 @@ function New-isiSyncPoliciesv1{
 }
 
 Export-ModuleMember -Function New-isiSyncPoliciesv1
+Set-Alias New-isiSyncPolicies -Value New-isiSyncPoliciesv1
+Export-ModuleMember -Alias New-isiSyncPolicies
 
-function New-isiSyncPolicies{
+function New-isiSyncPoliciesv3{
 <#
 .SYNOPSIS
 	New Sync Policies
@@ -7345,7 +7230,7 @@ function New-isiSyncPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$expected_dataloss,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][object]$file_matching_pattern,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$force_interface,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][object]$job_delay,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$job_delay,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateSet('fatal','error','notice','info','copy','debug','trace')][string]$log_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$log_removed_files,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$name,
@@ -7354,7 +7239,7 @@ function New-isiSyncPolicies{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$report_max_age,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$report_max_count,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$restrict_target_network,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][object]$rpo_alert,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$rpo_alert,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$skip_lookup,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$skip_when_source_unmodified,
@@ -7390,7 +7275,7 @@ function New-isiSyncPolicies{
 	}
 }
 
-Export-ModuleMember -Function New-isiSyncPolicies
+Export-ModuleMember -Function New-isiSyncPoliciesv3
 
 function New-isiSyncPolicyReset{
 <#
@@ -7523,8 +7408,10 @@ function New-isiSyncRulesv1{
 }
 
 Export-ModuleMember -Function New-isiSyncRulesv1
+Set-Alias New-isiSyncRules -Value New-isiSyncRulesv1
+Export-ModuleMember -Alias New-isiSyncRules
 
-function New-isiSyncRules{
+function New-isiSyncRulesv3{
 <#
 .SYNOPSIS
 	New Sync Rules
@@ -7575,7 +7462,7 @@ function New-isiSyncRules{
 	}
 }
 
-Export-ModuleMember -Function New-isiSyncRules
+Export-ModuleMember -Function New-isiSyncRulesv3
 
 function New-isiSyncTargetPolicyCancel{
 <#
@@ -7836,7 +7723,7 @@ function New-isiUpgradeClusterFirmwareUpgrade{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$exclude_type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$include_device,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$include_type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$nodes_to_upgrade,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$nodes_to_upgrade,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$no_burn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$no_reboot,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$no_verify,
@@ -7967,7 +7854,7 @@ function New-isiUpgradeClusterRetryLastAction{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][object]$nodes,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$nodes,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -8045,7 +7932,7 @@ function New-isiUpgradeClusterUpgrade{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$install_image_path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$nodes_to_rolling_upgrade,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$nodes_to_rolling_upgrade,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$skip_optional,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$upgrade_type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -8106,11 +7993,11 @@ function New-isiWormDomains{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][object]$autocommit_offset,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$default_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$max_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$min_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$override_date,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$autocommit_offset,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$default_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$max_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$min_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$override_date,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('on','off','disabled')][string]$privileged_delete,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('enterprise','compliance')][string]$type,
@@ -8254,8 +8141,10 @@ function New-isiZonesv1{
 }
 
 Export-ModuleMember -Function New-isiZonesv1
+Set-Alias New-isiZones -Value New-isiZonesv1
+Export-ModuleMember -Alias New-isiZones
 
-function New-isiZones{
+function New-isiZonesv3{
 <#
 .SYNOPSIS
 	New Zones
@@ -8345,5 +8234,5 @@ function New-isiZones{
 	}
 }
 
-Export-ModuleMember -Function New-isiZones
+Export-ModuleMember -Function New-isiZonesv3
 

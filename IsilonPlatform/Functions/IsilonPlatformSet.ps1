@@ -80,11 +80,11 @@ function Set-isiAntivirusPolicy{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$force_run,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$impact,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$impact,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][array]$paths,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$recursion_depth,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=9)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -93,19 +93,19 @@ function Set-isiAntivirusPolicy{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAntivirusPolicy')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -154,7 +154,7 @@ function Set-isiAntivirusQuarantine{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -162,7 +162,7 @@ function Set-isiAntivirusQuarantine{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAntivirusQuarantine')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/quarantine/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/quarantine/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -219,7 +219,7 @@ function Set-isiAntivirusServer{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -227,7 +227,7 @@ function Set-isiAntivirusServer{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAntivirusServer')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/servers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/servers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -317,7 +317,7 @@ function Set-isiAntivirusSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAntivirusSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/antivirus/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -387,7 +387,7 @@ function Set-isiAuditSettingsGlobalv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditSettingsGlobalv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -396,8 +396,10 @@ function Set-isiAuditSettingsGlobalv1{
 }
 
 Export-ModuleMember -Function Set-isiAuditSettingsGlobalv1
+Set-Alias Set-isiAuditSettingsGlobal -Value Set-isiAuditSettingsGlobalv1
+Export-ModuleMember -Alias Set-isiAuditSettingsGlobal
 
-function Set-isiAuditSettings{
+function Set-isiAuditSettingsv3{
 <#
 .SYNOPSIS
 	Set Audit Settings
@@ -405,7 +407,7 @@ function Set-isiAuditSettings{
 .DESCRIPTION
 	Modify per-Access Zone Audit settings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone which contains audit settings.
 
 .PARAMETER audit_failure
@@ -431,7 +433,7 @@ function Set-isiAuditSettings{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$audit_failure,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$audit_success,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$syslog_audit_events,
@@ -445,15 +447,15 @@ function Set-isiAuditSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditSettings')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/audit/settings" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditSettingsv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/audit/settings" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -461,7 +463,7 @@ function Set-isiAuditSettings{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuditSettings
+Export-ModuleMember -Function Set-isiAuditSettingsv3
 
 function Set-isiAuditSettingsGlobal{
 <#
@@ -523,7 +525,7 @@ function Set-isiAuditSettingsGlobal{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditSettingsGlobal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/audit/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/audit/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -576,19 +578,19 @@ function Set-isiAuditTopic{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_id){
+				$BoundParameters.Remove('new_id') | out-null
+				$BoundParameters.Add('id',$new_id)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_id){
-				$BoundParameters.Remove('new_id') | out-null
-				$BoundParameters.Add('id',$new_id)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuditTopic')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/topics/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/audit/topics/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -615,7 +617,7 @@ function Set-isiAuthGroup{
 .PARAMETER provider
 	Optional provider type.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER gid
@@ -635,7 +637,7 @@ function Set-isiAuthGroup{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -645,27 +647,27 @@ function Set-isiAuthGroup{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($provider){
+				$queryArguments += 'provider=' + $provider
+				$BoundParameters.Remove('provider') | out-null
+			}
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($provider){
-				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
-			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthGroup')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/groups/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/groups/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -685,6 +687,7 @@ function Set-isiAuthLogLevel{
 
 .PARAMETER level
 	Valid auth logging levels
+	Valid inputs: always,error,warning,info,verbose,debug,trace
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -697,7 +700,7 @@ function Set-isiAuthLogLevel{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('always','error','warning','info','verbose','debug','trace')][string]$level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -707,7 +710,7 @@ function Set-isiAuthLogLevel{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthLogLevel')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -728,7 +731,7 @@ function Set-isiAuthMappingImport{
 .PARAMETER replace
 	Specify whether existing mappings should be replaced. The default behavior is to leave existing mappings intact and return an error.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER identities
@@ -746,7 +749,7 @@ function Set-isiAuthMappingImport{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][object]$replace,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$identities,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -759,17 +762,17 @@ function Set-isiAuthMappingImport{
 			$queryArguments = @()
 			if ($replace){
 				$queryArguments += 'replace=' + $replace
-				$BoundParameters = $BoundParameters.Remove('$replace')
+				$BoundParameters.Remove('replace') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthMappingImport')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/mapping/import" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/mapping/import" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -807,7 +810,7 @@ function Set-isiAuthMappingUsersRules{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthMappingUsersRules')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/mapping/users/rules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/mapping/users/rules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -964,7 +967,7 @@ function Set-isiAuthProviderAdsv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -972,7 +975,7 @@ function Set-isiAuthProviderAdsv1{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderAdsv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ads/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ads/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -981,8 +984,10 @@ function Set-isiAuthProviderAdsv1{
 }
 
 Export-ModuleMember -Function Set-isiAuthProviderAdsv1
+Set-Alias Set-isiAuthProviderAds -Value Set-isiAuthProviderAdsv1
+Export-ModuleMember -Alias Set-isiAuthProviderAds
 
-function Set-isiAuthProviderAds{
+function Set-isiAuthProviderAdsv3{
 <#
 .SYNOPSIS
 	Set Auth Provider Ads
@@ -1169,15 +1174,15 @@ function Set-isiAuthProviderAds{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderAds')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/ads/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderAdsv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/ads/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -1185,7 +1190,7 @@ function Set-isiAuthProviderAds{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthProviderAds
+Export-ModuleMember -Function Set-isiAuthProviderAdsv3
 
 function Set-isiAuthProviderFile{
 <#
@@ -1350,19 +1355,19 @@ function Set-isiAuthProviderFile{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderFile')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/file/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/file/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -1439,19 +1444,19 @@ function Set-isiAuthProviderKrb5v1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderKrb5v1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/krb5/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/krb5/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -1460,8 +1465,10 @@ function Set-isiAuthProviderKrb5v1{
 }
 
 Export-ModuleMember -Function Set-isiAuthProviderKrb5v1
+Set-Alias Set-isiAuthProviderKrb5 -Value Set-isiAuthProviderKrb5v1
+Export-ModuleMember -Alias Set-isiAuthProviderKrb5
 
-function Set-isiAuthProviderKrb5{
+function Set-isiAuthProviderKrb5v3{
 <#
 .SYNOPSIS
 	Set Auth Provider Krb5
@@ -1528,19 +1535,19 @@ function Set-isiAuthProviderKrb5{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderKrb5')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/krb5/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderKrb5v3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/krb5/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -1548,7 +1555,7 @@ function Set-isiAuthProviderKrb5{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthProviderKrb5
+Export-ModuleMember -Function Set-isiAuthProviderKrb5v3
 
 function Set-isiAuthProviderLdapv1{
 <#
@@ -1833,19 +1840,19 @@ function Set-isiAuthProviderLdapv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLdapv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -1854,8 +1861,10 @@ function Set-isiAuthProviderLdapv1{
 }
 
 Export-ModuleMember -Function Set-isiAuthProviderLdapv1
+Set-Alias Set-isiAuthProviderLdap -Value Set-isiAuthProviderLdapv1
+Export-ModuleMember -Alias Set-isiAuthProviderLdap
 
-function Set-isiAuthProviderLdap{
+function Set-isiAuthProviderLdapv3{
 <#
 .SYNOPSIS
 	Set Auth Provider Ldap
@@ -2138,19 +2147,19 @@ function Set-isiAuthProviderLdap{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLdap')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLdapv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2158,7 +2167,7 @@ function Set-isiAuthProviderLdap{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthProviderLdap
+Export-ModuleMember -Function Set-isiAuthProviderLdapv3
 
 function Set-isiAuthProviderLocal{
 <#
@@ -2255,19 +2264,19 @@ function Set-isiAuthProviderLocal{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderLocal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/local/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/local/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2440,19 +2449,19 @@ function Set-isiAuthProviderNisv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderNisv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/nis/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/providers/nis/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2461,8 +2470,10 @@ function Set-isiAuthProviderNisv1{
 }
 
 Export-ModuleMember -Function Set-isiAuthProviderNisv1
+Set-Alias Set-isiAuthProviderNis -Value Set-isiAuthProviderNisv1
+Export-ModuleMember -Alias Set-isiAuthProviderNis
 
-function Set-isiAuthProviderNis{
+function Set-isiAuthProviderNisv3{
 <#
 .SYNOPSIS
 	Set Auth Provider Nis
@@ -2625,19 +2636,19 @@ function Set-isiAuthProviderNis{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderNis')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/nis/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProviderNisv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/auth/providers/nis/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2645,7 +2656,7 @@ function Set-isiAuthProviderNis{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthProviderNis
+Export-ModuleMember -Function Set-isiAuthProviderNisv3
 
 function Set-isiAuthRole{
 <#
@@ -2698,19 +2709,19 @@ function Set-isiAuthRole{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthRole')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/roles/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/roles/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2730,45 +2741,59 @@ function Set-isiAuthSettingsAcls{
 
 .PARAMETER access
 	Access checks (chmod, chown).
+	Valid inputs: unix,windows
 
 .PARAMETER calcmode
 	Displayed mode bits.
+	Valid inputs: approx,777
 
 .PARAMETER calcmode_group
 	Approximate group mode bits when ACL exists.
+	Valid inputs: group_aces,group_only
 
 .PARAMETER calcmode_owner
 	Approximate owner mode bits when ACL exists.
+	Valid inputs: owner_aces,owner_only
 
 .PARAMETER chmod
 	chmod on files with existing ACLs.
+	Valid inputs: remove,replace,replace_users_and_groups,merge,deny,ignore
 
 .PARAMETER chmod_007
 	chmod (007) on files with existing ACLs.
+	Valid inputs: default,remove
 
 .PARAMETER chmod_inheritable
 	ACLs created on directories by UNIX chmod.
+	Valid inputs: yes,no
 
 .PARAMETER chown
 	chown/chgrp on files with existing ACLs.
+	Valid inputs: owner_group_and_acl,owner_group_only,ignore
 
 .PARAMETER create_over_smb
 	ACL creation over SMB.
+	Valid inputs: allow,disallow
 
 .PARAMETER dos_attr
 	 Read only DOS attribute.
+	Valid inputs: deny_smb,deny_smb_and_nfs
 
 .PARAMETER group_owner_inheritance
 	Group owner inheritance.
+	Valid inputs: native,parent,creator
 
 .PARAMETER rwx
 	Treatment of 'rwx' permissions.
+	Valid inputs: retain,full_control
 
 .PARAMETER synthetic_denies
 	Synthetic 'deny' ACEs.
+	Valid inputs: none,remove
 
 .PARAMETER utimes
 	Access check (utimes)
+	Valid inputs: only_owner,owner_and_write
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -2781,20 +2806,20 @@ function Set-isiAuthSettingsAcls{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$access,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$calcmode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$calcmode_group,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$calcmode_owner,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$chmod,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$chmod_007,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$chmod_inheritable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$chown,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$create_over_smb,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$dos_attr,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$group_owner_inheritance,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$rwx,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$synthetic_denies,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$utimes,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('unix','windows')][string]$access,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('approx','777')][string]$calcmode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('group_aces','group_only')][string]$calcmode_group,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('owner_aces','owner_only')][string]$calcmode_owner,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('remove','replace','replace_users_and_groups','merge','deny','ignore')][string]$chmod,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('default','remove')][string]$chmod_007,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('yes','no')][string]$chmod_inheritable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('owner_group_and_acl','owner_group_only','ignore')][string]$chown,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('allow','disallow')][string]$create_over_smb,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('deny_smb','deny_smb_and_nfs')][string]$dos_attr,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('native','parent','creator')][string]$group_owner_inheritance,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateSet('retain','full_control')][string]$rwx,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateSet('none','remove')][string]$synthetic_denies,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateSet('only_owner','owner_and_write')][string]$utimes,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=14)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -2808,7 +2833,7 @@ function Set-isiAuthSettingsAcls{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsAcls')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/settings/acls" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/settings/acls" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -2826,7 +2851,7 @@ function Set-isiAuthSettingsGlobal{
 .DESCRIPTION
 	Modify the global settings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains any per-zone settings.
 
 .PARAMETER alloc_retries
@@ -2918,7 +2943,7 @@ function Set-isiAuthSettingsGlobal{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$alloc_retries,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$gid_range_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_max,
@@ -2954,15 +2979,15 @@ function Set-isiAuthSettingsGlobal{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsGlobal')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/global" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/global" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3016,7 +3041,7 @@ function Set-isiAuthSettingsKrb5Defaults{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Defaults')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/defaults" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/defaults" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3065,7 +3090,7 @@ function Set-isiAuthSettingsKrb5Domain{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -3073,7 +3098,7 @@ function Set-isiAuthSettingsKrb5Domain{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Domain')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3134,7 +3159,7 @@ function Set-isiAuthSettingsKrb5Realm{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -3142,7 +3167,7 @@ function Set-isiAuthSettingsKrb5Realm{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsKrb5Realm')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/realms/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/auth/settings/krb5/realms/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3160,7 +3185,7 @@ function Set-isiAuthSettingsMapping{
 .DESCRIPTION
 	Modify the mapping settings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone which contains mapping settings.
 
 .PARAMETER cache_entry_expiry
@@ -3201,7 +3226,7 @@ function Set-isiAuthSettingsMapping{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$cache_entry_expiry,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$gid_range_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_max,
@@ -3220,15 +3245,15 @@ function Set-isiAuthSettingsMapping{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthSettingsMapping')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/settings/mapping" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3255,7 +3280,7 @@ function Set-isiAuthUser{
 .PARAMETER provider
 	Optional provider type.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER email
@@ -3280,7 +3305,7 @@ function Set-isiAuthUser{
 	If true, the password should expire.
 
 .PARAMETER primary_group
-	Specifies properties for a persona, which consists of either a 'type' and a 'name' or an 'ID'.
+	Specifies the primary group by name.
 
 .PARAMETER prompt_password_change
 	If true, prompts the user to change their password at the next login.
@@ -3311,7 +3336,7 @@ function Set-isiAuthUser{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$email,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$expiry,
@@ -3333,27 +3358,27 @@ function Set-isiAuthUser{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($provider){
+				$queryArguments += 'provider=' + $provider
+				$BoundParameters.Remove('provider') | out-null
+			}
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($provider){
-				$queryArguments += 'provider=' + $provider
-				$BoundParameters = $BoundParameters.Remove('$provider')
-			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUser')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/users/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/users/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3363,7 +3388,7 @@ function Set-isiAuthUser{
 
 Export-ModuleMember -Function Set-isiAuthUser
 
-function Set-isiAuthUserChangePassword{
+function Set-isiAuthUserChangePasswordv3{
 <#
 .SYNOPSIS
 	Set Auth User Change Password
@@ -3377,7 +3402,7 @@ function Set-isiAuthUserChangePassword{
 .PARAMETER name
 	User name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Specifies access zone containing user.
 
 .PARAMETER new_password
@@ -3399,7 +3424,7 @@ function Set-isiAuthUserChangePassword{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_password,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$old_password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
@@ -3410,23 +3435,23 @@ function Set-isiAuthUserChangePassword{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUserChangePassword')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/users/$parameter1/change-password" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUserChangePasswordv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/auth/users/$parameter1/change-password" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3434,9 +3459,9 @@ function Set-isiAuthUserChangePassword{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthUserChangePassword
+Export-ModuleMember -Function Set-isiAuthUserChangePasswordv3
 
-function Set-isiAuthUserChangePassword{
+function Set-isiAuthUserChangePasswordv1{
 <#
 .SYNOPSIS
 	Set Auth User Change Password
@@ -3450,7 +3475,7 @@ function Set-isiAuthUserChangePassword{
 .PARAMETER name
 	User name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Specifies access zone containing user.
 
 .PARAMETER new_password
@@ -3472,7 +3497,7 @@ function Set-isiAuthUserChangePassword{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_password,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$old_password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
@@ -3483,23 +3508,23 @@ function Set-isiAuthUserChangePassword{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUserChangePassword')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/users/$parameter1/change_password" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthUserChangePasswordv1')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/auth/users/$parameter1/change_password" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3507,9 +3532,9 @@ function Set-isiAuthUserChangePassword{
 	}
 }
 
-Export-ModuleMember -Function Set-isiAuthUserChangePassword
+Export-ModuleMember -Function Set-isiAuthUserChangePasswordv1
 
-function Set-isiCloudAccount{
+function Set-isiCloudAccountv3{
 <#
 .SYNOPSIS
 	Set Cloud Account
@@ -3573,7 +3598,7 @@ function Set-isiCloudAccount{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$skip_ssl_validation,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][object]$storage_region,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$storage_region,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$telemetry_bucket,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$uri,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=11)][switch]$Force,
@@ -3584,19 +3609,19 @@ function Set-isiCloudAccount{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudAccount')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudAccountv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3604,9 +3629,9 @@ function Set-isiCloudAccount{
 	}
 }
 
-Export-ModuleMember -Function Set-isiCloudAccount
+Export-ModuleMember -Function Set-isiCloudAccountv3
 
-function Set-isiCloudJob{
+function Set-isiCloudJobv3{
 <#
 .SYNOPSIS
 	Set Cloud Job
@@ -3625,6 +3650,7 @@ function Set-isiCloudJob{
 
 .PARAMETER state
 	The desired state of the job or operation
+	Valid inputs: resume,pause,cancel
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -3640,7 +3666,7 @@ function Set-isiCloudJob{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$state,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('resume','pause','cancel')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3649,19 +3675,19 @@ function Set-isiCloudJob{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudJob')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/cloud/jobs/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudJobv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/cloud/jobs/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3669,9 +3695,9 @@ function Set-isiCloudJob{
 	}
 }
 
-Export-ModuleMember -Function Set-isiCloudJob
+Export-ModuleMember -Function Set-isiCloudJobv3
 
-function Set-isiCloudPool{
+function Set-isiCloudPoolv3{
 <#
 .SYNOPSIS
 	Set Cloud Pool
@@ -3726,19 +3752,19 @@ function Set-isiCloudPool{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudPool')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/pools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudPoolv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/pools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3746,9 +3772,9 @@ function Set-isiCloudPool{
 	}
 }
 
-Export-ModuleMember -Function Set-isiCloudPool
+Export-ModuleMember -Function Set-isiCloudPoolv3
 
-function Set-isiCloudSettings{
+function Set-isiCloudSettingsv3{
 <#
 .SYNOPSIS
 	Set Cloud Settings
@@ -3835,8 +3861,8 @@ function Set-isiCloudSettings{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudSettingsv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cloud/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3844,7 +3870,7 @@ function Set-isiCloudSettings{
 	}
 }
 
-Export-ModuleMember -Function Set-isiCloudSettings
+Export-ModuleMember -Function Set-isiCloudSettingsv3
 
 function Set-isiClusterEmail{
 <#
@@ -3856,6 +3882,7 @@ function Set-isiClusterEmail{
 
 .PARAMETER batch_mode
 	This setting determines how notifications will be batched together to be sent by email.  'none' means each notification will be sent separately.  'severity' means notifications of the same severity will be sent together.  'category' means notifications of the same category will be sent together.  'all' means all notifications will be batched together and sent in a single email.
+	Valid inputs: all,severity,category,none
 
 .PARAMETER mail_relay
 	The address of the SMTP server to be used for relaying the notification messages.  An SMTP server is required in order to send notifications.  If this string is empty, no emails will be sent.
@@ -3871,6 +3898,7 @@ function Set-isiClusterEmail{
 
 .PARAMETER smtp_auth_security
 	The type of secure communication protocol to use if SMTP is being used.  If 'none', plain text will be used, if 'starttls', the encrypted STARTTLS protocol will be used.
+	Valid inputs: none,starttls
 
 .PARAMETER smtp_auth_username
 	Username to authenticate with if SMTP authentication is being used.
@@ -3895,15 +3923,15 @@ function Set-isiClusterEmail{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$batch_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('all','severity','category','none')][string]$batch_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$mail_relay,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$mail_sender,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$mail_subject,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$smtp_auth_passwd,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$smtp_auth_security,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$smtp_auth_passwd,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('none','starttls')][string]$smtp_auth_security,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$smtp_auth_username,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$smtp_port,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][object]$user_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$user_template,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$use_smtp_auth,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=10)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -3914,7 +3942,7 @@ function Set-isiClusterEmail{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterEmail')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cluster/email" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cluster/email" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3924,7 +3952,7 @@ function Set-isiClusterEmail{
 
 Export-ModuleMember -Function Set-isiClusterEmail
 
-function Set-isiClusterIdentity{
+function Set-isiClusterIdentityv3{
 <#
 .SYNOPSIS
 	Set Cluster Identity
@@ -3963,8 +3991,8 @@ function Set-isiClusterIdentity{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterIdentity')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/identity" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterIdentityv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/identity" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -3972,7 +4000,7 @@ function Set-isiClusterIdentity{
 	}
 }
 
-Export-ModuleMember -Function Set-isiClusterIdentity
+Export-ModuleMember -Function Set-isiClusterIdentityv3
 
 function Set-isiClusterNode{
 <#
@@ -4017,7 +4045,7 @@ function Set-isiClusterNode{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4025,7 +4053,7 @@ function Set-isiClusterNode{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterNode')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4094,7 +4122,7 @@ function Set-isiClusterNodeStateReadonly{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4102,7 +4130,7 @@ function Set-isiClusterNodeStateReadonly{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterNodeStateReadonly')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/readonly" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/readonly" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4163,7 +4191,7 @@ function Set-isiClusterNodeStateServicelight{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4171,7 +4199,7 @@ function Set-isiClusterNodeStateServicelight{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterNodeStateServicelight')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/servicelight" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/servicelight" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4240,7 +4268,7 @@ function Set-isiClusterNodeStateSmartfail{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4248,7 +4276,7 @@ function Set-isiClusterNodeStateSmartfail{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterNodeStateSmartfail')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/smartfail" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/nodes/$parameter1/state/smartfail" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4326,7 +4354,7 @@ function Set-isiClusterOwner{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterOwner')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cluster/owner" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/cluster/owner" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4336,7 +4364,7 @@ function Set-isiClusterOwner{
 
 Export-ModuleMember -Function Set-isiClusterOwner
 
-function Set-isiClusterTime{
+function Set-isiClusterTimev3{
 <#
 .SYNOPSIS
 	Set Cluster Time
@@ -4367,8 +4395,8 @@ function Set-isiClusterTime{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterTime')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/time" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterTimev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/time" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4376,7 +4404,7 @@ function Set-isiClusterTime{
 	}
 }
 
-Export-ModuleMember -Function Set-isiClusterTime
+Export-ModuleMember -Function Set-isiClusterTimev3
 
 function Set-isiClusterTimezone{
 <#
@@ -4406,7 +4434,7 @@ function Set-isiClusterTimezone{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterTimezone')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/timezone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/timezone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4452,7 +4480,7 @@ function Set-isiClusterTimezoneSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterTimezoneSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/timezone/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/timezone/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4498,7 +4526,7 @@ function Set-isiDedupeSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiDedupeSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/dedupe/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/dedupe/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4530,6 +4558,7 @@ function Set-isiEventAlertCondition{
 
 .PARAMETER condition
 	Trigger condition for alert
+	Valid inputs: NEW,NEW EVENTS,ONGOING,SEVERITY INCREASE,SEVERITY DECREASE,RESOLVED
 
 .PARAMETER eventgroup_ids
 	Event Group IDs to be alerted
@@ -4558,7 +4587,7 @@ function Set-isiEventAlertCondition{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$categories,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$channel_ids,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$condition,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('NEW','NEW EVENTS','ONGOING','SEVERITY INCREASE','SEVERITY DECREASE','RESOLVED')][string]$condition,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$eventgroup_ids,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$interval,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$limit,
@@ -4571,7 +4600,7 @@ function Set-isiEventAlertCondition{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4579,7 +4608,7 @@ function Set-isiEventAlertCondition{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventAlertCondition')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/alert-conditions/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/alert-conditions/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4613,13 +4642,14 @@ function Set-isiEventChannel{
 	Nodes that can be masters for this channel
 
 .PARAMETER parameters
-	Parameters to be used for an smtp channel Parameters to be used for an snmp channel
+	A collection of parameters dependent on the channel type
 
 .PARAMETER system
 	Channel is a pre-defined system channel
 
 .PARAMETER type
 	The mechanism used by the channel
+	Valid inputs: connectemc,smtp,snmp
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -4639,7 +4669,7 @@ function Set-isiEventChannel{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$excluded_nodes,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$parameters,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$system,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('connectemc','smtp','snmp')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -4648,7 +4678,7 @@ function Set-isiEventChannel{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4656,7 +4686,7 @@ function Set-isiEventChannel{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventChannel')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/channels/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/channels/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4702,7 +4732,7 @@ function Set-isiEventEventgroupOccurrences{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventEventgroupOccurrences')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/eventgroup-occurrences" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/eventgroup-occurrences" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4755,7 +4785,7 @@ function Set-isiEventEventgroupOccurrence{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -4763,7 +4793,7 @@ function Set-isiEventEventgroupOccurrence{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventEventgroupOccurrence')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/eventgroup-occurrences/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/eventgroup-occurrences/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4785,7 +4815,7 @@ function Set-isiEventSettings{
 	Interval between heartbeat events. "daily", "weekly", or "monthly".
 
 .PARAMETER maintenance
-	Specifies start and duration of maintenance period during which no alerts will be sent for new eventgroups.
+	Maintenance period
 
 .PARAMETER retention_days
 	Retention period in days
@@ -4817,7 +4847,7 @@ function Set-isiEventSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4867,7 +4897,7 @@ function Set-isiFileFilterSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFileFilterSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/file-filter/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/file-filter/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4909,7 +4939,7 @@ function Set-isiFilepoolDefaultPolicy{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolDefaultPolicy')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/default-policy" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/default-policy" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4974,19 +5004,19 @@ function Set-isiFilepoolPolicy{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolPolicy')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5032,7 +5062,7 @@ function Set-isiFilesystemAccessTime{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilesystemAccessTime')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/access-time" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/access-time" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5074,7 +5104,7 @@ function Set-isiFilesystemCharacterEncoding{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilesystemCharacterEncoding')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/character-encodings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filesystem/settings/character-encodings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5123,7 +5153,7 @@ function Set-isiFsaResultv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -5131,7 +5161,7 @@ function Set-isiFsaResultv1{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaResultv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/results/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/results/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5140,8 +5170,10 @@ function Set-isiFsaResultv1{
 }
 
 Export-ModuleMember -Function Set-isiFsaResultv1
+Set-Alias Set-isiFsaResult -Value Set-isiFsaResultv1
+Export-ModuleMember -Alias Set-isiFsaResult
 
-function Set-isiFsaResult{
+function Set-isiFsaResultv3{
 <#
 .SYNOPSIS
 	Set Fsa Result
@@ -5180,15 +5212,15 @@ function Set-isiFsaResult{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaResult')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/fsa/results/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaResultv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/fsa/results/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5196,7 +5228,7 @@ function Set-isiFsaResult{
 	}
 }
 
-Export-ModuleMember -Function Set-isiFsaResult
+Export-ModuleMember -Function Set-isiFsaResultv3
 
 function Set-isiFsaSettings{
 <#
@@ -5254,7 +5286,7 @@ function Set-isiFsaSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFsaSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/fsa/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5283,12 +5315,15 @@ function Set-isiHardwareFcport{
 
 .PARAMETER rate
 	
+	Valid inputs: auto,1,2,4,8
 
 .PARAMETER state
 	State of the port
+	Valid inputs: enable,disable
 
 .PARAMETER topology
 	
+	Valid inputs: auto,ptp,loop
 
 .PARAMETER wwnn
 	World wide node name of the port
@@ -5310,9 +5345,9 @@ function Set-isiHardwareFcport{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$rate,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$state,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$topology,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('auto','1','2','4','8')][string]$rate,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('enable','disable')][string]$state,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('auto','ptp','loop')][string]$topology,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$wwnn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$wwpn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
@@ -5323,19 +5358,19 @@ function Set-isiHardwareFcport{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_id){
+				$BoundParameters.Remove('new_id') | out-null
+				$BoundParameters.Add('id',$new_id)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_id){
-				$BoundParameters.Remove('new_id') | out-null
-				$BoundParameters.Add('id',$new_id)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHardwareFcport')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/hardware/fcports/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/hardware/fcports/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5364,6 +5399,7 @@ function Set-isiHardwareTape{
 
 .PARAMETER state
 	Set the device state to close
+	Valid inputs: closed
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5379,7 +5415,7 @@ function Set-isiHardwareTape{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$state,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('closed')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -5388,19 +5424,19 @@ function Set-isiHardwareTape{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHardwareTape')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/hardware/tape/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/hardware/tape/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5432,6 +5468,7 @@ function Set-isiJob{
 
 .PARAMETER state
 	Desired new state of this job instance.
+	Valid inputs: run,pause,cancel
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5448,7 +5485,7 @@ function Set-isiJob{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$policy,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$priority,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$state,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('run','pause','cancel')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -5457,7 +5494,7 @@ function Set-isiJob{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -5465,7 +5502,7 @@ function Set-isiJob{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJob')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5518,7 +5555,7 @@ function Set-isiJobPolicy{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -5526,7 +5563,7 @@ function Set-isiJobPolicy{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJobPolicy')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5578,7 +5615,7 @@ function Set-isiJobType{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$policy,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$priority,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=5)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -5587,7 +5624,7 @@ function Set-isiJobType{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -5595,7 +5632,7 @@ function Set-isiJobType{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiJobType')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/types/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/job/types/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5685,7 +5722,7 @@ function Set-isiNetworkDnscache{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNetworkDnscache')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/dnscache" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/dnscache" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5735,7 +5772,7 @@ function Set-isiNetworkExternal{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNetworkExternal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/external" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/external" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5807,7 +5844,7 @@ function Set-isiNetworkGroupnet{
 			$parameter1 = $id
 			$BoundParameters.Remove('id') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNetworkGroupnet')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/groupnets/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/groupnets/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5896,7 +5933,7 @@ function Set-isiNetworkGroupnetSubnet{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($groupnet_id){
+			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
 				$BoundParameters.Remove('groupnet_id') | out-null
 			} else {
@@ -5906,7 +5943,7 @@ function Set-isiNetworkGroupnetSubnet{
 			$parameter2 = $id
 			$BoundParameters.Remove('id') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNetworkGroupnetSubnet')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/groupnets/$parameter1/subnets/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/groupnets/$parameter1/subnets/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -5915,174 +5952,6 @@ function Set-isiNetworkGroupnetSubnet{
 }
 
 Export-ModuleMember -Function Set-isiNetworkGroupnetSubnet
-
-function Set-{
-<#
-.SYNOPSIS
-	Set 
-
-.DESCRIPTION
-	Modify a network pool.
-
-.PARAMETER enforce
-	force creating this pool even if it causes an MTU conflict.
-
-.PARAMETER access_zone
-	 Name of a valid access zone to map IP address pool to the zone.
-
-.PARAMETER aggregation_mode
-	 OneFS supports the following NIC aggregation modes.
-
-.PARAMETER alloc_method
-	 Specifies how IP address allocation is done among pool members.
-
-.PARAMETER description
-	A description of the pool.
-
-.PARAMETER ifaces
-	List of interface members in this pool.
-
-.PARAMETER name
-	The name of the pool. It must be unique throughout the given subnet.It's a required field with POST method.
-
-.PARAMETER ranges
-	List of IP address ranges in this pool.
-
-.PARAMETER rebalance_policy
-	 Rebalance policy..
-
-.PARAMETER sc_auto_unsuspend_delay
-	 Time delay in seconds before a node which has been                 automatically unsuspended becomes usable in SmartConnect                responses for pool zones.
-
-.PARAMETER sc_connect_policy
-	 SmartConnect client connection balancing policy.
-
-.PARAMETER sc_dns_zone
-	SmartConnect zone name for the pool.
-
-.PARAMETER sc_dns_zone_aliases
-	List of SmartConnect zone aliases (DNS names) to the pool.
-
-.PARAMETER sc_failover_policy
-	 SmartConnect IP failover policy.
-
-.PARAMETER sc_subnet
-	Name of SmartConnect service subnet for this pool.
-
-.PARAMETER sc_ttl
-	 Time to live value for SmartConnect DNS query responses in seconds.
-
-.PARAMETER static_routes
-	List of interface members in this pool.
-
-.PARAMETER Force
-	Force update of object without prompt
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$enforce,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$aggregation_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$alloc_method,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][array]$ifaces,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][array]$ranges,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$rebalance_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$sc_auto_unsuspend_delay,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$sc_connect_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$sc_dns_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][array]$sc_dns_zone_aliases,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$sc_failover_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$sc_subnet,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$sc_ttl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][array]$static_routes,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=17)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			$queryArguments = @()
-			if ($enforce){
-				$queryArguments += 'force=' + $enforce
-				$BoundParameters = $BoundParameters.Remove('$enforce')
-			}
-			if ($queryArguments) {
-				$queryArguments = '?' + [String]::Join('&',$queryArguments)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
-			}
-			return $ISIObject
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function Set-
-
-function Set-{
-<#
-.SYNOPSIS
-	Set 
-
-.DESCRIPTION
-	Modify a network rule.
-
-.PARAMETER description
-	Description for the provisioning rule.
-
-.PARAMETER iface
-	Interface name the provisioning rule applies to.
-
-.PARAMETER name
-	Name of the provisioning rule.
-
-.PARAMETER node_type
-	 Node type the provisioning rule applies to.
-
-.PARAMETER Force
-	Force update of object without prompt
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$iface,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$node_type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
-			}
-			return $ISIObject
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function Set-
 
 function Set-isiFtpSettings{
 <#
@@ -6228,7 +6097,7 @@ function Set-isiFtpSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFtpSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ftp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ftp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6248,6 +6117,7 @@ function Set-isiHdfsLogLevel{
 
 .PARAMETER level
 	Setup the HDFS service log level for this node
+	Valid inputs: always,error,warning,info,verbose,debug,trace,default
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -6260,7 +6130,7 @@ function Set-isiHdfsLogLevel{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('always','error','warning','info','verbose','debug','trace','default')][string]$level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6270,7 +6140,7 @@ function Set-isiHdfsLogLevel{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsLogLevel')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/hdfs/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/hdfs/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6315,7 +6185,7 @@ function Set-isiHdfsProxyUser{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -6323,7 +6193,7 @@ function Set-isiHdfsProxyUser{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsProxyUser')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6376,14 +6246,14 @@ function Set-isiHdfsProxyUserMember{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($proxyuser_id){
+			if ($psBoundParameters.ContainsKey('proxyuser_id')){
 				$parameter1 = $proxyuser_id
 				$BoundParameters.Remove('proxyuser_id') | out-null
 			} else {
 				$parameter1 = $proxyuser_name
 				$BoundParameters.Remove('proxyuser_name') | out-null
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -6391,7 +6261,7 @@ function Set-isiHdfsProxyUserMember{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsProxyUserMember')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1/members/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/proxyusers/$parameter1/members/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6448,19 +6318,19 @@ function Set-isiHdfsRack{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsRack')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/racks/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/hdfs/racks/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6470,7 +6340,7 @@ function Set-isiHdfsRack{
 
 Export-ModuleMember -Function Set-isiHdfsRack
 
-function Set-isiHdfsSettings{
+function Set-isiHdfsSettingsv3{
 <#
 .SYNOPSIS
 	Set Protocols Hdfs Settings
@@ -6486,12 +6356,14 @@ function Set-isiHdfsSettings{
 
 .PARAMETER authentication_mode
 	Type of authentication for HDFS protocol.
+	Valid inputs: all,simple_only,kerberos_only
 
 .PARAMETER default_block_size
 	Block size (size=2**value) reported by HDFS server.
 
 .PARAMETER default_checksum_type
 	Checksum type reported by HDFS server.
+	Valid inputs: none,crc32,crc32c
 
 .PARAMETER odp_version
 	ODP stack repository version number
@@ -6518,9 +6390,9 @@ function Set-isiHdfsSettings{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$ambari_namenode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$ambari_server,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$authentication_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('all','simple_only','kerberos_only')][string]$authentication_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$default_block_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$default_checksum_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('none','crc32','crc32c')][string]$default_checksum_type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$odp_version,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$root_directory,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$service,
@@ -6533,8 +6405,8 @@ function Set-isiHdfsSettings{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/hdfs/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsSettingsv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/hdfs/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6542,7 +6414,7 @@ function Set-isiHdfsSettings{
 	}
 }
 
-Export-ModuleMember -Function Set-isiHdfsSettings
+Export-ModuleMember -Function Set-isiHdfsSettingsv3
 
 function Set-isiHttpSettings{
 <#
@@ -6572,6 +6444,7 @@ function Set-isiHttpSettings{
 
 .PARAMETER service
 	Enable/disable the HTTP service or redirect to WebUI.
+	Valid inputs: enabled,disabled,redirect
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -6590,7 +6463,7 @@ function Set-isiHttpSettings{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$enable_access_log,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$integrated_authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$server_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('enabled','disabled','redirect')][string]$service,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6600,7 +6473,7 @@ function Set-isiHttpSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHttpSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/http/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/http/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6626,6 +6499,7 @@ function Set-isiNdmpDiagnostics{
 
 .PARAMETER trace_level
 	Trace level for ndmp.
+	Valid inputs: none,standard,include-file-history,log-file-history
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -6640,7 +6514,7 @@ function Set-isiNdmpDiagnostics{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$diag_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$protocol_version,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$trace_level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('none','standard','include-file-history','log-file-history')][string]$trace_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6650,7 +6524,7 @@ function Set-isiNdmpDiagnostics{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNdmpDiagnostics')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/diagnostics" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/diagnostics" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6673,6 +6547,7 @@ function Set-isiNdmpSettingsGlobal{
 
 .PARAMETER dma
 	A unique identifier for the dma vendor.
+	Valid inputs: generic,atempo,bakbone,commvault,emc,symantec,tivoli,symantec-netbackup,symantec-backupexec
 
 .PARAMETER msb_context_retention_duration
 	Multi-Stream Backup context retention duration.
@@ -6698,7 +6573,7 @@ function Set-isiNdmpSettingsGlobal{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$bre_max_num_contexts,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$dma,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('generic','atempo','bakbone','commvault','emc','symantec','tivoli','symantec-netbackup','symantec-backupexec')][string]$dma,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$msb_context_retention_duration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$msr_context_retention_duration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$port,
@@ -6712,7 +6587,7 @@ function Set-isiNdmpSettingsGlobal{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNdmpSettingsGlobal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6760,7 +6635,7 @@ function Set-isiNdmpSettingsVariable{
 			$parameter1 = $id
 			$BoundParameters.Remove('id') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNdmpSettingsVariable')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/settings/variables/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/settings/variables/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6809,7 +6684,7 @@ function Set-isiNdmpUser{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -6817,7 +6692,7 @@ function Set-isiNdmpUser{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNdmpUser')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/users/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ndmp/users/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6841,7 +6716,7 @@ function Set-isiNfsAlias{
 .PARAMETER name
 	Aid name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER health
@@ -6853,7 +6728,7 @@ function Set-isiNfsAlias{
 .PARAMETER path
 	Specifies the path to which the alias points.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	Specifies the zone in which the alias is valid.
 
 .PARAMETER Force
@@ -6869,11 +6744,11 @@ function Set-isiNfsAlias{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$health,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -6882,31 +6757,27 @@ function Set-isiNfsAlias{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsAlias')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/aliases/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7107,18 +6978,18 @@ function Set-isiNfsExportv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			$parameter1 = $id
-			$BoundParameters.Remove('id') | out-null
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
-				$BoundParameters = $BoundParameters.Remove('$enforce')
+				$BoundParameters.Remove('enforce') | out-null
 			}
+			$parameter1 = $id
+			$BoundParameters.Remove('id') | out-null
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExportv1')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7128,7 +6999,7 @@ function Set-isiNfsExportv1{
 
 Export-ModuleMember -Function Set-isiNfsExportv1
 
-function Set-isiNfsExport{
+function Set-isiNfsExportv2{
 <#
 .SYNOPSIS
 	Set Nfs Export
@@ -7142,7 +7013,7 @@ function Set-isiNfsExport{
 .PARAMETER enforce
 	If true, the export will be updated even if that change conflicts with another export.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER all_dirs
@@ -7286,7 +7157,7 @@ function Set-isiNfsExport{
 .PARAMETER write_unstable_reply
 	Specifies the synchronization type.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Specifies the zone in which the export is valid.
 
 .PARAMETER Force
@@ -7302,7 +7173,7 @@ function Set-isiNfsExport{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$all_dirs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$block_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$can_set_time,
@@ -7350,7 +7221,7 @@ function Set-isiNfsExport{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][int]$write_transfer_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][string]$write_unstable_action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=51)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -7359,26 +7230,22 @@ function Set-isiNfsExport{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			$parameter1 = $id
-			$BoundParameters.Remove('id') | out-null
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
-				$BoundParameters = $BoundParameters.Remove('$enforce')
+				$BoundParameters.Remove('enforce') | out-null
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
-			}
+			$parameter1 = $id
+			$BoundParameters.Remove('id') | out-null
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExport')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsExportv2')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7386,7 +7253,9 @@ function Set-isiNfsExport{
 	}
 }
 
-Export-ModuleMember -Function Set-isiNfsExport
+Export-ModuleMember -Function Set-isiNfsExportv2
+Set-Alias Set-isiNfsExport -Value Set-isiNfsExportv2
+Export-ModuleMember -Alias Set-isiNfsExport
 
 function Set-isiNfsLogLevel{
 <#
@@ -7398,6 +7267,7 @@ function Set-isiNfsLogLevel{
 
 .PARAMETER level
 	Valid NFS logging levels
+	Valid inputs: always,error,warning,info,verbose,debug,trace
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -7410,7 +7280,7 @@ function Set-isiNfsLogLevel{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('always','error','warning','info','verbose','debug','trace')][string]$level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -7420,7 +7290,7 @@ function Set-isiNfsLogLevel{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsLogLevel')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/nfs/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/nfs/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7464,13 +7334,13 @@ function Set-isiNfsNetgroup{
 			$queryArguments = @()
 			if ($host){
 				$queryArguments += 'host=' + $host
-				$BoundParameters = $BoundParameters.Remove('$host')
+				$BoundParameters.Remove('host') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsNetgroup')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/nfs/netgroup" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/nfs/netgroup" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7640,7 +7510,7 @@ function Set-isiNfsSettingsExportv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExportv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/nfs/settings/export" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/nfs/settings/export" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7650,7 +7520,7 @@ function Set-isiNfsSettingsExportv1{
 
 Export-ModuleMember -Function Set-isiNfsSettingsExportv1
 
-function Set-isiNfsSettingsExport{
+function Set-isiNfsSettingsExportv2{
 <#
 .SYNOPSIS
 	Set Nfs Settings Export
@@ -7658,7 +7528,7 @@ function Set-isiNfsSettingsExport{
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER all_dirs
@@ -7784,7 +7654,7 @@ function Set-isiNfsSettingsExport{
 .PARAMETER write_unstable_reply
 	Specifies the synchronization type.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Specifies the zone in which the export is valid.
 
 .PARAMETER Force
@@ -7798,7 +7668,7 @@ function Set-isiNfsSettingsExport{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
@@ -7840,7 +7710,7 @@ function Set-isiNfsSettingsExport{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][int]$write_transfer_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$write_unstable_action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=43)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -7850,19 +7720,15 @@ function Set-isiNfsSettingsExport{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExport')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsExportv2')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/2/protocols/nfs/settings/export" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7870,9 +7736,11 @@ function Set-isiNfsSettingsExport{
 	}
 }
 
-Export-ModuleMember -Function Set-isiNfsSettingsExport
+Export-ModuleMember -Function Set-isiNfsSettingsExportv2
+Set-Alias Set-isiNfsSettingsExport -Value Set-isiNfsSettingsExportv2
+Export-ModuleMember -Alias Set-isiNfsSettingsExport
 
-function Set-isiNfsSettingsGlobal{
+function Set-isiNfsSettingsGlobalv3{
 <#
 .SYNOPSIS
 	Set Protocols Nfs Settings Global
@@ -7919,8 +7787,8 @@ function Set-isiNfsSettingsGlobal{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsGlobal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/nfs/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsGlobalv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/nfs/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -7928,7 +7796,7 @@ function Set-isiNfsSettingsGlobal{
 	}
 }
 
-Export-ModuleMember -Function Set-isiNfsSettingsGlobal
+Export-ModuleMember -Function Set-isiNfsSettingsGlobalv3
 
 function Set-isiNfsSettingsZone{
 <#
@@ -7986,7 +7854,7 @@ function Set-isiNfsSettingsZone{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNfsSettingsZone')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/zone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/2/protocols/nfs/settings/zone" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8026,7 +7894,7 @@ function Set-isiNtpServer{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$key,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8035,7 +7903,7 @@ function Set-isiNtpServer{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -8043,7 +7911,7 @@ function Set-isiNtpServer{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNtpServer')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ntp/servers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ntp/servers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8083,7 +7951,7 @@ function Set-isiNtpSettings{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$chimers,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$excluded,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$key_file,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$key_file,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8093,7 +7961,7 @@ function Set-isiNtpSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNtpSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ntp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/ntp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8113,6 +7981,7 @@ function Set-isiSmbLogLevel{
 
 .PARAMETER level
 	Valid SMB logging levels
+	Valid inputs: always,error,warning,info,verbose,debug,trace
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -8125,7 +7994,7 @@ function Set-isiSmbLogLevel{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('always','error','warning','info','verbose','debug','trace')][string]$level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8135,7 +8004,7 @@ function Set-isiSmbLogLevel{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbLogLevel')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/smb/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/smb/log-level" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8257,7 +8126,7 @@ function Set-isiSmbSettingsGlobalv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsGlobalv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/smb/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/protocols/smb/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8266,8 +8135,10 @@ function Set-isiSmbSettingsGlobalv1{
 }
 
 Export-ModuleMember -Function Set-isiSmbSettingsGlobalv1
+Set-Alias Set-isiSmbSettingsGlobal -Value Set-isiSmbSettingsGlobalv1
+Export-ModuleMember -Alias Set-isiSmbSettingsGlobal
 
-function Set-isiSmbSettingsGlobal{
+function Set-isiSmbSettingsGlobalv3{
 <#
 .SYNOPSIS
 	Set Protocols Smb Settings Global
@@ -8382,8 +8253,8 @@ function Set-isiSmbSettingsGlobal{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsGlobal')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/smb/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsGlobalv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/smb/settings/global" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8391,7 +8262,7 @@ function Set-isiSmbSettingsGlobal{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSmbSettingsGlobal
+Export-ModuleMember -Function Set-isiSmbSettingsGlobalv3
 
 function Set-isiSmbSettingsSharev1{
 <#
@@ -8401,7 +8272,7 @@ function Set-isiSmbSettingsSharev1{
 .DESCRIPTION
 	Modify one or more settings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains these share settings.
 
 .PARAMETER access_based_enumeration
@@ -8467,7 +8338,7 @@ function Set-isiSmbSettingsSharev1{
 .PARAMETER strict_locking
 	 Specifies whether byte range locks contend against SMB I/O.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Name of the access zone in which to update settings
 
 .PARAMETER Force
@@ -8481,7 +8352,7 @@ function Set-isiSmbSettingsSharev1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
@@ -8503,7 +8374,7 @@ function Set-isiSmbSettingsSharev1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$oplocks,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$strict_flush,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=23)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8513,19 +8384,15 @@ function Set-isiSmbSettingsSharev1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsSharev1')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/settings/share" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8534,8 +8401,10 @@ function Set-isiSmbSettingsSharev1{
 }
 
 Export-ModuleMember -Function Set-isiSmbSettingsSharev1
+Set-Alias Set-isiSmbSettingsShare -Value Set-isiSmbSettingsSharev1
+Export-ModuleMember -Alias Set-isiSmbSettingsShare
 
-function Set-isiSmbSettingsShare{
+function Set-isiSmbSettingsSharev3{
 <#
 .SYNOPSIS
 	Set Protocols Smb Settings Share
@@ -8543,7 +8412,7 @@ function Set-isiSmbSettingsShare{
 .DESCRIPTION
 	Modify one or more settings.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains these share settings.
 
 .PARAMETER access_based_enumeration
@@ -8627,7 +8496,7 @@ function Set-isiSmbSettingsShare{
 .PARAMETER strict_locking
 	 Specifies whether byte range locks contend against SMB I/O.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Name of the access zone in which to update settings
 
 .PARAMETER Force
@@ -8641,7 +8510,7 @@ function Set-isiSmbSettingsShare{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
@@ -8669,7 +8538,7 @@ function Set-isiSmbSettingsShare{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$strict_ca_lockout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$strict_flush,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=29)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8679,19 +8548,15 @@ function Set-isiSmbSettingsShare{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsShare')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/smb/settings/share" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSettingsSharev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/smb/settings/share" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8699,7 +8564,7 @@ function Set-isiSmbSettingsShare{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSmbSettingsShare
+Export-ModuleMember -Function Set-isiSmbSettingsSharev3
 
 function Set-isiSmbSharev1{
 <#
@@ -8715,7 +8580,7 @@ function Set-isiSmbSharev1{
 .PARAMETER name
 	Share name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER access_based_enumeration
@@ -8808,7 +8673,7 @@ function Set-isiSmbSharev1{
 .PARAMETER strict_locking
 	 Specifies whether byte range locks contend against SMB I/O.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Name of the access zone to which to move this SMB share
 
 .PARAMETER Force
@@ -8824,7 +8689,7 @@ function Set-isiSmbSharev1{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$access_based_enumeration_root_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_delete_readonly,
@@ -8855,7 +8720,7 @@ function Set-isiSmbSharev1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$run_as_root,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_flush,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=33)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -8864,31 +8729,27 @@ function Set-isiSmbSharev1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSharev1')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/shares/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/1/protocols/smb/shares/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -8897,8 +8758,10 @@ function Set-isiSmbSharev1{
 }
 
 Export-ModuleMember -Function Set-isiSmbSharev1
+Set-Alias Set-isiSmbShare -Value Set-isiSmbSharev1
+Export-ModuleMember -Alias Set-isiSmbShare
 
-function Set-isiSmbShare{
+function Set-isiSmbSharev3{
 <#
 .SYNOPSIS
 	Set Protocols Smb Share
@@ -8912,7 +8775,7 @@ function Set-isiSmbShare{
 .PARAMETER name
 	Share name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER access_based_enumeration
@@ -9023,7 +8886,7 @@ function Set-isiSmbShare{
 .PARAMETER strict_locking
 	 Specifies whether byte range locks contend against SMB I/O.
 
-.PARAMETER new_zone
+.PARAMETER zone
 	 Name of the access zone to which to move this SMB share
 
 .PARAMETER Force
@@ -9039,7 +8902,7 @@ function Set-isiSmbShare{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$access_based_enumeration_root_only,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_delete_readonly,
@@ -9076,7 +8939,7 @@ function Set-isiSmbShare{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$strict_ca_lockout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][bool]$strict_flush,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$new_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=39)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -9085,31 +8948,27 @@ function Set-isiSmbShare{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
+				$BoundParameters.Remove('access_zone') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
-				$BoundParameters = $BoundParameters.Remove('$zone')
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($new_zone){
-				$BoundParameters.Remove('new_zone') | out-null
-				$BoundParameters.Add('zone',$new_zone)
-			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbShare')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/smb/shares/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters)  -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSmbSharev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/protocols/smb/shares/$parameter1" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9117,7 +8976,7 @@ function Set-isiSmbShare{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSmbShare
+Export-ModuleMember -Function Set-isiSmbSharev3
 
 function Set-isiSnmpSettings{
 <#
@@ -9179,7 +9038,7 @@ function Set-isiSnmpSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnmpSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/snmp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/snmp/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9248,13 +9107,6 @@ function Set-isiSwiftAccount{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
-				$parameter1 = $id
-				$BoundParameters.Remove('id') | out-null
-			} else {
-				$parameter1 = $name
-				$BoundParameters.Remove('name') | out-null
-			}
 			if ($new_id){
 				$BoundParameters.Remove('new_id') | out-null
 				$BoundParameters.Add('id',$new_id)
@@ -9263,8 +9115,15 @@ function Set-isiSwiftAccount{
 				$BoundParameters.Remove('new_name') | out-null
 				$BoundParameters.Add('name',$new_name)
 			}
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSwiftAccount')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/swift/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/protocols/swift/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9329,7 +9188,7 @@ function Set-isiQuota{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -9337,7 +9196,7 @@ function Set-isiQuota{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuota')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9382,7 +9241,7 @@ function Set-isiQuotaNotifications{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($quota_id){
+			if ($psBoundParameters.ContainsKey('quota_id')){
 				$parameter1 = $quota_id
 				$BoundParameters.Remove('quota_id') | out-null
 			} else {
@@ -9390,7 +9249,7 @@ function Set-isiQuotaNotifications{
 				$BoundParameters.Remove('quota_name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaNotifications')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9454,11 +9313,11 @@ function Set-isiQuotaNotification{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$action_alert,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$action_email_address,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$action_email_address,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$action_email_owner,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$email_template,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][object]$holdoff,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$email_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$holdoff,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -9467,14 +9326,14 @@ function Set-isiQuotaNotification{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($quota_id){
+			if ($psBoundParameters.ContainsKey('quota_id')){
 				$parameter1 = $quota_id
 				$BoundParameters.Remove('quota_id') | out-null
 			} else {
 				$parameter1 = $quota_name
 				$BoundParameters.Remove('quota_name') | out-null
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -9482,7 +9341,7 @@ function Set-isiQuotaNotification{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaNotification')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/quotas/$parameter1/notifications/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9531,7 +9390,7 @@ function Set-isiQuotaSettingsMapping{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -9539,7 +9398,7 @@ function Set-isiQuotaSettingsMapping{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsMapping')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/mappings/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/mappings/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9595,11 +9454,11 @@ function Set-isiQuotaSettingsNotification{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$action_alert,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$action_email_address,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$action_email_address,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$action_email_owner,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$email_template,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$holdoff,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][object]$schedule,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$email_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$holdoff,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -9608,7 +9467,7 @@ function Set-isiQuotaSettingsNotification{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -9616,7 +9475,7 @@ function Set-isiQuotaSettingsNotification{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsNotification')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/notifications/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/notifications/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9674,7 +9533,7 @@ function Set-isiQuotaSettingsReports{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiQuotaSettingsReports')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/reports" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/quota/settings/reports" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9736,7 +9595,7 @@ function Set-isiRemoteSupport{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiRemoteSupport')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/remotesupport/connectemc" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/remotesupport/connectemc" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9789,19 +9648,19 @@ function Set-isiSnapshotAlias{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotAlias')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/aliases/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/aliases/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9870,19 +9729,19 @@ function Set-isiSnapshotSchedule{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotSchedule')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/schedules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/schedules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -9976,7 +9835,7 @@ function Set-isiSnapshotSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10022,9 +9881,9 @@ function Set-isiSnapshot{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$alias,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$expires,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alias,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$expires,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -10033,19 +9892,19 @@ function Set-isiSnapshot{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshot')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10102,14 +9961,14 @@ function Set-isiSnapshotLock{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($snapshot_id){
+			if ($psBoundParameters.ContainsKey('snapshot_id')){
 				$parameter1 = $snapshot_id
 				$BoundParameters.Remove('snapshot_id') | out-null
 			} else {
 				$parameter1 = $snapshot_name
 				$BoundParameters.Remove('snapshot_name') | out-null
 			}
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter2 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -10117,7 +9976,7 @@ function Set-isiSnapshotLock{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSnapshotLock')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1/locks/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/snapshot/snapshots/$parameter1/locks/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10127,7 +9986,7 @@ function Set-isiSnapshotLock{
 
 Export-ModuleMember -Function Set-isiSnapshotLock
 
-function Set-isiStoragepoolCompatibilitiesSSDActive{
+function Set-isiStoragepoolCompatibilitiesSSDActivev3{
 <#
 .SYNOPSIS
 	Set Storagepool Compatibilities Ssd Active
@@ -10174,15 +10033,15 @@ function Set-isiStoragepoolCompatibilitiesSSDActive{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolCompatibilitiesSSDActive')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/storagepool/compatibilities/ssd/active/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolCompatibilitiesSSDActivev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/storagepool/compatibilities/ssd/active/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10190,7 +10049,7 @@ function Set-isiStoragepoolCompatibilitiesSSDActive{
 	}
 }
 
-Export-ModuleMember -Function Set-isiStoragepoolCompatibilitiesSSDActive
+Export-ModuleMember -Function Set-isiStoragepoolCompatibilitiesSSDActivev3
 
 function Set-isiStoragepoolNodepoolv1{
 <#
@@ -10238,7 +10097,7 @@ function Set-isiStoragepoolNodepoolv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$lnns,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$protection_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$tier,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$tier,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -10247,19 +10106,19 @@ function Set-isiStoragepoolNodepoolv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolNodepoolv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/nodepools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/nodepools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10268,8 +10127,10 @@ function Set-isiStoragepoolNodepoolv1{
 }
 
 Export-ModuleMember -Function Set-isiStoragepoolNodepoolv1
+Set-Alias Set-isiStoragepoolNodepool -Value Set-isiStoragepoolNodepoolv1
+Export-ModuleMember -Alias Set-isiStoragepoolNodepool
 
-function Set-isiStoragepoolNodepool{
+function Set-isiStoragepoolNodepoolv3{
 <#
 .SYNOPSIS
 	Set Storagepool Nodepool
@@ -10315,7 +10176,7 @@ function Set-isiStoragepoolNodepool{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$lnns,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$protection_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$tier,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$tier,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -10324,19 +10185,19 @@ function Set-isiStoragepoolNodepool{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolNodepool')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/storagepool/nodepools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolNodepoolv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/storagepool/nodepools/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10344,7 +10205,7 @@ function Set-isiStoragepoolNodepool{
 	}
 }
 
-Export-ModuleMember -Function Set-isiStoragepoolNodepool
+Export-ModuleMember -Function Set-isiStoragepoolNodepoolv3
 
 function Set-isiStoragepoolSettings{
 <#
@@ -10356,9 +10217,11 @@ function Set-isiStoragepoolSettings{
 
 .PARAMETER automatically_manage_io_optimization
 	Automatically manage IO optimization settings on files.
+	Valid inputs: all,files_at_default,none
 
 .PARAMETER automatically_manage_protection
 	Automatically manage protection settings on files.
+	Valid inputs: all,files_at_default,none
 
 .PARAMETER global_namespace_acceleration_enabled
 	Optimize namespace operations by storing metadata on SSDs.
@@ -10398,8 +10261,8 @@ function Set-isiStoragepoolSettings{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$automatically_manage_io_optimization,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$automatically_manage_protection,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateSet('all','files_at_default','none')][string]$automatically_manage_io_optimization,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('all','files_at_default','none')][string]$automatically_manage_protection,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$global_namespace_acceleration_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$protect_directories_one_level_higher,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$spillover_enabled,
@@ -10418,7 +10281,7 @@ function Set-isiStoragepoolSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10471,19 +10334,19 @@ function Set-isiStoragepoolTier{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiStoragepoolTier')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/tiers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/storagepool/tiers/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10509,6 +10372,7 @@ function Set-isiSyncJobv1{
 
 .PARAMETER state
 	The state of the job.
+	Valid inputs: canceled,running,paused
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -10523,7 +10387,7 @@ function Set-isiSyncJobv1{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$state,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('canceled','running','paused')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -10532,7 +10396,7 @@ function Set-isiSyncJobv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -10540,7 +10404,7 @@ function Set-isiSyncJobv1{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncJobv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10549,8 +10413,10 @@ function Set-isiSyncJobv1{
 }
 
 Export-ModuleMember -Function Set-isiSyncJobv1
+Set-Alias Set-isiSyncJob -Value Set-isiSyncJobv1
+Export-ModuleMember -Alias Set-isiSyncJob
 
-function Set-isiSyncJob{
+function Set-isiSyncJobv3{
 <#
 .SYNOPSIS
 	Set Sync Job
@@ -10566,6 +10432,7 @@ function Set-isiSyncJob{
 
 .PARAMETER state
 	The state of the job.
+	Valid inputs: canceled,running,paused
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -10580,7 +10447,7 @@ function Set-isiSyncJob{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$state,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('canceled','running','paused')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -10589,15 +10456,15 @@ function Set-isiSyncJob{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncJob')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncJobv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/jobs/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10605,7 +10472,7 @@ function Set-isiSyncJob{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSyncJob
+Export-ModuleMember -Function Set-isiSyncJobv3
 
 function Set-isiSyncPolicyv1{
 <#
@@ -10623,6 +10490,7 @@ function Set-isiSyncPolicyv1{
 
 .PARAMETER action
 	If 'copy', source files will be copied to the target cluster.  If 'sync', the target directory will be made an image of the source directory:  Files and directories that have been deleted on the source, have been moved within the target directory, or no longer match the selection criteria will be deleted from the target directory.
+	Valid inputs: copy,sync
 
 .PARAMETER burst_mode
 	NOTE: This field should not be changed without the help of Isilon support.  Enable/disable UDP-based data transfer.
@@ -10635,6 +10503,7 @@ function Set-isiSyncPolicyv1{
 
 .PARAMETER conflicted
 	NOTE: This field should not be changed without the help of Isilon support.  If true, the most recent run of this policy encountered an error and this policy will not start any more scheduled jobs until this field is manually set back to 'false'.
+	Valid inputs: False
 
 .PARAMETER description
 	User-assigned description of this sync policy.
@@ -10662,6 +10531,7 @@ function Set-isiSyncPolicyv1{
 
 .PARAMETER log_level
 	Severity an event must reach before it is logged.
+	Valid inputs: fatal,error,notice,info,copy,debug,trace
 
 .PARAMETER log_removed_files
 	If true, the system will log any files or directories that are deleted due to a sync.
@@ -10745,11 +10615,11 @@ function Set-isiSyncPolicyv1{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('copy','sync')][string]$action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$burst_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$changelist,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$check_integrity,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$conflicted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('False')][bool]$conflicted,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$disable_file_split,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$disable_fofb,
@@ -10758,7 +10628,7 @@ function Set-isiSyncPolicyv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$expected_dataloss,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][object]$file_matching_pattern,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$force_interface,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$log_level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateSet('fatal','error','notice','info','copy','debug','trace')][string]$log_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$log_removed_files,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$password,
@@ -10790,19 +10660,19 @@ function Set-isiSyncPolicyv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncPolicyv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -10811,8 +10681,10 @@ function Set-isiSyncPolicyv1{
 }
 
 Export-ModuleMember -Function Set-isiSyncPolicyv1
+Set-Alias Set-isiSyncPolicy -Value Set-isiSyncPolicyv1
+Export-ModuleMember -Alias Set-isiSyncPolicy
 
-function Set-isiSyncPolicy{
+function Set-isiSyncPolicyv3{
 <#
 .SYNOPSIS
 	Set Sync Policy
@@ -10831,6 +10703,7 @@ function Set-isiSyncPolicy{
 
 .PARAMETER action
 	If 'copy', source files will be copied to the target cluster.  If 'sync', the target directory will be made an image of the source directory:  Files and directories that have been deleted on the source, have been moved within the target directory, or no longer match the selection criteria will be deleted from the target directory.
+	Valid inputs: copy,sync
 
 .PARAMETER burst_mode
 	NOTE: This field should not be changed without the help of Isilon support.  Enable/disable UDP-based data transfer.
@@ -10843,9 +10716,11 @@ function Set-isiSyncPolicy{
 
 .PARAMETER cloud_deep_copy
 	If set to deny, replicates all CloudPools smartlinks to the target cluster as smartlinks; if the target cluster does not support the smartlinks, the job will fail. If set to force, replicates all smartlinks to the target cluster as regular files. If set to allow, SyncIQ will attempt to replicate smartlinks to the target cluster as smartlinks; if the target cluster does not support the smartlinks, SyncIQ will replicate the smartlinks as regular files.
+	Valid inputs: deny,allow,force
 
 .PARAMETER conflicted
 	NOTE: This field should not be changed without the help of Isilon support.  If true, the most recent run of this policy encountered an error and this policy will not start any more scheduled jobs until this field is manually set back to 'false'.
+	Valid inputs: False
 
 .PARAMETER description
 	User-assigned description of this sync policy.
@@ -10876,6 +10751,7 @@ function Set-isiSyncPolicy{
 
 .PARAMETER log_level
 	Severity an event must reach before it is logged.
+	Valid inputs: fatal,error,notice,info,copy,debug,trace
 
 .PARAMETER log_removed_files
 	If true, the system will log any files or directories that are deleted due to a sync.
@@ -10978,12 +10854,12 @@ function Set-isiSyncPolicy{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$accelerated_failback,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('copy','sync')][string]$action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$burst_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$changelist,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$check_integrity,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$cloud_deep_copy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$conflicted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('deny','allow','force')][string]$cloud_deep_copy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('False')][bool]$conflicted,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$disable_file_split,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$disable_fofb,
@@ -10992,8 +10868,8 @@ function Set-isiSyncPolicy{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$expected_dataloss,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][object]$file_matching_pattern,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$force_interface,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][object]$job_delay,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$log_level,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$job_delay,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][ValidateSet('fatal','error','notice','info','copy','debug','trace')][string]$log_level,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$log_removed_files,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$password,
@@ -11001,7 +10877,7 @@ function Set-isiSyncPolicy{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$report_max_age,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$report_max_count,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$restrict_target_network,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][object]$rpo_alert,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$rpo_alert,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$schedule,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$skip_lookup,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$skip_when_source_unmodified,
@@ -11031,19 +10907,19 @@ function Set-isiSyncPolicy{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncPolicy')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncPolicyv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11051,7 +10927,7 @@ function Set-isiSyncPolicy{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSyncPolicy
+Export-ModuleMember -Function Set-isiSyncPolicyv3
 
 function Set-isiSyncRulev1{
 <#
@@ -11104,7 +10980,7 @@ function Set-isiSyncRulev1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -11112,7 +10988,7 @@ function Set-isiSyncRulev1{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncRulev1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/rules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/rules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11121,8 +10997,10 @@ function Set-isiSyncRulev1{
 }
 
 Export-ModuleMember -Function Set-isiSyncRulev1
+Set-Alias Set-isiSyncRule -Value Set-isiSyncRulev1
+Export-ModuleMember -Alias Set-isiSyncRule
 
-function Set-isiSyncRule{
+function Set-isiSyncRulev3{
 <#
 .SYNOPSIS
 	Set Sync Rule
@@ -11173,15 +11051,15 @@ function Set-isiSyncRule{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncRule')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/rules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncRulev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/rules/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11189,7 +11067,7 @@ function Set-isiSyncRule{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSyncRule
+Export-ModuleMember -Function Set-isiSyncRulev3
 
 function Set-isiSyncSettingsv1{
 <#
@@ -11222,6 +11100,7 @@ function Set-isiSyncSettingsv1{
 
 .PARAMETER service
 	Specifies if the SyncIQ service currently on, paused, or off.  If paused, all sync jobs will be paused.  If turned off, all jobs will be canceled.
+	Valid inputs: on,off,paused
 
 .PARAMETER source_network
 	Restricts replication policies on the local cluster to running on the specified subnet and pool.
@@ -11244,7 +11123,7 @@ function Set-isiSyncSettingsv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$report_max_age,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$report_max_count,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$restrict_target_network,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('on','off','paused')][string]$service,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][object]$source_network,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=9)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -11255,7 +11134,7 @@ function Set-isiSyncSettingsv1{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncSettingsv1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/sync/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11264,8 +11143,10 @@ function Set-isiSyncSettingsv1{
 }
 
 Export-ModuleMember -Function Set-isiSyncSettingsv1
+Set-Alias Set-isiSyncSettings -Value Set-isiSyncSettingsv1
+Export-ModuleMember -Alias Set-isiSyncSettings
 
-function Set-isiSyncSettings{
+function Set-isiSyncSettingsv3{
 <#
 .SYNOPSIS
 	Set Sync Settings
@@ -11299,6 +11180,7 @@ function Set-isiSyncSettings{
 
 .PARAMETER service
 	Specifies if the SyncIQ service currently on, paused, or off.  If paused, all sync jobs will be paused.  If turned off, all jobs will be canceled.
+	Valid inputs: on,off,paused
 
 .PARAMETER source_network
 	Restricts replication policies on the local cluster to running on the specified subnet and pool.
@@ -11322,7 +11204,7 @@ function Set-isiSyncSettings{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$report_max_count,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$restrict_target_network,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$rpo_alerts,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('on','off','paused')][string]$service,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][object]$source_network,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=10)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -11332,8 +11214,8 @@ function Set-isiSyncSettings{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiSyncSettingsv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/sync/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11341,7 +11223,7 @@ function Set-isiSyncSettings{
 	}
 }
 
-Export-ModuleMember -Function Set-isiSyncSettings
+Export-ModuleMember -Function Set-isiSyncSettingsv3
 
 function Set-isiUpgradeClusterUpgrade{
 <#
@@ -11375,7 +11257,7 @@ function Set-isiUpgradeClusterUpgrade{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiUpgradeClusterUpgrade')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/upgrade/cluster/upgrade" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/upgrade/cluster/upgrade" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11403,22 +11285,24 @@ function Set-isiWormDomain{
 	Specifies the autocommit time period for the domain in seconds.  After a file is in the domain without being modified for the specified time period, the file is automatically committed. If this parameter is set to null, there is no autocommit time, and files must be committed manually.
 
 .PARAMETER default_retention
-	
+	Specifies the default amount of time, in seconds, that a file in this domain will be protected for. The default retention period is applied if no retention date is manually set on the file. This parameter can also be set to 'forever', 'use_min' (which applies the 'min_retention' option), or 'use_max' (which applies the 'max_retention' option).
 
 .PARAMETER max_retention
-	
+	Specifies the maximum amount of time, in seconds, that a file in this domain will be protected. This setting will override the retention period of any file committed with a longer retention period. If this parameter is set to null, an infinite length retention period is set.
 
 .PARAMETER min_retention
-	
+	Specifies the minimum amount of time, in seconds, that a file in this domain will be protected. This setting will override the retention period of any file committed with a shorter retention period. If this parameter is set to null, this minimum value is not enforced. This parameter can also be set to 'forever'.
 
 .PARAMETER override_date
 	Specifies the override retention date for the domain. If this date is later than the retention date for any committed file, the file will remain protected until the override retention date.
 
 .PARAMETER privileged_delete
 	When this value is set to 'on', files in this domain can be deleted through the privileged delete feature. If this value is set to 'disabled', privileged file deletes are permanently disabled and cannot be turned on again.
+	Valid inputs: on,off,disabled
 
 .PARAMETER type
 	Specifies whether the domain is an enterprise domain or a compliance domain. Compliance domains can not be created on enterprise clusters. Enterprise and compliance domains can be created on compliance clusters.
+	Valid inputs: enterprise,compliance
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -11433,13 +11317,13 @@ function Set-isiWormDomain{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$autocommit_offset,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$default_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][object]$max_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$min_retention,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][object]$override_date,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$privileged_delete,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$autocommit_offset,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$default_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$max_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$min_retention,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$override_date,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('on','off','disabled')][string]$privileged_delete,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('enterprise','compliance')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -11448,7 +11332,7 @@ function Set-isiWormDomain{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
@@ -11456,7 +11340,7 @@ function Set-isiWormDomain{
 				$BoundParameters.Remove('name') | out-null
 			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiWormDomain')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/domains/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11498,7 +11382,7 @@ function Set-isiWormSettings{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiWormSettings')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/worm/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11635,19 +11519,19 @@ function Set-isiZonev1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiZonev1')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/zones/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/zones/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11656,8 +11540,10 @@ function Set-isiZonev1{
 }
 
 Export-ModuleMember -Function Set-isiZonev1
+Set-Alias Set-isiZone -Value Set-isiZonev1
+Export-ModuleMember -Alias Set-isiZone
 
-function Set-isiZone{
+function Set-isiZonev3{
 <#
 .SYNOPSIS
 	Set Zone
@@ -11748,19 +11634,19 @@ function Set-isiZone{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			if ($id){
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
 			} else {
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
-			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiZone')){
-			$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/zones/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiZonev3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/zones/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -11768,5 +11654,5 @@ function Set-isiZone{
 	}
 }
 
-Export-ModuleMember -Function Set-isiZone
+Export-ModuleMember -Function Set-isiZonev3
 

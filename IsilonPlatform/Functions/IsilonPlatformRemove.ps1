@@ -348,7 +348,7 @@ function Remove-isiAuthGroups{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER Force
@@ -364,7 +364,7 @@ function Remove-isiAuthGroups{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -378,8 +378,8 @@ function Remove-isiAuthGroups{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -414,7 +414,7 @@ function Remove-isiAuthGroup{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER Force
@@ -432,7 +432,7 @@ function Remove-isiAuthGroup{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -446,8 +446,8 @@ function Remove-isiAuthGroup{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -490,7 +490,7 @@ function Remove-isiAuthGroupMember{
 .PARAMETER provider
 	Filter group members by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter group members by zone.
 
 .PARAMETER Force
@@ -506,10 +506,10 @@ function Remove-isiAuthGroupMember{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$group_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$group_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -520,8 +520,8 @@ function Remove-isiAuthGroupMember{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('group_id')){
 				$parameter1 = $group_id
@@ -561,7 +561,7 @@ function Remove-isiAuthMappingIdentities{
 .PARAMETER remove
 	Delete mapping instead of flush mapping cache.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER Force
@@ -577,7 +577,7 @@ function Remove-isiAuthMappingIdentities{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('auto','external')][string]$filter,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$remove,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -591,8 +591,8 @@ function Remove-isiAuthMappingIdentities{
 			if ($remove){
 				$queryArguments += 'remove=' + $remove
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -630,7 +630,7 @@ function Remove-isiAuthMappingIdentities{
 .PARAMETER target
 	Target identity persona.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Optional zone.
 
 .PARAMETER Force
@@ -649,7 +649,7 @@ function Remove-isiAuthMappingIdentities{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$2way,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$remove,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$target,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=5)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -666,8 +666,8 @@ function Remove-isiAuthMappingIdentities{
 			if ($target){
 				$queryArguments += 'target=' + $target
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -734,8 +734,10 @@ function Remove-isiAuthProviderAdsv1{
 }
 
 Export-ModuleMember -Function Remove-isiAuthProviderAdsv1
+Set-Alias Remove-isiAuthProviderAds -Value Remove-isiAuthProviderAdsv1
+Export-ModuleMember -Alias Remove-isiAuthProviderAds
 
-function Remove-isiAuthProviderAds{
+function Remove-isiAuthProviderAdsv3{
 <#
 .SYNOPSIS
 	Remove Auth Provider Ads
@@ -773,7 +775,7 @@ function Remove-isiAuthProviderAds{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderAds')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderAdsv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/auth/providers/ads/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -781,7 +783,7 @@ function Remove-isiAuthProviderAds{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthProviderAds
+Export-ModuleMember -Function Remove-isiAuthProviderAdsv3
 
 function Remove-isiAuthProviderFile{
 <#
@@ -878,8 +880,10 @@ function Remove-isiAuthProviderKrb5v1{
 }
 
 Export-ModuleMember -Function Remove-isiAuthProviderKrb5v1
+Set-Alias Remove-isiAuthProviderKrb5 -Value Remove-isiAuthProviderKrb5v1
+Export-ModuleMember -Alias Remove-isiAuthProviderKrb5
 
-function Remove-isiAuthProviderKrb5{
+function Remove-isiAuthProviderKrb5v3{
 <#
 .SYNOPSIS
 	Remove Auth Provider Krb5
@@ -917,7 +921,7 @@ function Remove-isiAuthProviderKrb5{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderKrb5')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderKrb5v3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/auth/providers/krb5/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -925,7 +929,7 @@ function Remove-isiAuthProviderKrb5{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthProviderKrb5
+Export-ModuleMember -Function Remove-isiAuthProviderKrb5v3
 
 function Remove-isiAuthProviderLdapv1{
 <#
@@ -974,8 +978,10 @@ function Remove-isiAuthProviderLdapv1{
 }
 
 Export-ModuleMember -Function Remove-isiAuthProviderLdapv1
+Set-Alias Remove-isiAuthProviderLdap -Value Remove-isiAuthProviderLdapv1
+Export-ModuleMember -Alias Remove-isiAuthProviderLdap
 
-function Remove-isiAuthProviderLdap{
+function Remove-isiAuthProviderLdapv3{
 <#
 .SYNOPSIS
 	Remove Auth Provider Ldap
@@ -1013,7 +1019,7 @@ function Remove-isiAuthProviderLdap{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderLdap')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderLdapv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/auth/providers/ldap/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -1021,7 +1027,7 @@ function Remove-isiAuthProviderLdap{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthProviderLdap
+Export-ModuleMember -Function Remove-isiAuthProviderLdapv3
 
 function Remove-isiAuthProviderLocal{
 <#
@@ -1118,8 +1124,10 @@ function Remove-isiAuthProviderNisv1{
 }
 
 Export-ModuleMember -Function Remove-isiAuthProviderNisv1
+Set-Alias Remove-isiAuthProviderNis -Value Remove-isiAuthProviderNisv1
+Export-ModuleMember -Alias Remove-isiAuthProviderNis
 
-function Remove-isiAuthProviderNis{
+function Remove-isiAuthProviderNisv3{
 <#
 .SYNOPSIS
 	Remove Auth Provider Nis
@@ -1157,7 +1165,7 @@ function Remove-isiAuthProviderNis{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderNis')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProviderNisv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/auth/providers/nis/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -1165,7 +1173,7 @@ function Remove-isiAuthProviderNis{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthProviderNis
+Export-ModuleMember -Function Remove-isiAuthProviderNisv3
 
 function Remove-isiAuthRole{
 <#
@@ -1248,7 +1256,7 @@ function Remove-isiAuthRoleMember{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$role_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -1309,7 +1317,7 @@ function Remove-isiAuthRolePrivilege{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$role_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$role_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -1447,7 +1455,7 @@ function Remove-isiAuthUsers{
 .PARAMETER provider
 	Filter users by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter users by zone.
 
 .PARAMETER Force
@@ -1463,7 +1471,7 @@ function Remove-isiAuthUsers{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -1477,8 +1485,8 @@ function Remove-isiAuthUsers{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1513,7 +1521,7 @@ function Remove-isiAuthUser{
 .PARAMETER provider
 	Filter users by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter users by zone.
 
 .PARAMETER Force
@@ -1531,7 +1539,7 @@ function Remove-isiAuthUser{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$cached,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -1545,8 +1553,8 @@ function Remove-isiAuthUser{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -1566,7 +1574,7 @@ function Remove-isiAuthUser{
 
 Export-ModuleMember -Function Remove-isiAuthUser
 
-function Remove-isiAuthUserMemberOfGroup{
+function Remove-isiAuthUserMemberOfGroupv3{
 <#
 .SYNOPSIS
 	Remove Auth User Member Of Group
@@ -1589,7 +1597,7 @@ function Remove-isiAuthUserMemberOfGroup{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER Force
@@ -1605,10 +1613,10 @@ function Remove-isiAuthUserMemberOfGroup{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$user_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$user_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -1619,8 +1627,8 @@ function Remove-isiAuthUserMemberOfGroup{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
@@ -1635,7 +1643,7 @@ function Remove-isiAuthUserMemberOfGroup{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthUserMemberOfGroup')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthUserMemberOfGroupv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/auth/users/$parameter1/member-of/$parameter2" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -1643,9 +1651,9 @@ function Remove-isiAuthUserMemberOfGroup{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroup
+Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroupv3
 
-function Remove-isiAuthUserMemberOfGroup{
+function Remove-isiAuthUserMemberOfGroupv1{
 <#
 .SYNOPSIS
 	Remove Auth User Member Of Group
@@ -1668,7 +1676,7 @@ function Remove-isiAuthUserMemberOfGroup{
 .PARAMETER provider
 	Filter groups by provider.
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Filter groups by zone.
 
 .PARAMETER Force
@@ -1684,10 +1692,10 @@ function Remove-isiAuthUserMemberOfGroup{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$user_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$user_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -1698,8 +1706,8 @@ function Remove-isiAuthUserMemberOfGroup{
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
@@ -1714,7 +1722,7 @@ function Remove-isiAuthUserMemberOfGroup{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthUserMemberOfGroup')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthUserMemberOfGroupv1')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/1/auth/users/$parameter1/member_of/$parameter2" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -1722,7 +1730,7 @@ function Remove-isiAuthUserMemberOfGroup{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroup
+Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroupv1
 
 function Remove-isiCloudAccess{
 <#
@@ -1772,7 +1780,7 @@ function Remove-isiCloudAccess{
 
 Export-ModuleMember -Function Remove-isiCloudAccess
 
-function Remove-isiCloudAccount{
+function Remove-isiCloudAccountv3{
 <#
 .SYNOPSIS
 	Remove Cloud Account
@@ -1810,7 +1818,7 @@ function Remove-isiCloudAccount{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudAccount')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudAccountv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/cloud/accounts/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -1818,9 +1826,9 @@ function Remove-isiCloudAccount{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiCloudAccount
+Export-ModuleMember -Function Remove-isiCloudAccountv3
 
-function Remove-isiCloudPool{
+function Remove-isiCloudPoolv3{
 <#
 .SYNOPSIS
 	Remove Cloud Pool
@@ -1858,7 +1866,7 @@ function Remove-isiCloudPool{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudPool')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudPoolv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/cloud/pools/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -1866,7 +1874,7 @@ function Remove-isiCloudPool{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiCloudPool
+Export-ModuleMember -Function Remove-isiCloudPoolv3
 
 function Remove-isiCloudSettingsReportingEula{
 <#
@@ -1946,7 +1954,7 @@ function Remove-isiEventAlertConditions{
 .DESCRIPTION
 	Bulk delete of alert conditions.
 
-.PARAMETER channel`
+.PARAMETER channel
 	Delete only conditions for this channel
 
 .PARAMETER Force
@@ -1969,7 +1977,7 @@ function Remove-isiEventAlertConditions{
 	Process{
 			$queryArguments = @()
 			if ($channel){
-				$queryArguments += 'channel`=' + $channel
+				$queryArguments += 'channel=' + $channel
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2175,8 +2183,10 @@ function Remove-isiFsaResultv1{
 }
 
 Export-ModuleMember -Function Remove-isiFsaResultv1
+Set-Alias Remove-isiFsaResult -Value Remove-isiFsaResultv1
+Export-ModuleMember -Alias Remove-isiFsaResult
 
-function Remove-isiFsaResult{
+function Remove-isiFsaResultv3{
 <#
 .SYNOPSIS
 	Remove Fsa Result
@@ -2214,7 +2224,7 @@ function Remove-isiFsaResult{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiFsaResult')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiFsaResultv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/fsa/results/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -2222,7 +2232,7 @@ function Remove-isiFsaResult{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiFsaResult
+Export-ModuleMember -Function Remove-isiFsaResultv3
 
 function Remove-isiFsaSettings{
 <#
@@ -2412,7 +2422,7 @@ function Remove-isiNetworkGroupnetSubnet{
 .PARAMETER id
 	 id
 
-.PARAMETER force
+.PARAMETER enforce
 	force deleting this subnet even if pools in other subnets rely on this subnet's SC VIP.
 
 .PARAMETER Force
@@ -2428,7 +2438,7 @@ function Remove-isiNetworkGroupnetSubnet{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$groupnet_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$groupnet_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1)][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -2458,76 +2468,6 @@ function Remove-isiNetworkGroupnetSubnet{
 }
 
 Export-ModuleMember -Function Remove-isiNetworkGroupnetSubnet
-
-function Remove-{
-<#
-.SYNOPSIS
-	Remove 
-
-.DESCRIPTION
-	Delete a network pool.
-
-.PARAMETER Force
-	Force deletion of object without prompt
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=0)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-')){
-				$ISIObject = Send-isiAPI -Method DELETE -Resource "" -Cluster $Cluster
-			}
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function Remove-
-
-function Remove-{
-<#
-.SYNOPSIS
-	Remove 
-
-.DESCRIPTION
-	Delete a network rule.
-
-.PARAMETER Force
-	Force deletion of object without prompt
-
-.PARAMETER Cluster
-	Name of Isilon Cluster
-
-.NOTES
-
-#>
-	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
-		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=0)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
-		)
-	Begin{
-	}
-	Process{
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-')){
-				$ISIObject = Send-isiAPI -Method DELETE -Resource "" -Cluster $Cluster
-			}
-	}
-	End{
-	}
-}
-
-Export-ModuleMember -Function Remove-
 
 function Remove-isiHdfsProxyUser{
 <#
@@ -2610,7 +2550,7 @@ function Remove-isiHdfsProxyUserMember{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$proxyuser_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$proxyuser_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -3028,7 +2968,7 @@ function Remove-isiNfsAlias{
 .PARAMETER name
 	Aid name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER Force
@@ -3044,7 +2984,7 @@ function Remove-isiNfsAlias{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3052,8 +2992,8 @@ function Remove-isiNfsAlias{
 	}
 	Process{
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -3113,7 +3053,7 @@ function Remove-isiNfsExportv1{
 
 Export-ModuleMember -Function Remove-isiNfsExportv1
 
-function Remove-isiNfsExport{
+function Remove-isiNfsExportv2{
 <#
 .SYNOPSIS
 	Remove Nfs Export
@@ -3124,7 +3064,7 @@ function Remove-isiNfsExport{
 .PARAMETER id
 	 id
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Access zone
 
 .PARAMETER Force
@@ -3139,7 +3079,7 @@ function Remove-isiNfsExport{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3147,14 +3087,14 @@ function Remove-isiNfsExport{
 	}
 	Process{
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsExport')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsExportv2')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/2/protocols/nfs/exports/$parameter1" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -3162,7 +3102,9 @@ function Remove-isiNfsExport{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiNfsExport
+Export-ModuleMember -Function Remove-isiNfsExportv2
+Set-Alias Remove-isiNfsExport -Value Remove-isiNfsExportv2
+Export-ModuleMember -Alias Remove-isiNfsExport
 
 function Remove-isiNfsNlmSessionv1{
 <#
@@ -3259,8 +3201,10 @@ function Remove-isiNfsNlmSessionv2{
 }
 
 Export-ModuleMember -Function Remove-isiNfsNlmSessionv2
+Set-Alias Remove-isiNfsNlmSession -Value Remove-isiNfsNlmSessionv2
+Export-ModuleMember -Alias Remove-isiNfsNlmSession
 
-function Remove-isiNfsNlmSession{
+function Remove-isiNfsNlmSessionv3{
 <#
 .SYNOPSIS
 	Remove Protocols Nfs Nlm Session
@@ -3280,7 +3224,7 @@ function Remove-isiNfsNlmSession{
 .PARAMETER refresh
 	if set to true, the client will be given a chance to reclaim its locks before they are destroyed
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Represents an extant auth zone
 
 .PARAMETER Force
@@ -3298,7 +3242,7 @@ function Remove-isiNfsNlmSession{
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$ip,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$refresh,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3312,8 +3256,8 @@ function Remove-isiNfsNlmSession{
 			if ($refresh){
 				$queryArguments += 'refresh=' + $refresh
 			}
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -3323,7 +3267,7 @@ function Remove-isiNfsNlmSession{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsNlmSession')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNfsNlmSessionv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/protocols/nfs/nlm/sessions/$parameter1" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -3331,7 +3275,7 @@ function Remove-isiNfsNlmSession{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiNfsNlmSession
+Export-ModuleMember -Function Remove-isiNfsNlmSessionv3
 
 function Remove-isiNtpServers{
 <#
@@ -3617,7 +3561,7 @@ function Remove-isiSmbSessionComputerUser{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$computer,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1)][ValidateNotNullOrEmpty()][string]$user,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$user,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3674,8 +3618,10 @@ function Remove-isiSmbSharesv1{
 }
 
 Export-ModuleMember -Function Remove-isiSmbSharesv1
+Set-Alias Remove-isiSmbShares -Value Remove-isiSmbSharesv1
+Export-ModuleMember -Alias Remove-isiSmbShares
 
-function Remove-isiSmbShares{
+function Remove-isiSmbSharesv3{
 <#
 .SYNOPSIS
 	Remove Protocols Smb Shares
@@ -3700,7 +3646,7 @@ function Remove-isiSmbShares{
 	Begin{
 	}
 	Process{
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSmbShares')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSmbSharesv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/protocols/smb/shares" -Cluster $Cluster
 			}
 	}
@@ -3708,7 +3654,7 @@ function Remove-isiSmbShares{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSmbShares
+Export-ModuleMember -Function Remove-isiSmbSharesv3
 
 function Remove-isiSmbSharev1{
 <#
@@ -3724,7 +3670,7 @@ function Remove-isiSmbSharev1{
 .PARAMETER name
 	Share name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER Force
@@ -3740,7 +3686,7 @@ function Remove-isiSmbSharev1{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3748,8 +3694,8 @@ function Remove-isiSmbSharev1{
 	}
 	Process{
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -3768,8 +3714,10 @@ function Remove-isiSmbSharev1{
 }
 
 Export-ModuleMember -Function Remove-isiSmbSharev1
+Set-Alias Remove-isiSmbShare -Value Remove-isiSmbSharev1
+Export-ModuleMember -Alias Remove-isiSmbShare
 
-function Remove-isiSmbShare{
+function Remove-isiSmbSharev3{
 <#
 .SYNOPSIS
 	Remove Protocols Smb Share
@@ -3783,7 +3731,7 @@ function Remove-isiSmbShare{
 .PARAMETER name
 	Share name
 
-.PARAMETER zone
+.PARAMETER access_zone
 	Zone which contains this share.
 
 .PARAMETER Force
@@ -3799,7 +3747,7 @@ function Remove-isiSmbShare{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -3807,8 +3755,8 @@ function Remove-isiSmbShare{
 	}
 	Process{
 			$queryArguments = @()
-			if ($zone){
-				$queryArguments += 'zone=' + $zone
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -3818,7 +3766,7 @@ function Remove-isiSmbShare{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSmbShare')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSmbSharev3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/protocols/smb/shares/$parameter1" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -3826,7 +3774,7 @@ function Remove-isiSmbShare{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSmbShare
+Export-ModuleMember -Function Remove-isiSmbSharev3
 
 function Remove-isiSwiftAccount{
 <#
@@ -4094,7 +4042,7 @@ function Remove-isiQuotaNotification{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$quota_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -4515,7 +4463,7 @@ function Remove-isiSnapshotRepstate{
 
 Export-ModuleMember -Function Remove-isiSnapshotRepstate
 
-function Remove-isiSnapshotSchedules{
+function Remove-isiSnapshotSchedulesv3{
 <#
 .SYNOPSIS
 	Remove Snapshot Schedules
@@ -4540,7 +4488,7 @@ function Remove-isiSnapshotSchedules{
 	Begin{
 	}
 	Process{
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSnapshotSchedules')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSnapshotSchedulesv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/snapshot/schedules" -Cluster $Cluster
 			}
 	}
@@ -4548,7 +4496,7 @@ function Remove-isiSnapshotSchedules{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSnapshotSchedules
+Export-ModuleMember -Function Remove-isiSnapshotSchedulesv3
 
 function Remove-isiSnapshotSchedule{
 <#
@@ -4781,7 +4729,7 @@ function Remove-isiSnapshotLock{
 		param (
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$snapshot_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$snapshot_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -4888,8 +4836,10 @@ function Remove-isiStoragepoolCompatibilitiesSSDActiveIdv1{
 }
 
 Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesSSDActiveIdv1
+Set-Alias Remove-isiStoragepoolCompatibilitiesSSDActiveId -Value Remove-isiStoragepoolCompatibilitiesSSDActiveIdv1
+Export-ModuleMember -Alias Remove-isiStoragepoolCompatibilitiesSSDActiveId
 
-function Remove-isiStoragepoolCompatibilitiesSSDActive{
+function Remove-isiStoragepoolCompatibilitiesSSDActivev3{
 <#
 .SYNOPSIS
 	Remove Storagepool Compatibilities Ssd Active
@@ -4927,7 +4877,7 @@ function Remove-isiStoragepoolCompatibilitiesSSDActive{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiStoragepoolCompatibilitiesSSDActive')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiStoragepoolCompatibilitiesSSDActivev3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/storagepool/compatibilities/ssd/active/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -4935,7 +4885,7 @@ function Remove-isiStoragepoolCompatibilitiesSSDActive{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesSSDActive
+Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesSSDActivev3
 
 function Remove-isiStoragepoolNodepoolv1{
 <#
@@ -4984,8 +4934,10 @@ function Remove-isiStoragepoolNodepoolv1{
 }
 
 Export-ModuleMember -Function Remove-isiStoragepoolNodepoolv1
+Set-Alias Remove-isiStoragepoolNodepool -Value Remove-isiStoragepoolNodepoolv1
+Export-ModuleMember -Alias Remove-isiStoragepoolNodepool
 
-function Remove-isiStoragepoolNodepool{
+function Remove-isiStoragepoolNodepoolv3{
 <#
 .SYNOPSIS
 	Remove Storagepool Nodepool
@@ -5023,7 +4975,7 @@ function Remove-isiStoragepoolNodepool{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiStoragepoolNodepool')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiStoragepoolNodepoolv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/storagepool/nodepools/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -5031,7 +4983,7 @@ function Remove-isiStoragepoolNodepool{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiStoragepoolNodepool
+Export-ModuleMember -Function Remove-isiStoragepoolNodepoolv3
 
 function Remove-isiStoragepoolTiers{
 <#
@@ -5124,7 +5076,7 @@ function Remove-isiSyncPoliciesv1{
 .DESCRIPTION
 	Delete all SyncIQ policies.
 
-.PARAMETER force
+.PARAMETER enforce
 	Ignore any running jobs when preparing to delete a policy.
 
 .PARAMETER local_only
@@ -5168,8 +5120,10 @@ function Remove-isiSyncPoliciesv1{
 }
 
 Export-ModuleMember -Function Remove-isiSyncPoliciesv1
+Set-Alias Remove-isiSyncPolicies -Value Remove-isiSyncPoliciesv1
+Export-ModuleMember -Alias Remove-isiSyncPolicies
 
-function Remove-isiSyncPolicies{
+function Remove-isiSyncPoliciesv3{
 <#
 .SYNOPSIS
 	Remove Sync Policies
@@ -5177,7 +5131,7 @@ function Remove-isiSyncPolicies{
 .DESCRIPTION
 	Delete all SyncIQ policies.
 
-.PARAMETER force
+.PARAMETER enforce
 	Ignore any running jobs when preparing to delete a policy.
 
 .PARAMETER local_only
@@ -5212,7 +5166,7 @@ function Remove-isiSyncPolicies{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncPolicies')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncPoliciesv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/sync/policies" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -5220,7 +5174,7 @@ function Remove-isiSyncPolicies{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSyncPolicies
+Export-ModuleMember -Function Remove-isiSyncPoliciesv3
 
 function Remove-isiSyncPolicyv1{
 <#
@@ -5236,7 +5190,7 @@ function Remove-isiSyncPolicyv1{
 .PARAMETER name
 	Policy name
 
-.PARAMETER force
+.PARAMETER enforce
 	Ignore any running jobs when preparing to delete a policy.
 
 .PARAMETER local_only
@@ -5287,8 +5241,10 @@ function Remove-isiSyncPolicyv1{
 }
 
 Export-ModuleMember -Function Remove-isiSyncPolicyv1
+Set-Alias Remove-isiSyncPolicy -Value Remove-isiSyncPolicyv1
+Export-ModuleMember -Alias Remove-isiSyncPolicy
 
-function Remove-isiSyncPolicy{
+function Remove-isiSyncPolicyv3{
 <#
 .SYNOPSIS
 	Remove Sync Policy
@@ -5302,7 +5258,7 @@ function Remove-isiSyncPolicy{
 .PARAMETER name
 	Policy name
 
-.PARAMETER force
+.PARAMETER enforce
 	Ignore any running jobs when preparing to delete a policy.
 
 .PARAMETER local_only
@@ -5344,7 +5300,7 @@ function Remove-isiSyncPolicy{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncPolicy')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncPolicyv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/sync/policies/$parameter1" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -5352,7 +5308,7 @@ function Remove-isiSyncPolicy{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSyncPolicy
+Export-ModuleMember -Function Remove-isiSyncPolicyv3
 
 function Remove-isiSyncRulesv1{
 <#
@@ -5400,8 +5356,10 @@ function Remove-isiSyncRulesv1{
 }
 
 Export-ModuleMember -Function Remove-isiSyncRulesv1
+Set-Alias Remove-isiSyncRules -Value Remove-isiSyncRulesv1
+Export-ModuleMember -Alias Remove-isiSyncRules
 
-function Remove-isiSyncRules{
+function Remove-isiSyncRulesv3{
 <#
 .SYNOPSIS
 	Remove Sync Rules
@@ -5438,7 +5396,7 @@ function Remove-isiSyncRules{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncRules')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncRulesv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/sync/rules" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -5446,7 +5404,7 @@ function Remove-isiSyncRules{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSyncRules
+Export-ModuleMember -Function Remove-isiSyncRulesv3
 
 function Remove-isiSyncRulev1{
 <#
@@ -5495,8 +5453,10 @@ function Remove-isiSyncRulev1{
 }
 
 Export-ModuleMember -Function Remove-isiSyncRulev1
+Set-Alias Remove-isiSyncRule -Value Remove-isiSyncRulev1
+Export-ModuleMember -Alias Remove-isiSyncRule
 
-function Remove-isiSyncRule{
+function Remove-isiSyncRulev3{
 <#
 .SYNOPSIS
 	Remove Sync Rule
@@ -5534,7 +5494,7 @@ function Remove-isiSyncRule{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncRule')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSyncRulev3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/sync/rules/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -5542,7 +5502,7 @@ function Remove-isiSyncRule{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiSyncRule
+Export-ModuleMember -Function Remove-isiSyncRulev3
 
 function Remove-isiSyncTargetPolicy{
 <#
@@ -5558,7 +5518,7 @@ function Remove-isiSyncTargetPolicy{
 .PARAMETER name
 	Policy name
 
-.PARAMETER force
+.PARAMETER enforce
 	Ignore any running jobs when preparing to delete the policy target association.
 
 .PARAMETER Force
@@ -5716,8 +5676,10 @@ function Remove-isiZonev1{
 }
 
 Export-ModuleMember -Function Remove-isiZonev1
+Set-Alias Remove-isiZone -Value Remove-isiZonev1
+Export-ModuleMember -Alias Remove-isiZone
 
-function Remove-isiZone{
+function Remove-isiZonev3{
 <#
 .SYNOPSIS
 	Remove Zone
@@ -5755,7 +5717,7 @@ function Remove-isiZone{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiZone')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiZonev3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/zones/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -5763,5 +5725,5 @@ function Remove-isiZone{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiZone
+Export-ModuleMember -Function Remove-isiZonev3
 
