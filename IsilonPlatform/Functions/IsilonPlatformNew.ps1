@@ -5730,6 +5730,129 @@ function New-isiSmbSharesv3{
 .DESCRIPTION
 	Create a new share.
 
+.PARAMETER access_based_enumeration
+	Only enumerate files and folders the requesting user has access to.
+
+.PARAMETER access_based_enumeration_root_only
+	Access-based enumeration on only the root directory of the share.
+
+.PARAMETER allow_delete_readonly
+	Allow deletion of read-only files in the share.
+
+.PARAMETER allow_execute_always
+	Allows users to execute files they have read rights for.
+
+.PARAMETER allow_variable_expansion
+	Allow automatic expansion of variables for home directories.
+
+.PARAMETER auto_create_directory
+	Automatically create home directories.
+
+.PARAMETER browsable
+	Share is visible in net view and the browse list.
+
+.PARAMETER ca_timeout
+	Persistent open timeout for the share.
+
+.PARAMETER ca_write_integrity
+	Specify the level of write-integrity on continuously available shares.
+	Valid inputs: none,write-read-coherent,full
+
+.PARAMETER change_notify
+	Level of change notification alerts on the share.
+	Valid inputs: all,norecurse,none
+
+.PARAMETER continuously_available
+	Specify if persistent opens are allowed on the share.
+
+.PARAMETER create_path
+	Create path if does not exist.
+
+.PARAMETER create_permissions
+	Create permissions for new files and directories in share.
+	Valid inputs: default acl,inherit mode bits,use create mask and mode
+
+.PARAMETER csc_policy
+	Client-side caching policy for the shares.
+	Valid inputs: manual,documents,programs,none
+
+.PARAMETER description
+	Description for this SMB share.
+
+.PARAMETER directory_create_mask
+	Directory create mask bits.
+
+.PARAMETER directory_create_mode
+	Directory create mode bits.
+
+.PARAMETER file_create_mask
+	File create mask bits.
+
+.PARAMETER file_create_mode
+	File create mode bits.
+
+.PARAMETER file_filtering_enabled
+	Enables file filtering on this zone.
+
+.PARAMETER file_filter_extensions
+	Specifies the list of file extensions.
+
+.PARAMETER file_filter_type
+	Specifies if filter list is for deny or allow. Default is deny.
+	Valid inputs: deny,allow
+
+.PARAMETER hide_dot_files
+	Hide files and directories that begin with a period '.'.
+
+.PARAMETER host_acl
+	An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
+
+.PARAMETER impersonate_guest
+	Specify the condition in which user access is done as the guest account.
+	Valid inputs: always,bad user,never
+
+.PARAMETER impersonate_user
+	User account to be used as guest account.
+
+.PARAMETER inheritable_path_acl
+	Set the inheritable ACL on the share path.
+
+.PARAMETER mangle_byte_start
+	Specifies the wchar_t starting point for automatic byte mangling.
+
+.PARAMETER mangle_map
+	Character mangle map.
+
+.PARAMETER name
+	Share name.
+
+.PARAMETER ntfs_acl_support
+	Support NTFS ACLs on files and directories.
+
+.PARAMETER oplocks
+	Support oplocks.
+
+.PARAMETER path
+	Path of share within /ifs.
+
+.PARAMETER permissions
+	Specifies an ordered list of permission modifications.
+
+.PARAMETER run_as_root
+	Allow account to run as root.
+
+.PARAMETER strict_ca_lockout
+	Specifies if persistent opens would do strict lockout on the share.
+
+.PARAMETER strict_flush
+	Handle SMB flush operations.
+
+.PARAMETER strict_locking
+	Specifies whether byte range locks contend against SMB I/O.
+
+.PARAMETER zone
+	Name of the access zone to which to move this SMB share
+
 .PARAMETER access_zone
 	Zone which contains this share.
 
@@ -5741,8 +5864,47 @@ function New-isiSmbSharesv3{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_variable_expansion,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$auto_create_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$browsable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$ca_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('none','write-read-coherent','full')][string]$ca_write_integrity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$continuously_available,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$create_path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$file_filtering_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][array]$file_filter_extensions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][ValidateSet('deny','allow')][string]$file_filter_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$inheritable_path_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$mangle_map,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$oplocks,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][array]$run_as_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$strict_ca_lockout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$strict_locking,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateNotNullOrEmpty()][string]$access_zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
