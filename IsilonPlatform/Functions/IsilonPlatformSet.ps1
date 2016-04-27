@@ -75,7 +75,7 @@ function Set-isiAntivirusPolicy{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -143,7 +143,7 @@ function Set-isiAntivirusQuarantine{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$quarantined,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -206,7 +206,7 @@ function Set-isiAntivirusServer{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -336,28 +336,28 @@ function Set-isiAuditSettingsGlobalv1{
 	Modify Global Audit settings.
 
 .PARAMETER audited_zones
-	 Specifies zones that are audited when the protocol_auditing_enabled property is enabled.
+	Specifies zones that are audited when the protocol_auditing_enabled property is enabled.
 
 .PARAMETER cee_log_time
-	 Specifies that events past a certain date are forwarded by the audit CEE forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS'.
+	Specifies that events past a certain date are forwarded by the audit CEE forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS'.
 
 .PARAMETER cee_server_uris
-	 Specifies a list of Common Event Enabler (CEE) server URIs. Protocol audit logs are sent to these URIs for external processing.
+	Specifies a list of Common Event Enabler (CEE) server URIs. Protocol audit logs are sent to these URIs for external processing.
 
 .PARAMETER config_auditing_enabled
-	 Specifies whether logging for API configuration changes are enabled.
+	Specifies whether logging for API configuration changes are enabled.
 
 .PARAMETER config_syslog_enabled
-	 Specifies whether configuration audit syslog messages are forwarded.
+	Specifies whether configuration audit syslog messages are forwarded.
 
 .PARAMETER hostname
-	 Specifies the hostname that is reported in protocol events from this cluster.
+	Specifies the hostname that is reported in protocol events from this cluster.
 
 .PARAMETER protocol_auditing_enabled
-	 Specifies if logging for the I/O stream is enabled.
+	Specifies if logging for the I/O stream is enabled.
 
 .PARAMETER syslog_log_time
-	 Specifies that events past a specified date are forwarded by the audit syslog forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS' format
+	Specifies that events past a specified date are forwarded by the audit syslog forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS' format
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -407,23 +407,23 @@ function Set-isiAuditSettingsv3{
 .DESCRIPTION
 	Modify per-Access Zone Audit settings.
 
-.PARAMETER access_zone
-	Access zone which contains audit settings.
-
 .PARAMETER audit_failure
-	 Filter of protocol operations to Audit when they fail.
+	Filter of protocol operations to Audit when they fail.
 
 .PARAMETER audit_success
-	 Filter of protocol operations to Audit when they succeed.
+	Filter of protocol operations to Audit when they succeed.
 
 .PARAMETER syslog_audit_events
-	 Filter of Audit operations to forward to syslog.
+	Filter of Audit operations to forward to syslog.
 
 .PARAMETER syslog_forwarding_enabled
-	 Enables forwarding of events to syslog.
+	Enables forwarding of events to syslog.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Access zone which contains audit settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -433,12 +433,12 @@ function Set-isiAuditSettingsv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$audit_failure,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$audit_success,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$syslog_audit_events,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$syslog_forwarding_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=5)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$audit_failure,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$audit_success,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$syslog_audit_events,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$syslog_forwarding_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -474,28 +474,28 @@ function Set-isiAuditSettingsGlobal{
 	Modify Global Audit settings.
 
 .PARAMETER audited_zones
-	 Specifies zones that are audited when the protocol_auditing_enabled property is enabled.
+	Specifies zones that are audited when the protocol_auditing_enabled property is enabled.
 
 .PARAMETER cee_log_time
-	 Specifies that events past a certain date are forwarded by the audit CEE forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS'.
+	Specifies that events past a certain date are forwarded by the audit CEE forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS'.
 
 .PARAMETER cee_server_uris
-	 Specifies a list of Common Event Enabler (CEE) server URIs. Protocol audit logs are sent to these URIs for external processing.
+	Specifies a list of Common Event Enabler (CEE) server URIs. Protocol audit logs are sent to these URIs for external processing.
 
 .PARAMETER config_auditing_enabled
-	 Specifies whether logging for API configuration changes are enabled.
+	Specifies whether logging for API configuration changes are enabled.
 
 .PARAMETER config_syslog_enabled
-	 Specifies whether configuration audit syslog messages are forwarded.
+	Specifies whether configuration audit syslog messages are forwarded.
 
 .PARAMETER hostname
-	 Specifies the hostname that is reported in protocol events from this cluster.
+	Specifies the hostname that is reported in protocol events from this cluster.
 
 .PARAMETER protocol_auditing_enabled
-	 Specifies if logging for the I/O stream is enabled.
+	Specifies if logging for the I/O stream is enabled.
 
 .PARAMETER syslog_log_time
-	 Specifies that events past a specified date are forwarded by the audit syslog forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS' format
+	Specifies that events past a specified date are forwarded by the audit syslog forwarder. Format these events as follows: 'Topic@YYYY-MM-DD HH:MM:SS' format
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -566,7 +566,7 @@ function Set-isiAuditTopic{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$max_cached_messages,
@@ -614,17 +614,17 @@ function Set-isiAuthGroup{
 .PARAMETER name
 	Group name
 
-.PARAMETER provider
-	Optional provider type.
-
-.PARAMETER access_zone
-	Optional zone.
-
 .PARAMETER gid
 	Specifies the numeric group identifier.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER provider
+	Optional provider type.
+
+.PARAMETER access_zone
+	Optional zone.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -634,12 +634,12 @@ function Set-isiAuthGroup{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$gid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$provider,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -728,17 +728,17 @@ function Set-isiAuthMappingImport{
 .DESCRIPTION
 	Set or update a list of mappings between two personae.
 
-.PARAMETER replace
-	Specify whether existing mappings should be replaced. The default behavior is to leave existing mappings intact and return an error.
-
-.PARAMETER access_zone
-	Optional zone.
-
 .PARAMETER identities
 	
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER replace
+	Specify whether existing mappings should be replaced. The default behavior is to leave existing mappings intact and return an error.
+
+.PARAMETER access_zone
+	Optional zone.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -748,10 +748,10 @@ function Set-isiAuthMappingImport{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][object]$replace,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$identities,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$identities,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][object]$replace,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -835,88 +835,89 @@ function Set-isiAuthProviderAdsv1{
 	Provider name
 
 .PARAMETER allocate_gids
-	 Allocates an ID for an unmapped Active Directory (ADS) group. ADS groups without GIDs can be proactively assigned a GID by the ID mapper. If the ID mapper option is disabled, GIDs are not proactively assigned, and when a primary group for a user does not include a GID, the system may allocate one. 
+	Allocates an ID for an unmapped Active Directory (ADS) group. ADS groups without GIDs can be proactively assigned a GID by the ID mapper. If the ID mapper option is disabled, GIDs are not proactively assigned, and when a primary group for a user does not include a GID, the system may allocate one. 
 
 .PARAMETER allocate_uids
-	 Allocates a user ID for an unmapped Active Directory (ADS) user. ADS users without UIDs can be proactively assigned a UID by the ID mapper. IF the ID mapper option is disabled, UIDs are not proactively assigned, and when an identify for a user does not include a UID, the system may allocate one.
+	Allocates a user ID for an unmapped Active Directory (ADS) user. ADS users without UIDs can be proactively assigned a UID by the ID mapper. IF the ID mapper option is disabled, UIDs are not proactively assigned, and when an identify for a user does not include a UID, the system may allocate one.
 
 .PARAMETER assume_default_domain
-	 Enables lookup of unqualified user names in the primary domain.
+	Enables lookup of unqualified user names in the primary domain.
 
 .PARAMETER authentication
-	 Enables authentication and identity management through the authentication provider.
+	Enables authentication and identity management through the authentication provider.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER controller_time
-	 Specifies the current time for the domain controllers.
+	Specifies the current time for the domain controllers.
 
 .PARAMETER create_home_directory
-	 Automatically creates a home directory on the first login.
+	Automatically creates a home directory on the first login.
 
 .PARAMETER domain_controller
 	Specifies the domain controller to which the authentication service should send requests
 
 .PARAMETER domain_offline_alerts
-	 Sends an alert if the domain goes offline.
+	Sends an alert if the domain goes offline.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER ignored_trusted_domains
-	 Includes trusted domains when 'ignore_all_trusts' is set to false.
+	Includes trusted domains when 'ignore_all_trusts' is set to false.
 
 .PARAMETER ignore_all_trusts
-	 If set to true, ignores all trusted domains.
+	If set to true, ignores all trusted domains.
 
 .PARAMETER include_trusted_domains
-	 Includes trusted domains when 'ignore_all_trusts' is set to true.
+	Includes trusted domains when 'ignore_all_trusts' is set to true.
 
 .PARAMETER ldap_sign_and_seal
-	 Enables encryption and signing on LDAP requests.
+	Enables encryption and signing on LDAP requests.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER lookup_domains
-	 Limits user and group lookups to the specified domains.
+	Limits user and group lookups to the specified domains.
 
 .PARAMETER lookup_groups
-	 Looks up AD groups in other providers before allocating a group ID.
+	Looks up AD groups in other providers before allocating a group ID.
 
 .PARAMETER lookup_normalize_groups
-	 Normalizes AD group names to lowercase before look up.
+	Normalizes AD group names to lowercase before look up.
 
 .PARAMETER lookup_normalize_users
-	 Normalize AD user names to lowercase before look up.
+	Normalize AD user names to lowercase before look up.
 
 .PARAMETER lookup_users
-	 Looks up AD users in other providers before allocating a user ID.
+	Looks up AD users in other providers before allocating a user ID.
 
 .PARAMETER machine_password_changes
-	 Enables periodic changes of the machine password for security.
+	Enables periodic changes of the machine password for security.
 
 .PARAMETER machine_password_lifespan
-	 Sets maximum age of a password in seconds.
+	Sets maximum age of a password in seconds.
 
 .PARAMETER node_dc_affinity
-	 Specifies the domain controller for which the node has affinity.
+	Specifies the domain controller for which the node has affinity.
 
 .PARAMETER node_dc_affinity_timeout
-	 Specifies the timeout for the domain controller for which the local node has affinity.
+	Specifies the timeout for the domain controller for which the local node has affinity.
 
 .PARAMETER nss_enumeration
-	 Enables the Active Directory provider to respond to 'getpwent' and 'getgrent' requests.
+	Enables the Active Directory provider to respond to 'getpwent' and 'getgrent' requests.
 
 .PARAMETER reset_schannel
 	Resets the secure channel to the primary domain.
 
 .PARAMETER sfu_support
-	 Specifies whether to support RFC 2307 attributes on ADS domain controllers.
+	Specifies whether to support RFC 2307 attributes on ADS domain controllers.
+	Valid inputs: none,rfc2307
 
 .PARAMETER store_sfu_mappings
-	 Stores SFU mappings permanently in the ID mapper.
+	Stores SFU mappings permanently in the ID mapper.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -929,7 +930,7 @@ function Set-isiAuthProviderAdsv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$allocate_gids,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allocate_uids,
@@ -957,7 +958,7 @@ function Set-isiAuthProviderAdsv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$node_dc_affinity_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$nss_enumeration,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$reset_schannel,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$sfu_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][ValidateSet('none','rfc2307')][string]$sfu_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$store_sfu_mappings,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=29)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -1002,118 +1003,119 @@ function Set-isiAuthProviderAdsv3{
 	Id name
 
 .PARAMETER allocate_gids
-	 Allocates an ID for an unmapped Active Directory (ADS) group. ADS groups without GIDs can be proactively assigned a GID by the ID mapper. If the ID mapper option is disabled, GIDs are not proactively assigned, and when a primary group for a user does not include a GID, the system may allocate one. 
+	Allocates an ID for an unmapped Active Directory (ADS) group. ADS groups without GIDs can be proactively assigned a GID by the ID mapper. If the ID mapper option is disabled, GIDs are not proactively assigned, and when a primary group for a user does not include a GID, the system may allocate one. 
 
 .PARAMETER allocate_uids
-	 Allocates a user ID for an unmapped Active Directory (ADS) user. ADS users without UIDs can be proactively assigned a UID by the ID mapper. IF the ID mapper option is disabled, UIDs are not proactively assigned, and when an identify for a user does not include a UID, the system may allocate one.
+	Allocates a user ID for an unmapped Active Directory (ADS) user. ADS users without UIDs can be proactively assigned a UID by the ID mapper. IF the ID mapper option is disabled, UIDs are not proactively assigned, and when an identify for a user does not include a UID, the system may allocate one.
 
 .PARAMETER assume_default_domain
-	 Enables lookup of unqualified user names in the primary domain.
+	Enables lookup of unqualified user names in the primary domain.
 
 .PARAMETER authentication
-	 Enables authentication and identity management through the authentication provider.
+	Enables authentication and identity management through the authentication provider.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER controller_time
-	 Specifies the current time for the domain controllers.
+	Specifies the current time for the domain controllers.
 
 .PARAMETER create_home_directory
-	 Automatically creates a home directory on the first login.
+	Automatically creates a home directory on the first login.
 
 .PARAMETER domain_controller
 	Specifies the domain controller to which the authentication service should send requests
 
 .PARAMETER domain_offline_alerts
-	 Sends an alert if the domain goes offline.
+	Sends an alert if the domain goes offline.
 
 .PARAMETER findable_groups
-	 Sets list of groups that can be resolved.
+	Sets list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Sets list of users that can be resolved.
+	Sets list of users that can be resolved.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER ignored_trusted_domains
-	 Includes trusted domains when 'ignore_all_trusts' is set to false.
+	Includes trusted domains when 'ignore_all_trusts' is set to false.
 
 .PARAMETER ignore_all_trusts
-	 If set to true, ignores all trusted domains.
+	If set to true, ignores all trusted domains.
 
 .PARAMETER include_trusted_domains
-	 Includes trusted domains when 'ignore_all_trusts' is set to true.
+	Includes trusted domains when 'ignore_all_trusts' is set to true.
 
 .PARAMETER instance
-	 Specifies Active Directory provider instnace.
+	Specifies Active Directory provider instnace.
 
 .PARAMETER ldap_sign_and_seal
-	 Enables encryption and signing on LDAP requests.
+	Enables encryption and signing on LDAP requests.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER lookup_domains
-	 Limits user and group lookups to the specified domains.
+	Limits user and group lookups to the specified domains.
 
 .PARAMETER lookup_groups
-	 Looks up AD groups in other providers before allocating a group ID.
+	Looks up AD groups in other providers before allocating a group ID.
 
 .PARAMETER lookup_normalize_groups
-	 Normalizes AD group names to lowercase before look up.
+	Normalizes AD group names to lowercase before look up.
 
 .PARAMETER lookup_normalize_users
-	 Normalize AD user names to lowercase before look up.
+	Normalize AD user names to lowercase before look up.
 
 .PARAMETER lookup_users
-	 Looks up AD users in other providers before allocating a user ID.
+	Looks up AD users in other providers before allocating a user ID.
 
 .PARAMETER machine_name
-	 Specifies name to join AD as.
+	Specifies name to join AD as.
 
 .PARAMETER machine_password_changes
-	 Enables periodic changes of the machine password for security.
+	Enables periodic changes of the machine password for security.
 
 .PARAMETER machine_password_lifespan
-	 Sets maximum age of a password in seconds.
+	Sets maximum age of a password in seconds.
 
 .PARAMETER node_dc_affinity
-	 Specifies the domain controller for which the node has affinity.
+	Specifies the domain controller for which the node has affinity.
 
 .PARAMETER node_dc_affinity_timeout
-	 Specifies the timeout for the domain controller for which the local node has affinity.
+	Specifies the timeout for the domain controller for which the local node has affinity.
 
 .PARAMETER nss_enumeration
-	 Enables the Active Directory provider to respond to 'getpwent' and 'getgrent' requests.
+	Enables the Active Directory provider to respond to 'getpwent' and 'getgrent' requests.
 
 .PARAMETER password
-	 Specifies the password used during domain join.
+	Specifies the password used during domain join.
 
 .PARAMETER reset_schannel
 	Resets the secure channel to the primary domain.
 
 .PARAMETER restrict_findable
-	 Check the provider for filtered lists of findable and unfindable users and groups.
+	Check the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER sfu_support
-	 Specifies whether to support RFC 2307 attributes on ADS domain controllers.
+	Specifies whether to support RFC 2307 attributes on ADS domain controllers.
+	Valid inputs: none,rfc2307
 
 .PARAMETER spns
-	 Currently configured SPNs.
+	Currently configured SPNs.
 
 .PARAMETER store_sfu_mappings
-	 Stores SFU mappings permanently in the ID mapper.
+	Stores SFU mappings permanently in the ID mapper.
 
 .PARAMETER unfindable_groups
-	 Specifies groups that cannot be resolved by the provider.
+	Specifies groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER user
-	 Specifies the user name that has permission to join a machine to the given domain.
+	Specifies the user name that has permission to join a machine to the given domain.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -1126,7 +1128,7 @@ function Set-isiAuthProviderAdsv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$allocate_gids,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allocate_uids,
@@ -1160,7 +1162,7 @@ function Set-isiAuthProviderAdsv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][string]$password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$reset_schannel,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][bool]$restrict_findable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][string]$sfu_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][ValidateSet('none','rfc2307')][string]$sfu_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][array]$spns,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$store_sfu_mappings,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][array]$unfindable_groups,
@@ -1207,100 +1209,101 @@ function Set-isiAuthProviderFile{
 	Provider name
 
 .PARAMETER authentication
-	 Enables authentication and identity mapping through the authentication provider.
+	Enables authentication and identity mapping through the authentication provider.
 
 .PARAMETER create_home_directory
-	 Automatically creates a home directory on the first login.
+	Automatically creates a home directory on the first login.
 
 .PARAMETER enabled
-	 Enables the file provider.
+	Enables the file provider.
 
 .PARAMETER enumerate_groups
-	 Enables the provider to enumerate groups.
+	Enables the provider to enumerate groups.
 
 .PARAMETER enumerate_users
-	 Enables the provider to enumerate users.
+	Enables the provider to enumerate users.
 
 .PARAMETER findable_groups
-	 Specifies the list of groups that can be resolved.
+	Specifies the list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Specifies the list of users that can be resolved.
+	Specifies the list of users that can be resolved.
 
 .PARAMETER group_domain
-	 Specifies the domain for this provider through which domains are qualified.
+	Specifies the domain for this provider through which domains are qualified.
 
 .PARAMETER group_file
-	 Specifies the location of the file that contains information about the group.
+	Specifies the location of the file that contains information about the group.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER listable_groups
-	 Specifies the groups that can be viewed in the provider.
+	Specifies the groups that can be viewed in the provider.
 
 .PARAMETER listable_users
-	 Specifies the users that can be viewed in the provider.
+	Specifies the users that can be viewed in the provider.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER modifiable_groups
-	 Specifies the groups that can be modified in the provider.
+	Specifies the groups that can be modified in the provider.
 
 .PARAMETER modifiable_users
-	 Specifies the users that can be modified in the provider.
+	Specifies the users that can be modified in the provider.
 
 .PARAMETER new_name
 	Specifies the name of the file provider.
 
 .PARAMETER netgroup_file
-	 Specifies the path to a netgroups replacement file.
+	Specifies the path to a netgroups replacement file.
 
 .PARAMETER normalize_groups
-	 Normalizes group names to lowercase before look up.
+	Normalizes group names to lowercase before look up.
 
 .PARAMETER normalize_users
-	 Normalizes user names to lowercase before look up.
+	Normalizes user names to lowercase before look up.
 
 .PARAMETER ntlm_support
-	 Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
 
 .PARAMETER password_file
-	 Specifies the location of the file containing information about users.
+	Specifies the location of the file containing information about users.
 
 .PARAMETER provider_domain
-	 Specifies the domain for the provider.
+	Specifies the domain for the provider.
 
 .PARAMETER restrict_findable
-	 If true, checks the provider for filtered lists of findable and unfindable users and groups.
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER restrict_listable
-	 If true, checks the provider for filtered lists of listable and unlistable users and groups.
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
 
 .PARAMETER restrict_modifiable
-	 If true, checks the provider for filtered lists of modifiable and unmodifiable users and groups.
+	If true, checks the provider for filtered lists of modifiable and unmodifiable users and groups.
 
 .PARAMETER unfindable_groups
-	 Specifies groups that cannot be resolved by the provider.
+	Specifies groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER unlistable_groups
-	 Specifies a group that cannot be listed by the provider.
+	Specifies a group that cannot be listed by the provider.
 
 .PARAMETER unlistable_users
-	 Specifies a user that cannot be listed by the provider.
+	Specifies a user that cannot be listed by the provider.
 
 .PARAMETER unmodifiable_groups
-	 Specifies a group that cannot be modified by the provider.
+	Specifies a group that cannot be modified by the provider.
 
 .PARAMETER unmodifiable_users
-	 Specifies a user that cannot be modified by the provider.
+	Specifies a user that cannot be modified by the provider.
 
 .PARAMETER user_domain
-	 Specifies the domain for this provider through which users are qualified.
+	Specifies the domain for this provider through which users are qualified.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -1313,7 +1316,7 @@ function Set-isiAuthProviderFile{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$create_home_directory,
@@ -1334,7 +1337,7 @@ function Set-isiAuthProviderFile{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$netgroup_file,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$normalize_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$normalize_users,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][ValidateSet('all','v2only','none')][string]$ntlm_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$password_file,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$provider_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$restrict_findable,
@@ -1426,7 +1429,7 @@ function Set-isiAuthProviderKrb5v1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$keytab_entries,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$keytab_file,
@@ -1517,7 +1520,7 @@ function Set-isiAuthProviderKrb5v3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$keytab_entries,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$keytab_file,
@@ -1572,190 +1575,196 @@ function Set-isiAuthProviderLdapv1{
 	Provider name
 
 .PARAMETER alternate_security_identities_attribute
-	 Specifies the attribute name used when searching for alternate security identities.
+	Specifies the attribute name used when searching for alternate security identities.
 
 .PARAMETER authentication
-	 If true, enables authentication and identity management through the authentication provider.
+	If true, enables authentication and identity management through the authentication provider.
 
 .PARAMETER balance_servers
-	 If true, connects the provider to a random server.
+	If true, connects the provider to a random server.
 
 .PARAMETER base_dn
-	 Specifies the root of the tree in which to search identities.
+	Specifies the root of the tree in which to search identities.
 
 .PARAMETER bind_dn
-	 Specifies the distinguished name for binding to the LDAP server.
+	Specifies the distinguished name for binding to the LDAP server.
 
 .PARAMETER bind_mechanism
-	 Specifies which bind mechanism to use when connecting to an LDAP server. The only supported option is the 'simple' value.
+	Specifies which bind mechanism to use when connecting to an LDAP server. The only supported option is the 'simple' value.
+	Valid inputs: simple,gssapi,digest-md5
 
 .PARAMETER bind_password
-	 Specifies the password for the distinguished name for binding to the LDAP server.
+	Specifies the password for the distinguished name for binding to the LDAP server.
 
 .PARAMETER bind_timeout
-	 Specifies the timeout in seconds when binding to an LDAP server.
+	Specifies the timeout in seconds when binding to an LDAP server.
 
 .PARAMETER certificate_authority_file
-	 Specifies the path to the root certificates file.
+	Specifies the path to the root certificates file.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER cn_attribute
-	 Specifies the canonical name.
+	Specifies the canonical name.
 
 .PARAMETER create_home_directory
-	 Automatically create the home directory on the first login.
+	Automatically create the home directory on the first login.
 
 .PARAMETER crypt_password_attribute
-	 Specifies the hashed password value.
+	Specifies the hashed password value.
 
 .PARAMETER email_attribute
-	 Specifies the LDAP Email attribute.
+	Specifies the LDAP Email attribute.
 
 .PARAMETER enabled
-	 If true, enables the LDAP provider.
+	If true, enables the LDAP provider.
 
 .PARAMETER enumerate_groups
-	 If true, allows the provider to enumerate groups.
+	If true, allows the provider to enumerate groups.
 
 .PARAMETER enumerate_users
-	 If true, allows the provider to enumerate users.
+	If true, allows the provider to enumerate users.
 
 .PARAMETER findable_groups
-	 Specifies the list of groups that can be resolved.
+	Specifies the list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Specifies the list of users that can be resolved.
+	Specifies the list of users that can be resolved.
 
 .PARAMETER gecos_attribute
-	 Specifies the LDAP GECOS attribute.
+	Specifies the LDAP GECOS attribute.
 
 .PARAMETER gid_attribute
-	 Specifies the LDAP GID attribute.
+	Specifies the LDAP GID attribute.
 
 .PARAMETER group_base_dn
-	 Specifies the distinguished name of the entry where LDAP searches for groups are started.
+	Specifies the distinguished name of the entry where LDAP searches for groups are started.
 
 .PARAMETER group_domain
-	 Specifies the domain for this provider through which groups are qualified.
+	Specifies the domain for this provider through which groups are qualified.
 
 .PARAMETER group_filter
-	 Specifies the LDAP filter for group objects.
+	Specifies the LDAP filter for group objects.
 
 .PARAMETER group_members_attribute
-	 Specifies the LDAP Group Members attribute.
+	Specifies the LDAP Group Members attribute.
 
 .PARAMETER group_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER homedir_attribute
-	 Specifies the LDAP Homedir attribute.
+	Specifies the LDAP Homedir attribute.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER ignore_tls_errors
-	 If true, continues over secure connections even if identity checks fail.
+	If true, continues over secure connections even if identity checks fail.
 
 .PARAMETER listable_groups
-	 Specifies the groups that can be viewed in the provider.
+	Specifies the groups that can be viewed in the provider.
 
 .PARAMETER listable_users
-	 Specifies the users that can be viewed in the provider.
+	Specifies the users that can be viewed in the provider.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER member_of_attribute
-	 Specifies the LDAP Query Member Of attribute, which performs reverse membership queries.
+	Specifies the LDAP Query Member Of attribute, which performs reverse membership queries.
 
 .PARAMETER new_name
 	Specifies the name of the LDAP provider.
 
 .PARAMETER name_attribute
-	 Specifies the LDAP UID attribute, which is used as the login name.
+	Specifies the LDAP UID attribute, which is used as the login name.
 
 .PARAMETER netgroup_base_dn
-	 Specifies the distinguished name of the entry where LDAP searches for netgroups are started.
+	Specifies the distinguished name of the entry where LDAP searches for netgroups are started.
 
 .PARAMETER netgroup_filter
-	 Specifies the LDAP filter for netgroup objects.
+	Specifies the LDAP filter for netgroup objects.
 
 .PARAMETER netgroup_members_attribute
-	 Specifies the LDAP Netgroup Members attribute.
+	Specifies the LDAP Netgroup Members attribute.
 
 .PARAMETER netgroup_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER netgroup_triple_attribute
-	 Specifies the LDAP Netgroup Triple attribute.
+	Specifies the LDAP Netgroup Triple attribute.
 
 .PARAMETER normalize_groups
-	 Normalizes group names to lowercase before look up.
+	Normalizes group names to lowercase before look up.
 
 .PARAMETER normalize_users
-	 Normalizes user names to lowercase before look up.
+	Normalizes user names to lowercase before look up.
 
 .PARAMETER ntlm_support
-	 Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
 
 .PARAMETER nt_password_attribute
-	 Specifies the LDAP NT Password attribute.
+	Specifies the LDAP NT Password attribute.
 
 .PARAMETER provider_domain
-	 Specifies the provider domain.
+	Specifies the provider domain.
 
 .PARAMETER require_secure_connection
-	 Determines whether to continue over a non-TLS connection.
+	Determines whether to continue over a non-TLS connection.
 
 .PARAMETER restrict_findable
-	 If true, checks the provider for filtered lists of findable and unfindable users and groups.
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER restrict_listable
-	 If true, checks the provider for filtered lists of listable and unlistable users and groups.
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
 
 .PARAMETER search_scope
-	 Specifies the default depth from the base DN to perform LDAP searches.
+	Specifies the default depth from the base DN to perform LDAP searches.
+	Valid inputs: base,onelevel,subtree,children
 
 .PARAMETER search_timeout
-	 Specifies the search timeout period in seconds.
+	Specifies the search timeout period in seconds.
 
 .PARAMETER server_uris
-	 Specifies the server URIs.
+	Specifies the server URIs.
 
 .PARAMETER shell_attribute
-	 Specifies the the LDAP Shell attribute.
+	Specifies the the LDAP Shell attribute.
 
 .PARAMETER uid_attribute
-	 Specifies the the LDAP UID Number attribute.
+	Specifies the the LDAP UID Number attribute.
 
 .PARAMETER unfindable_groups
-	 Specifies the groups that cannot be resolved by the provider.
+	Specifies the groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER unique_group_members_attribute
-	 Sets the LDAP Unique Group Members attribute.
+	Sets the LDAP Unique Group Members attribute.
 
 .PARAMETER unlistable_groups
-	 Specifies a group that cannot be listed by the provider.
+	Specifies a group that cannot be listed by the provider.
 
 .PARAMETER unlistable_users
-	 Specifies a user that cannot be listed by the provider.
+	Specifies a user that cannot be listed by the provider.
 
 .PARAMETER user_base_dn
-	 Specifies the distinguished name of the entry at which to start LDAP searches for users.
+	Specifies the distinguished name of the entry at which to start LDAP searches for users.
 
 .PARAMETER user_domain
-	 Specifies the domain for this provider through which users are qualified.
+	Specifies the domain for this provider through which users are qualified.
 
 .PARAMETER user_filter
-	 Specifies the LDAP filter for user objects.
+	Specifies the LDAP filter for user objects.
 
 .PARAMETER user_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -1768,14 +1777,14 @@ function Set-isiAuthProviderLdapv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alternate_security_identities_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$balance_servers,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$bind_dn,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$bind_mechanism,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('simple','gssapi','digest-md5')][string]$bind_mechanism,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$bind_password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$bind_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$certificate_authority_file,
@@ -1795,7 +1804,7 @@ function Set-isiAuthProviderLdapv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][string]$group_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$group_filter,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$group_members_attribute,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$group_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][ValidateSet('default','base','onelevel','subtree','children')][string]$group_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$homedir_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$home_directory_template,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$ignore_tls_errors,
@@ -1808,17 +1817,17 @@ function Set-isiAuthProviderLdapv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$netgroup_base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][string]$netgroup_filter,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$netgroup_members_attribute,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][string]$netgroup_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('default','base','onelevel','subtree','children')][string]$netgroup_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$netgroup_triple_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][bool]$normalize_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][bool]$normalize_users,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][ValidateSet('all','v2only','none')][string]$ntlm_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][string]$nt_password_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][string]$provider_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][bool]$require_secure_connection,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][bool]$restrict_findable,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][bool]$restrict_listable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][ValidateSet('base','onelevel','subtree','children')][string]$search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][int]$search_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=51)][array]$server_uris,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][string]$shell_attribute,
@@ -1831,7 +1840,7 @@ function Set-isiAuthProviderLdapv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=59)][string]$user_base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=60)][string]$user_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=61)][string]$user_filter,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=62)][string]$user_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=62)][ValidateSet('default','base','onelevel','subtree','children')][string]$user_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=63)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=64)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -1879,190 +1888,196 @@ function Set-isiAuthProviderLdapv3{
 	Id name
 
 .PARAMETER alternate_security_identities_attribute
-	 Specifies the attribute name used when searching for alternate security identities.
+	Specifies the attribute name used when searching for alternate security identities.
 
 .PARAMETER authentication
-	 If true, enables authentication and identity management through the authentication provider.
+	If true, enables authentication and identity management through the authentication provider.
 
 .PARAMETER balance_servers
-	 If true, connects the provider to a random server.
+	If true, connects the provider to a random server.
 
 .PARAMETER base_dn
-	 Specifies the root of the tree in which to search identities.
+	Specifies the root of the tree in which to search identities.
 
 .PARAMETER bind_dn
-	 Specifies the distinguished name for binding to the LDAP server.
+	Specifies the distinguished name for binding to the LDAP server.
 
 .PARAMETER bind_mechanism
-	 Specifies which bind mechanism to use when connecting to an LDAP server. The only supported option is the 'simple' value.
+	Specifies which bind mechanism to use when connecting to an LDAP server. The only supported option is the 'simple' value.
+	Valid inputs: simple,gssapi,digest-md5
 
 .PARAMETER bind_password
-	 Specifies the password for the distinguished name for binding to the LDAP server.
+	Specifies the password for the distinguished name for binding to the LDAP server.
 
 .PARAMETER bind_timeout
-	 Specifies the timeout in seconds when binding to an LDAP server.
+	Specifies the timeout in seconds when binding to an LDAP server.
 
 .PARAMETER certificate_authority_file
-	 Specifies the path to the root certificates file.
+	Specifies the path to the root certificates file.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER cn_attribute
-	 Specifies the canonical name.
+	Specifies the canonical name.
 
 .PARAMETER create_home_directory
-	 Automatically create the home directory on the first login.
+	Automatically create the home directory on the first login.
 
 .PARAMETER crypt_password_attribute
-	 Specifies the hashed password value.
+	Specifies the hashed password value.
 
 .PARAMETER email_attribute
-	 Specifies the LDAP Email attribute.
+	Specifies the LDAP Email attribute.
 
 .PARAMETER enabled
-	 If true, enables the LDAP provider.
+	If true, enables the LDAP provider.
 
 .PARAMETER enumerate_groups
-	 If true, allows the provider to enumerate groups.
+	If true, allows the provider to enumerate groups.
 
 .PARAMETER enumerate_users
-	 If true, allows the provider to enumerate users.
+	If true, allows the provider to enumerate users.
 
 .PARAMETER findable_groups
-	 Specifies the list of groups that can be resolved.
+	Specifies the list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Specifies the list of users that can be resolved.
+	Specifies the list of users that can be resolved.
 
 .PARAMETER gecos_attribute
-	 Specifies the LDAP GECOS attribute.
+	Specifies the LDAP GECOS attribute.
 
 .PARAMETER gid_attribute
-	 Specifies the LDAP GID attribute.
+	Specifies the LDAP GID attribute.
 
 .PARAMETER group_base_dn
-	 Specifies the distinguished name of the entry where LDAP searches for groups are started.
+	Specifies the distinguished name of the entry where LDAP searches for groups are started.
 
 .PARAMETER group_domain
-	 Specifies the domain for this provider through which groups are qualified.
+	Specifies the domain for this provider through which groups are qualified.
 
 .PARAMETER group_filter
-	 Specifies the LDAP filter for group objects.
+	Specifies the LDAP filter for group objects.
 
 .PARAMETER group_members_attribute
-	 Specifies the LDAP Group Members attribute.
+	Specifies the LDAP Group Members attribute.
 
 .PARAMETER group_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER homedir_attribute
-	 Specifies the LDAP Homedir attribute.
+	Specifies the LDAP Homedir attribute.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER ignore_tls_errors
-	 If true, continues over secure connections even if identity checks fail.
+	If true, continues over secure connections even if identity checks fail.
 
 .PARAMETER listable_groups
-	 Specifies the groups that can be viewed in the provider.
+	Specifies the groups that can be viewed in the provider.
 
 .PARAMETER listable_users
-	 Specifies the users that can be viewed in the provider.
+	Specifies the users that can be viewed in the provider.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER member_of_attribute
-	 Specifies the LDAP Query Member Of attribute, which performs reverse membership queries.
+	Specifies the LDAP Query Member Of attribute, which performs reverse membership queries.
 
 .PARAMETER new_name
 	Specifies the name of the LDAP provider.
 
 .PARAMETER name_attribute
-	 Specifies the LDAP UID attribute, which is used as the login name.
+	Specifies the LDAP UID attribute, which is used as the login name.
 
 .PARAMETER netgroup_base_dn
-	 Specifies the distinguished name of the entry where LDAP searches for netgroups are started.
+	Specifies the distinguished name of the entry where LDAP searches for netgroups are started.
 
 .PARAMETER netgroup_filter
-	 Specifies the LDAP filter for netgroup objects.
+	Specifies the LDAP filter for netgroup objects.
 
 .PARAMETER netgroup_members_attribute
-	 Specifies the LDAP Netgroup Members attribute.
+	Specifies the LDAP Netgroup Members attribute.
 
 .PARAMETER netgroup_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER netgroup_triple_attribute
-	 Specifies the LDAP Netgroup Triple attribute.
+	Specifies the LDAP Netgroup Triple attribute.
 
 .PARAMETER normalize_groups
-	 Normalizes group names to lowercase before look up.
+	Normalizes group names to lowercase before look up.
 
 .PARAMETER normalize_users
-	 Normalizes user names to lowercase before look up.
+	Normalizes user names to lowercase before look up.
 
 .PARAMETER ntlm_support
-	 Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
 
 .PARAMETER nt_password_attribute
-	 Specifies the LDAP NT Password attribute.
+	Specifies the LDAP NT Password attribute.
 
 .PARAMETER provider_domain
-	 Specifies the provider domain.
+	Specifies the provider domain.
 
 .PARAMETER require_secure_connection
-	 Determines whether to continue over a non-TLS connection.
+	Determines whether to continue over a non-TLS connection.
 
 .PARAMETER restrict_findable
-	 If true, checks the provider for filtered lists of findable and unfindable users and groups.
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER restrict_listable
-	 If true, checks the provider for filtered lists of listable and unlistable users and groups.
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
 
 .PARAMETER search_scope
-	 Specifies the default depth from the base DN to perform LDAP searches.
+	Specifies the default depth from the base DN to perform LDAP searches.
+	Valid inputs: base,onelevel,subtree,children
 
 .PARAMETER search_timeout
-	 Specifies the search timeout period in seconds.
+	Specifies the search timeout period in seconds.
 
 .PARAMETER server_uris
-	 Specifies the server URIs.
+	Specifies the server URIs.
 
 .PARAMETER shell_attribute
-	 Specifies the the LDAP Shell attribute.
+	Specifies the the LDAP Shell attribute.
 
 .PARAMETER uid_attribute
-	 Specifies the the LDAP UID Number attribute.
+	Specifies the the LDAP UID Number attribute.
 
 .PARAMETER unfindable_groups
-	 Specifies the groups that cannot be resolved by the provider.
+	Specifies the groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER unique_group_members_attribute
-	 Sets the LDAP Unique Group Members attribute.
+	Sets the LDAP Unique Group Members attribute.
 
 .PARAMETER unlistable_groups
-	 Specifies a group that cannot be listed by the provider.
+	Specifies a group that cannot be listed by the provider.
 
 .PARAMETER unlistable_users
-	 Specifies a user that cannot be listed by the provider.
+	Specifies a user that cannot be listed by the provider.
 
 .PARAMETER user_base_dn
-	 Specifies the distinguished name of the entry at which to start LDAP searches for users.
+	Specifies the distinguished name of the entry at which to start LDAP searches for users.
 
 .PARAMETER user_domain
-	 Specifies the domain for this provider through which users are qualified.
+	Specifies the domain for this provider through which users are qualified.
 
 .PARAMETER user_filter
-	 Specifies the LDAP filter for user objects.
+	Specifies the LDAP filter for user objects.
 
 .PARAMETER user_search_scope
-	 Specifies the depth from the base DN to perform LDAP searches.
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -2075,14 +2090,14 @@ function Set-isiAuthProviderLdapv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alternate_security_identities_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$balance_servers,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$bind_dn,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$bind_mechanism,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('simple','gssapi','digest-md5')][string]$bind_mechanism,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$bind_password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$bind_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$certificate_authority_file,
@@ -2102,7 +2117,7 @@ function Set-isiAuthProviderLdapv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][string]$group_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$group_filter,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$group_members_attribute,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$group_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][ValidateSet('default','base','onelevel','subtree','children')][string]$group_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$homedir_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$home_directory_template,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$ignore_tls_errors,
@@ -2115,17 +2130,17 @@ function Set-isiAuthProviderLdapv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$netgroup_base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][string]$netgroup_filter,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$netgroup_members_attribute,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][string]$netgroup_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('default','base','onelevel','subtree','children')][string]$netgroup_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$netgroup_triple_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][bool]$normalize_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][bool]$normalize_users,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][ValidateSet('all','v2only','none')][string]$ntlm_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][string]$nt_password_attribute,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][string]$provider_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][bool]$require_secure_connection,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][bool]$restrict_findable,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][bool]$restrict_listable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][ValidateSet('base','onelevel','subtree','children')][string]$search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][int]$search_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=51)][array]$server_uris,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][string]$shell_attribute,
@@ -2138,7 +2153,7 @@ function Set-isiAuthProviderLdapv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=59)][string]$user_base_dn,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=60)][string]$user_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=61)][string]$user_filter,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=62)][string]$user_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=62)][ValidateSet('default','base','onelevel','subtree','children')][string]$user_search_scope,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=63)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=64)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -2184,49 +2199,49 @@ function Set-isiAuthProviderLocal{
 	Provider name
 
 .PARAMETER authentication
-	 If true, enables authentication and identity management through the authentication provider.
+	If true, enables authentication and identity management through the authentication provider.
 
 .PARAMETER create_home_directory
-	 Automatically creates the home directory on the first login.
+	Automatically creates the home directory on the first login.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER lockout_duration
-	 Specifies the length of time in seconds that an account will be inaccessible after multiple failed login attempts.
+	Specifies the length of time in seconds that an account will be inaccessible after multiple failed login attempts.
 
 .PARAMETER lockout_threshold
-	 Specifies the number of failed login attempts necessary before an account is locked.
+	Specifies the number of failed login attempts necessary before an account is locked.
 
 .PARAMETER lockout_window
-	 Specifies the duration of time in seconds in which the number of failed attempts set in the 'lockout_threshold' parameter must be made before an account is locked.
+	Specifies the duration of time in seconds in which the number of failed attempts set in the 'lockout_threshold' parameter must be made before an account is locked.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER machine_name
-	 Specifies the domain for this provider through which users and groups are qualified.
+	Specifies the domain for this provider through which users and groups are qualified.
 
 .PARAMETER max_password_age
-	 Specifies the maximum password age in seconds.
+	Specifies the maximum password age in seconds.
 
 .PARAMETER min_password_age
-	 Specifies the minimum password age in seconds.
+	Specifies the minimum password age in seconds.
 
 .PARAMETER min_password_length
-	 Specifies the minimum password length.
+	Specifies the minimum password length.
 
 .PARAMETER new_name
 	Specifies the local provider name.
 
 .PARAMETER password_complexity
-	 Specifies the conditions required for a password.
+	Specifies the conditions required for a password.
 
 .PARAMETER password_history_length
-	 Specifies the number of previous passwords to store.
+	Specifies the number of previous passwords to store.
 
 .PARAMETER password_prompt_time
-	 Specifies the time in seconds remaining before a user will be prompted for a password change.
+	Specifies the time in seconds remaining before a user will be prompted for a password change.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -2239,7 +2254,7 @@ function Set-isiAuthProviderLocal{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$create_home_directory,
@@ -2301,100 +2316,101 @@ function Set-isiAuthProviderNisv1{
 	Provider name
 
 .PARAMETER authentication
-	 If true, enables authentication and identity management through the authentication provider.
+	If true, enables authentication and identity management through the authentication provider.
 
 .PARAMETER balance_servers
-	 If true, connects the provider to a random server.
+	If true, connects the provider to a random server.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER create_home_directory
-	 Automatically creates the home directory on the first login.
+	Automatically creates the home directory on the first login.
 
 .PARAMETER enabled
-	 If true, enables the NIS provider.
+	If true, enables the NIS provider.
 
 .PARAMETER enumerate_groups
-	 If true, allows the provider to enumerate groups.
+	If true, allows the provider to enumerate groups.
 
 .PARAMETER enumerate_users
-	 If true, allows the provider to enumerate users.
+	If true, allows the provider to enumerate users.
 
 .PARAMETER findable_groups
-	 Specifies the list of groups that can be resolved.
+	Specifies the list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Specifies the list of users that can be resolved.
+	Specifies the list of users that can be resolved.
 
 .PARAMETER group_domain
-	 Specifies the domain for this provider through which groups are qualified.
+	Specifies the domain for this provider through which groups are qualified.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER hostname_lookup
-	 If true, enables host name look ups.
+	If true, enables host name look ups.
 
 .PARAMETER listable_groups
-	 Specifies the groups that can be viewed in the provider.
+	Specifies the groups that can be viewed in the provider.
 
 .PARAMETER listable_users
-	 Specifies the users that can be viewed in the provider.
+	Specifies the users that can be viewed in the provider.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER new_name
 	Specifies the NIS provider name.
 
 .PARAMETER nis_domain
-	 Specifies the NIS domain name.
+	Specifies the NIS domain name.
 
 .PARAMETER normalize_groups
-	 Normalizes group names to lowercase before look up.
+	Normalizes group names to lowercase before look up.
 
 .PARAMETER normalize_users
-	 Normalizes user names to lowercase before look up.
+	Normalizes user names to lowercase before look up.
 
 .PARAMETER ntlm_support
-	 Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
 
 .PARAMETER provider_domain
-	 Specifies the domain for the provider.
+	Specifies the domain for the provider.
 
 .PARAMETER request_timeout
-	 Specifies the request timeout interval in seconds.
+	Specifies the request timeout interval in seconds.
 
 .PARAMETER restrict_findable
-	 If true, checks the provider for filtered lists of findable and unfindable users and groups.
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER restrict_listable
-	 If true, checks the provider for filtered lists of listable and unlistable users and groups.
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
 
 .PARAMETER retry_time
-	 Specifies the timeout period in seconds after which a request will be retried.
+	Specifies the timeout period in seconds after which a request will be retried.
 
 .PARAMETER servers
-	 Adds an NIS server for this provider.
+	Adds an NIS server for this provider.
 
 .PARAMETER unfindable_groups
-	 Specifies groups that cannot be resolved by the provider.
+	Specifies groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER unlistable_groups
-	 Specifies a group that cannot be listed by the provider.
+	Specifies a group that cannot be listed by the provider.
 
 .PARAMETER unlistable_users
-	 Specifies a user that cannot be listed by the provider.
+	Specifies a user that cannot be listed by the provider.
 
 .PARAMETER user_domain
-	 Specifies the domain for this provider through which users are qualified.
+	Specifies the domain for this provider through which users are qualified.
 
 .PARAMETER ypmatch_using_tcp
-	 If true, specifies TCP for YP Match operations.
+	If true, specifies TCP for YP Match operations.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -2407,7 +2423,7 @@ function Set-isiAuthProviderNisv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$balance_servers,
@@ -2428,7 +2444,7 @@ function Set-isiAuthProviderNisv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$nis_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$normalize_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$normalize_users,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][ValidateSet('all','v2only','none')][string]$ntlm_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$provider_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$request_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$restrict_findable,
@@ -2488,100 +2504,101 @@ function Set-isiAuthProviderNisv3{
 	Id name
 
 .PARAMETER authentication
-	 If true, enables authentication and identity management through the authentication provider.
+	If true, enables authentication and identity management through the authentication provider.
 
 .PARAMETER balance_servers
-	 If true, connects the provider to a random server.
+	If true, connects the provider to a random server.
 
 .PARAMETER check_online_interval
-	 Specifies the time in seconds between provider online checks.
+	Specifies the time in seconds between provider online checks.
 
 .PARAMETER create_home_directory
-	 Automatically creates the home directory on the first login.
+	Automatically creates the home directory on the first login.
 
 .PARAMETER enabled
-	 If true, enables the NIS provider.
+	If true, enables the NIS provider.
 
 .PARAMETER enumerate_groups
-	 If true, allows the provider to enumerate groups.
+	If true, allows the provider to enumerate groups.
 
 .PARAMETER enumerate_users
-	 If true, allows the provider to enumerate users.
+	If true, allows the provider to enumerate users.
 
 .PARAMETER findable_groups
-	 Specifies the list of groups that can be resolved.
+	Specifies the list of groups that can be resolved.
 
 .PARAMETER findable_users
-	 Specifies the list of users that can be resolved.
+	Specifies the list of users that can be resolved.
 
 .PARAMETER group_domain
-	 Specifies the domain for this provider through which groups are qualified.
+	Specifies the domain for this provider through which groups are qualified.
 
 .PARAMETER home_directory_template
-	 Specifies the path to the home directory template.
+	Specifies the path to the home directory template.
 
 .PARAMETER hostname_lookup
-	 If true, enables host name look ups.
+	If true, enables host name look ups.
 
 .PARAMETER listable_groups
-	 Specifies the groups that can be viewed in the provider.
+	Specifies the groups that can be viewed in the provider.
 
 .PARAMETER listable_users
-	 Specifies the users that can be viewed in the provider.
+	Specifies the users that can be viewed in the provider.
 
 .PARAMETER login_shell
-	 Specifies the login shell path.
+	Specifies the login shell path.
 
 .PARAMETER new_name
 	Specifies the NIS provider name.
 
 .PARAMETER nis_domain
-	 Specifies the NIS domain name.
+	Specifies the NIS domain name.
 
 .PARAMETER normalize_groups
-	 Normalizes group names to lowercase before look up.
+	Normalizes group names to lowercase before look up.
 
 .PARAMETER normalize_users
-	 Normalizes user names to lowercase before look up.
+	Normalizes user names to lowercase before look up.
 
 .PARAMETER ntlm_support
-	 Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
 
 .PARAMETER provider_domain
-	 Specifies the domain for the provider.
+	Specifies the domain for the provider.
 
 .PARAMETER request_timeout
-	 Specifies the request timeout interval in seconds.
+	Specifies the request timeout interval in seconds.
 
 .PARAMETER restrict_findable
-	 If true, checks the provider for filtered lists of findable and unfindable users and groups.
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
 
 .PARAMETER restrict_listable
-	 If true, checks the provider for filtered lists of listable and unlistable users and groups.
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
 
 .PARAMETER retry_time
-	 Specifies the timeout period in seconds after which a request will be retried.
+	Specifies the timeout period in seconds after which a request will be retried.
 
 .PARAMETER servers
-	 Adds an NIS server for this provider.
+	Adds an NIS server for this provider.
 
 .PARAMETER unfindable_groups
-	 Specifies groups that cannot be resolved by the provider.
+	Specifies groups that cannot be resolved by the provider.
 
 .PARAMETER unfindable_users
-	 Specifies users that cannot be resolved by the provider.
+	Specifies users that cannot be resolved by the provider.
 
 .PARAMETER unlistable_groups
-	 Specifies a group that cannot be listed by the provider.
+	Specifies a group that cannot be listed by the provider.
 
 .PARAMETER unlistable_users
-	 Specifies a user that cannot be listed by the provider.
+	Specifies a user that cannot be listed by the provider.
 
 .PARAMETER user_domain
-	 Specifies the domain for this provider through which users are qualified.
+	Specifies the domain for this provider through which users are qualified.
 
 .PARAMETER ypmatch_using_tcp
-	 If true, specifies TCP for YP Match operations.
+	If true, specifies TCP for YP Match operations.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -2594,7 +2611,7 @@ function Set-isiAuthProviderNisv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$balance_servers,
@@ -2615,7 +2632,7 @@ function Set-isiAuthProviderNisv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][string]$nis_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$normalize_groups,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$normalize_users,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][ValidateSet('all','v2only','none')][string]$ntlm_support,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$provider_domain,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$request_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$restrict_findable,
@@ -2695,7 +2712,7 @@ function Set-isiAuthRole{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$members,
@@ -2851,89 +2868,90 @@ function Set-isiAuthSettingsGlobal{
 .DESCRIPTION
 	Modify the global settings.
 
-.PARAMETER access_zone
-	Zone which contains any per-zone settings.
-
 .PARAMETER alloc_retries
-	 Specifies the number of times to retry an ID allocation before failing.
+	Specifies the number of times to retry an ID allocation before failing.
 
 .PARAMETER gid_range_enabled
-	 If true, allocates GIDs from a fixed range.
+	If true, allocates GIDs from a fixed range.
 
 .PARAMETER gid_range_max
-	 Specifies the ending number for a fixed range from which GIDs are allocated.
+	Specifies the ending number for a fixed range from which GIDs are allocated.
 
 .PARAMETER gid_range_min
-	 Specifies the starting number for a fixed range from which GIDs are allocated.
+	Specifies the starting number for a fixed range from which GIDs are allocated.
 
 .PARAMETER gid_range_next
-	 Specifies the next GID to allocate.
+	Specifies the next GID to allocate.
 
 .PARAMETER group_uid
-	 Specifies the user iD for a group when requested by the kernel.
+	Specifies the user iD for a group when requested by the kernel.
 
 .PARAMETER load_providers
-	 Specifies which providers are loaded by the authentication daemon (lsassd).
+	Specifies which providers are loaded by the authentication daemon (lsassd).
 
 .PARAMETER min_mapped_rid
-	 Starts the RID in the local domain to map a UID and a GID.
+	Starts the RID in the local domain to map a UID and a GID.
 
 .PARAMETER null_gid
-	 Specifies an alternative GID when the kernel is unable to retrieve a GID for a persona.
+	Specifies an alternative GID when the kernel is unable to retrieve a GID for a persona.
 
 .PARAMETER null_uid
-	 Specifies an alternative UID when the kernel is unable to retrieve a UID for a persona.
+	Specifies an alternative UID when the kernel is unable to retrieve a UID for a persona.
 
 .PARAMETER on_disk_identity
-	 Specifies the type of identity that is stored on disk.
+	Specifies the type of identity that is stored on disk.
+	Valid inputs: native,unix,sid
 
 .PARAMETER rpc_block_time
-	 Specifies the minimum amount of time in milliseconds to wait before performing an oprestart.
+	Specifies the minimum amount of time in milliseconds to wait before performing an oprestart.
 
 .PARAMETER rpc_max_requests
-	 Specifies the maximum number of outstanding RPC requests.
+	Specifies the maximum number of outstanding RPC requests.
 
 .PARAMETER rpc_timeout
-	 Specifies the maximum amount of time in seconds to wait for an idmap response.
+	Specifies the maximum amount of time in seconds to wait for an idmap response.
 
 .PARAMETER send_ntlmv2
-	 If true, sends NTLMv2 responses.
+	If true, sends NTLMv2 responses.
 
 .PARAMETER space_replacement
-	 Specifies the space replacement character.
+	Specifies the space replacement character.
 
 .PARAMETER system_gid_threshold
-	 Specifies the minimum GID to attempt to look up in the idmap database.
+	Specifies the minimum GID to attempt to look up in the idmap database.
 
 .PARAMETER system_uid_threshold
-	 Specifies the minimum UID to attempt to look up in the idmap database.
+	Specifies the minimum UID to attempt to look up in the idmap database.
 
 .PARAMETER uid_range_enabled
-	 If true, allocates UIDs from a fixed range.
+	If true, allocates UIDs from a fixed range.
 
 .PARAMETER uid_range_max
-	 Specifies the ending number for a fixed range from which UIDs are allocated.
+	Specifies the ending number for a fixed range from which UIDs are allocated.
 
 .PARAMETER uid_range_min
-	 Specifies the starting number for a fixed range from which UIDs are allocated.
+	Specifies the starting number for a fixed range from which UIDs are allocated.
 
 .PARAMETER uid_range_next
-	 Specifies the next UID to allocate.
+	Specifies the next UID to allocate.
 
 .PARAMETER unknown_gid
-	 Specifies the GID for the unknown (anonymous) group.
+	Specifies the GID for the unknown (anonymous) group.
 
 .PARAMETER unknown_uid
-	 Specifies the UID for the unknown (anonymous) user.
+	Specifies the UID for the unknown (anonymous) user.
 
 .PARAMETER user_object_cache_size
-	 Specifies the maximum size (in bytes) of the security object cache in the authentication daemon.
+	Specifies the maximum size (in bytes) of the security object cache in the authentication daemon.
 
 .PARAMETER workgroup
-	 Specifies the NetBIOS workgroup or domain.
+	Specifies the NetBIOS workgroup or domain.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Zone which contains any per-zone settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -2943,34 +2961,34 @@ function Set-isiAuthSettingsGlobal{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$alloc_retries,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$gid_range_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$gid_range_min,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$gid_range_next,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$group_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][array]$load_providers,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$min_mapped_rid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$null_gid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$null_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$on_disk_identity,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$rpc_block_time,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$rpc_max_requests,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$rpc_timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$send_ntlmv2,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][string]$space_replacement,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$system_gid_threshold,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$system_uid_threshold,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$uid_range_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$uid_range_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$uid_range_min,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$uid_range_next,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$unknown_gid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$unknown_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$user_object_cache_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$workgroup,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=27)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$alloc_retries,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$gid_range_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$gid_range_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_min,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$gid_range_next,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$group_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][array]$load_providers,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$min_mapped_rid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$null_gid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$null_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('native','unix','sid')][string]$on_disk_identity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$rpc_block_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$rpc_max_requests,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$rpc_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][bool]$send_ntlmv2,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][string]$space_replacement,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$system_gid_threshold,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$system_uid_threshold,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$uid_range_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][int]$uid_range_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$uid_range_min,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$uid_range_next,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$unknown_gid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$unknown_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$user_object_cache_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$workgroup,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=26)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3006,16 +3024,16 @@ function Set-isiAuthSettingsKrb5Defaults{
 	Modify the krb5 settings.
 
 .PARAMETER always_send_preauth
-	 If true, always attempts to preauthenticate to the domain controller.
+	If true, always attempts to preauthenticate to the domain controller.
 
 .PARAMETER default_realm
-	 Specifies the realm for unqualified names.
+	Specifies the realm for unqualified names.
 
 .PARAMETER dns_lookup_kdc
-	 If true, find KDCs through the DNS.
+	If true, find KDCs through the DNS.
 
 .PARAMETER dns_lookup_realm
-	 If true, find realm names through the DNS.
+	If true, find realm names through the DNS.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -3079,7 +3097,7 @@ function Set-isiAuthSettingsKrb5Domain{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$realm,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -3145,7 +3163,7 @@ function Set-isiAuthSettingsKrb5Realm{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$admin_server,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$default_domain,
@@ -3185,38 +3203,38 @@ function Set-isiAuthSettingsMapping{
 .DESCRIPTION
 	Modify the mapping settings.
 
-.PARAMETER access_zone
-	Access zone which contains mapping settings.
-
 .PARAMETER cache_entry_expiry
-	 Specifies the cache expiry in seconds of the idmapper.
+	Specifies the cache expiry in seconds of the idmapper.
 
 .PARAMETER gid_range_enabled
-	 If true, allocates GIDs from a fixed range.
+	If true, allocates GIDs from a fixed range.
 
 .PARAMETER gid_range_max
-	 Specifies the ending number for a fixed range from which GIDs are allocated.
+	Specifies the ending number for a fixed range from which GIDs are allocated.
 
 .PARAMETER gid_range_min
-	 Specifies the starting number for a fixed range from which GIDs are allocated.
+	Specifies the starting number for a fixed range from which GIDs are allocated.
 
 .PARAMETER gid_range_next
-	 Specifies the next GID to allocate.
+	Specifies the next GID to allocate.
 
 .PARAMETER uid_range_enabled
-	 If true, allocates UIDs from a fixed range.
+	If true, allocates UIDs from a fixed range.
 
 .PARAMETER uid_range_max
-	 Specifies the ending number for a fixed range from which UIDs are allocated.
+	Specifies the ending number for a fixed range from which UIDs are allocated.
 
 .PARAMETER uid_range_min
-	 Specifies the starting number for a fixed range from which UIDs are allocated.
+	Specifies the starting number for a fixed range from which UIDs are allocated.
 
 .PARAMETER uid_range_next
-	 Specifies the next UID to allocate.
+	Specifies the next UID to allocate.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Access zone which contains mapping settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -3226,17 +3244,17 @@ function Set-isiAuthSettingsMapping{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$cache_entry_expiry,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$gid_range_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$gid_range_min,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$gid_range_next,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$uid_range_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$uid_range_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$uid_range_min,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$uid_range_next,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=10)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][int]$cache_entry_expiry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$gid_range_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$gid_range_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$gid_range_min,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$gid_range_next,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$uid_range_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$uid_range_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$uid_range_min,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$uid_range_next,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=9)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3276,12 +3294,6 @@ function Set-isiAuthUser{
 
 .PARAMETER name
 	User name
-
-.PARAMETER provider
-	Optional provider type.
-
-.PARAMETER access_zone
-	Optional zone.
 
 .PARAMETER email
 	Specifies an email address for the user.
@@ -3325,6 +3337,12 @@ function Set-isiAuthUser{
 .PARAMETER Force
 	Force update of object without prompt
 
+.PARAMETER provider
+	Optional provider type.
+
+.PARAMETER access_zone
+	Optional zone.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3333,24 +3351,24 @@ function Set-isiAuthUser{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$email,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$expiry,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$gecos,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$home_directory,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$password,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$password_expires,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][object]$primary_group,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$prompt_password_change,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$shell,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$sid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$unlock,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=16)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$email,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$expiry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$gecos,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$home_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$password,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$password_expires,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][object]$primary_group,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$prompt_password_change,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$shell,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$sid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$unlock,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=14)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateNotNullOrEmpty()][string]$provider,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3402,9 +3420,6 @@ function Set-isiAuthUserChangePasswordv3{
 .PARAMETER name
 	User name
 
-.PARAMETER access_zone
-	Specifies access zone containing user.
-
 .PARAMETER new_password
 	Specifies user's new password
 
@@ -3414,6 +3429,9 @@ function Set-isiAuthUserChangePasswordv3{
 .PARAMETER Force
 	Force update of object without prompt
 
+.PARAMETER access_zone
+	Specifies access zone containing user.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3422,12 +3440,12 @@ function Set-isiAuthUserChangePasswordv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_password,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$old_password,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_password,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$old_password,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3475,9 +3493,6 @@ function Set-isiAuthUserChangePasswordv1{
 .PARAMETER name
 	User name
 
-.PARAMETER access_zone
-	Specifies access zone containing user.
-
 .PARAMETER new_password
 	Specifies user's new password
 
@@ -3487,6 +3502,9 @@ function Set-isiAuthUserChangePasswordv1{
 .PARAMETER Force
 	Force update of object without prompt
 
+.PARAMETER access_zone
+	Specifies access zone containing user.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -3495,12 +3513,12 @@ function Set-isiAuthUserChangePasswordv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_password,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$old_password,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_password,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$old_password,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -3589,7 +3607,7 @@ function Set-isiCloudAccountv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$account_id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$account_username,
@@ -3663,7 +3681,7 @@ function Set-isiCloudJobv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('resume','pause','cancel')][string]$state,
@@ -3737,7 +3755,7 @@ function Set-isiCloudPoolv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$accounts,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$birth_cluster_id,
@@ -4033,7 +4051,7 @@ function Set-isiClusterNode{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$drives,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$state,
@@ -4106,7 +4124,7 @@ function Set-isiClusterNodeStateReadonly{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$allowed,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -4177,7 +4195,7 @@ function Set-isiClusterNodeStateServicelight{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$present,
@@ -4252,7 +4270,7 @@ function Set-isiClusterNodeStateSmartfail{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$dead,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$down,
@@ -4583,7 +4601,7 @@ function Set-isiEventAlertCondition{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$categories,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$channel_ids,
@@ -4662,7 +4680,7 @@ function Set-isiEventChannel{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$allowed_nodes,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -4773,7 +4791,7 @@ function Set-isiEventEventgroupOccurrence{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$ignore,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$resolved,
@@ -4866,13 +4884,14 @@ function Set-isiFileFilterSettings{
 	Modify one or more File Filtering settings for an access zone
 
 .PARAMETER file_filtering_enabled
-	 Indicates whether file filtering is enabled on this zone.
+	Indicates whether file filtering is enabled on this zone.
 
 .PARAMETER file_filter_extensions
-	 List of file extensions to be filtered.
+	List of file extensions to be filtered.
 
 .PARAMETER file_filter_type
-	 Specifies if filter list is for deny or allow. Default is deny.
+	Specifies if filter list is for deny or allow. Default is deny.
+	Valid inputs: deny,allow
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -4887,7 +4906,7 @@ function Set-isiFileFilterSettings{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$file_filtering_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$file_filter_extensions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$file_filter_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('deny','allow')][string]$file_filter_type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -4989,7 +5008,7 @@ function Set-isiFilepoolPolicy{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$actions,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$apply_order,
@@ -5142,7 +5161,7 @@ function Set-isiFsaResultv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$pinned,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -5201,7 +5220,7 @@ function Set-isiFsaResultv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$pinned,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -5239,25 +5258,25 @@ function Set-isiFsaSettings{
 	Modify one or more settings.
 
 .PARAMETER default_template
-	 Name of question template to use for new FSA jobs.
+	Name of question template to use for new FSA jobs.
 
 .PARAMETER disk_usage_depth
-	 Maximum directory depth used for disk_usage question if not specified in the question.
+	Maximum directory depth used for disk_usage question if not specified in the question.
 
 .PARAMETER max_age
-	 Maximum age of non-pinned results in seconds.
+	Maximum age of non-pinned results in seconds.
 
 .PARAMETER max_count
-	 Maximum number of non-pinned result sets to keep.
+	Maximum number of non-pinned result sets to keep.
 
 .PARAMETER squash_depth
-	 Squash depth to use for squash binning questions if not specified in the question.
+	Squash depth to use for squash binning questions if not specified in the question.
 
 .PARAMETER top_n_max
-	 Maximum number of items in a Top-N question result if not specified in the question.
+	Maximum number of items in a Top-N question result if not specified in the question.
 
 .PARAMETER use_snapshot
-	 If true, use a snapshot for consistency, otherwise analyze head.
+	If true, use a snapshot for consistency, otherwise analyze head.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5342,7 +5361,7 @@ function Set-isiHardwareFcport{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('auto','1','2','4','8')][string]$rate,
@@ -5412,7 +5431,7 @@ function Set-isiHardwareTape{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('closed')][string]$state,
@@ -5481,7 +5500,7 @@ function Set-isiJob{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$policy,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$priority,
@@ -5543,7 +5562,7 @@ function Set-isiJobPolicy{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$intervals,
@@ -5610,7 +5629,7 @@ function Set-isiJobType{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$policy,
@@ -5651,43 +5670,43 @@ function Set-isiNetworkDnscache{
 	Modify network dns cache settings.
 
 .PARAMETER cache_entry_limit
-	 DNS cache entry limit
+	DNS cache entry limit
 
 .PARAMETER cluster_timeout
-	 Timeout value for calls made to other nodes in the cluster
+	Timeout value for calls made to other nodes in the cluster
 
 .PARAMETER dns_timeout
-	 Timeout value for calls made to the dns resolvers
+	Timeout value for calls made to the dns resolvers
 
 .PARAMETER eager_refresh
-	 Lead time to refresh cache entries nearing expiration
+	Lead time to refresh cache entries nearing expiration
 
 .PARAMETER testping_delta
-	 Deltas for checking cbind cluster health
+	Deltas for checking cbind cluster health
 
 .PARAMETER ttl_max_noerror
-	 Upper bound on ttl for cache hits
+	Upper bound on ttl for cache hits
 
 .PARAMETER ttl_max_nxdomain
-	 Upper bound on ttl for nxdomain
+	Upper bound on ttl for nxdomain
 
 .PARAMETER ttl_max_other
-	 Upper bound on ttl for non-nxdomain failures
+	Upper bound on ttl for non-nxdomain failures
 
 .PARAMETER ttl_max_servfail
-	 Upper bound on ttl for server failures
+	Upper bound on ttl for server failures
 
 .PARAMETER ttl_min_noerror
-	 Lower bound on ttl for cache hits
+	Lower bound on ttl for cache hits
 
 .PARAMETER ttl_min_nxdomain
-	 Lower bound on ttl for nxdomain
+	Lower bound on ttl for nxdomain
 
 .PARAMETER ttl_min_other
-	 Lower bound on ttl for non-nxdomain failures
+	Lower bound on ttl for non-nxdomain failures
 
 .PARAMETER ttl_min_servfail
-	 Lower bound on ttl for server failures
+	Lower bound on ttl for server failures
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5741,13 +5760,13 @@ function Set-isiNetworkExternal{
 	Modify external network settings.
 
 .PARAMETER sbr
-	 Enable or disable Source Based Routing (Defaults to false)
+	Enable or disable Source Based Routing (Defaults to false)
 
 .PARAMETER sc_rebalance_delay
-	 Delay in seconds for IP rebalance.
+	Delay in seconds for IP rebalance.
 
 .PARAMETER tcp_ports
-	 List of client TCP ports.
+	List of client TCP ports.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5797,7 +5816,7 @@ function Set-isiNetworkGroupnet{
 	A description of the groupnet.
 
 .PARAMETER dns_cache_enabled
-	 DNS caching is enabled or disabled.
+	DNS caching is enabled or disabled.
 
 .PARAMETER dns_options
 	List of DNS resolver options.
@@ -5812,7 +5831,7 @@ function Set-isiNetworkGroupnet{
 	The name of the groupnet.
 
 .PARAMETER server_side_dns_search
-	 Enable or disable appending nodes DNS search  list to client DNS inquiries directed at SmartConnect service IP.
+	Enable or disable appending nodes DNS search  list to client DNS inquiries directed at SmartConnect service IP.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -5825,7 +5844,7 @@ function Set-isiNetworkGroupnet{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$dns_cache_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$dns_options,
@@ -5884,7 +5903,7 @@ function Set-isiNetworkGroupnetSubnet{
 	Gateway priority.
 
 .PARAMETER mtu
-	 MTU of the subnet.
+	MTU of the subnet.
 
 .PARAMETER name
 	The name of the subnet.
@@ -5896,7 +5915,7 @@ function Set-isiNetworkGroupnetSubnet{
 	The address that SmartConnect listens for DNS requests.
 
 .PARAMETER vlan_enabled
-	 VLAN tagging enabled or disabled.
+	VLAN tagging enabled or disabled.
 
 .PARAMETER vlan_id
 	VLAN ID for all interfaces in the subnet.
@@ -5912,9 +5931,9 @@ function Set-isiNetworkGroupnetSubnet{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$groupnet_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$groupnet_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$groupnet_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][array]$dsr_addrs,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$gateway,
@@ -5962,91 +5981,94 @@ function Set-isiFtpSettings{
 	Modify the FTP settings. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER accept_timeout
-	 The timeout, in seconds, for a remote client to establish a PASV style data connection.
+	The timeout, in seconds, for a remote client to establish a PASV style data connection.
 
 .PARAMETER allow_anon_access
-	 Controls whether anonymous logins are permitted or not.
+	Controls whether anonymous logins are permitted or not.
 
 .PARAMETER allow_anon_upload
-	 Controls whether anonymous users will be permitted to upload files.
+	Controls whether anonymous users will be permitted to upload files.
 
 .PARAMETER allow_dirlists
-	 If set to false, all directory list commands will return a permission denied error.
+	If set to false, all directory list commands will return a permission denied error.
 
 .PARAMETER allow_downloads
-	 If set to false, all downloads requests will return a permission denied error.
+	If set to false, all downloads requests will return a permission denied error.
 
 .PARAMETER allow_local_access
-	 Controls whether local logins are permitted or not.
+	Controls whether local logins are permitted or not.
 
 .PARAMETER allow_writes
-	 This controls whether any FTP commands which change the filesystem are allowed or not.
+	This controls whether any FTP commands which change the filesystem are allowed or not.
 
 .PARAMETER always_chdir_homedir
-	 This controls whether FTP will always initially change directories to the home directory of the user, regardless of whether it is chroot-ing.
+	This controls whether FTP will always initially change directories to the home directory of the user, regardless of whether it is chroot-ing.
 
 .PARAMETER anon_chown_username
-	 This is the name of the user who is given ownership of anonymously uploaded files.
+	This is the name of the user who is given ownership of anonymously uploaded files.
 
 .PARAMETER anon_password_list
-	 A list of passwords for anonymous users.
+	A list of passwords for anonymous users.
 
 .PARAMETER anon_root_path
-	 This option represents a directory in /ifs which vsftpd will try to change into after an anonymous login.
+	This option represents a directory in /ifs which vsftpd will try to change into after an anonymous login.
 
 .PARAMETER anon_umask
-	 The value that the umask for file creation is set to for anonymous users.
+	The value that the umask for file creation is set to for anonymous users.
 
 .PARAMETER ascii_mode
-	 Controls whether ascii mode data transfers are honored for various types of requests.
+	Controls whether ascii mode data transfers are honored for various types of requests.
+	Valid inputs: off,upload,download,both
 
 .PARAMETER chroot_exception_list
-	 A list of users that are not chrooted when logging in.
+	A list of users that are not chrooted when logging in.
 
 .PARAMETER chroot_local_mode
-	 If set to 'all', all local users will be (by default) placed in a chroot() jail in their home directory after login. If set to 'all-with-exceptions', all local users except those listed in the chroot exception list (isi ftp chroot-exception-list) will be placed in a chroot() jail in their home directory after login. If set to 'none', no local users will be chrooted by default. If set to 'none-with-exceptions', only the local users listed in the chroot exception list (isi ftp chroot-exception-list) will be place in a chroot() jail in their home directory after login.
+	If set to 'all', all local users will be (by default) placed in a chroot() jail in their home directory after login. If set to 'all-with-exceptions', all local users except those listed in the chroot exception list (isi ftp chroot-exception-list) will be placed in a chroot() jail in their home directory after login. If set to 'none', no local users will be chrooted by default. If set to 'none-with-exceptions', only the local users listed in the chroot exception list (isi ftp chroot-exception-list) will be place in a chroot() jail in their home directory after login.
+	Valid inputs: all,none,all-with-exceptions,none-with-exceptions
 
 .PARAMETER connect_timeout
-	 The timeout, in seconds, for a remote client to respond to our PORT style data connection.
+	The timeout, in seconds, for a remote client to respond to our PORT style data connection.
 
 .PARAMETER data_timeout
-	 The timeout, in seconds, which is roughly the maximum time we permit data transfers to stall for with no progress. If the timeout triggers, the remote client is kicked off.
+	The timeout, in seconds, which is roughly the maximum time we permit data transfers to stall for with no progress. If the timeout triggers, the remote client is kicked off.
 
 .PARAMETER denied_user_list
-	 A list of uses that will be denied access.
+	A list of uses that will be denied access.
 
 .PARAMETER dirlist_localtime
-	 If enabled, display directory listings with the time in your local time zone. The default is to display GMT. The times returned by the MDTM FTP command are also affected by this option.
+	If enabled, display directory listings with the time in your local time zone. The default is to display GMT. The times returned by the MDTM FTP command are also affected by this option.
 
 .PARAMETER dirlist_names
-	 When set to 'hide',  all user and group information in directory listings will be displayed as 'ftp'. When set to 'textual', textual names are shown in the user and group fields of directory listings. When set to 'numeric', numeric IDs are show in the user and group fields of directory listings.
+	When set to 'hide',  all user and group information in directory listings will be displayed as 'ftp'. When set to 'textual', textual names are shown in the user and group fields of directory listings. When set to 'numeric', numeric IDs are show in the user and group fields of directory listings.
+	Valid inputs: numeric,textual,hide
 
 .PARAMETER file_create_perm
-	 The permissions with which uploaded files are created. Umasks are applied on top of this value.
+	The permissions with which uploaded files are created. Umasks are applied on top of this value.
 
 .PARAMETER limit_anon_passwords
-	 This field determines whether the anon_password_list is used.
+	This field determines whether the anon_password_list is used.
 
 .PARAMETER local_root_path
-	 This option represents a directory in /ifs which vsftpd will try to change into after a local login.
+	This option represents a directory in /ifs which vsftpd will try to change into after a local login.
 
 .PARAMETER local_umask
-	 The value that the umask for file creation is set to for local users.
+	The value that the umask for file creation is set to for local users.
 
 .PARAMETER server_to_server
-	 If enabled, allow server-to-server (FXP) transfers.
+	If enabled, allow server-to-server (FXP) transfers.
 
 .PARAMETER service
 	This field controls whether the FTP daemon is running.
 
 .PARAMETER session_support
-	 If enabled, maintain login sessions for each user through Pluggable Authentication Modules (PAM). Disabling this option prevents the ability to do automatic home directory creation if that functionality were otherwise available.
+	If enabled, maintain login sessions for each user through Pluggable Authentication Modules (PAM). Disabling this option prevents the ability to do automatic home directory creation if that functionality were otherwise available.
 
 .PARAMETER session_timeout
-	 The timeout, in seconds, which is roughly the maximum time we permit data transfers to stall for with no progress. If the timeout triggers, the remote client is kicked off.
+	The timeout, in seconds, which is roughly the maximum time we permit data transfers to stall for with no progress. If the timeout triggers, the remote client is kicked off.
 
 .PARAMETER user_config_dir
-	 Specifies the directory where per-user config overrides can be found.
+	Specifies the directory where per-user config overrides can be found.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -6071,14 +6093,14 @@ function Set-isiFtpSettings{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][array]$anon_password_list,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$anon_root_path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$anon_umask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$ascii_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateSet('off','upload','download','both')][string]$ascii_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][array]$chroot_exception_list,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$chroot_local_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateSet('all','none','all-with-exceptions','none-with-exceptions')][string]$chroot_local_mode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$connect_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$data_timeout,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][array]$denied_user_list,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$dirlist_localtime,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$dirlist_names,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][ValidateSet('numeric','textual','hide')][string]$dirlist_names,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$file_create_perm,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$limit_anon_passwords,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$local_root_path,
@@ -6175,7 +6197,7 @@ function Set-isiHdfsProxyUser{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -6234,9 +6256,9 @@ function Set-isiHdfsProxyUserMember{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$proxyuser_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$proxyuser_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$proxyuser_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -6305,7 +6327,7 @@ function Set-isiHdfsRack{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$client_ip_ranges,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$ip_pools,
@@ -6622,7 +6644,7 @@ function Set-isiNdmpSettingsVariable{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$value,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -6673,7 +6695,7 @@ function Set-isiNdmpUser{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$password,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -6716,9 +6738,6 @@ function Set-isiNfsAlias{
 .PARAMETER name
 	Aid name
 
-.PARAMETER access_zone
-	Access zone
-
 .PARAMETER health
 	Specifies whether the alias is usable.
 
@@ -6734,6 +6753,9 @@ function Set-isiNfsAlias{
 .PARAMETER Force
 	Force update of object without prompt
 
+.PARAMETER access_zone
+	Access zone
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6742,14 +6764,14 @@ function Set-isiNfsAlias{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$health,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$new_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$health,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=5)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -6757,14 +6779,14 @@ function Set-isiNfsAlias{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -6798,128 +6820,134 @@ function Set-isiNfsExportv1{
 .PARAMETER id
 	 id
 
-.PARAMETER enforce
-	If true, the export will be updated even if that change conflicts with another export.
-
 .PARAMETER all_dirs
-	 If true, all directories under the specified paths are mountable.
+	If true, all directories under the specified paths are mountable.
 
 .PARAMETER block_size
-	 The block size returned by the NFS STATFS procedure.
+	The block size returned by the NFS STATFS procedure.
 
 .PARAMETER can_set_time
-	 If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
+	If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
 
 .PARAMETER clients
-	 Clients that have access to the export.
+	Clients that have access to the export.
 
 .PARAMETER commit_asynchronous
-	 If true, allows NFS  commit  requests to  execute asynchronously.
+	If true, allows NFS  commit  requests to  execute asynchronously.
 
 .PARAMETER description
 	A human readable description of the export.
 
 .PARAMETER directory_transfer_size
-	 The preferred size for directory read operations.  This option is advisory.
+	The preferred size for directory read operations.  This option is advisory.
 
 .PARAMETER encoding
-	 The character encoding of clients connecting to the export.
+	The character encoding of clients connecting to the export.
 
 .PARAMETER map_all
 	User and group mapping.
 
 .PARAMETER map_full
-	 If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
+	If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
 
 .PARAMETER map_lookup_uid
-	 If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
+	If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
 
 .PARAMETER map_retry
-	 Determines whether lookups for users specified in map_all or map_root are retried if the look fails.
+	Determines whether lookups for users specified in map_all or map_root are retried if the look fails.
 
 .PARAMETER map_root
 	User and group mapping.
 
 .PARAMETER max_file_size
-	 The maximum file size in the export.
+	The maximum file size in the export.
 
 .PARAMETER paths
-	 The paths under /ifs that are exported.
+	The paths under /ifs that are exported.
 
 .PARAMETER readdirplus
-	 If true, readdirplus requests are enabled.
+	If true, readdirplus requests are enabled.
 
 .PARAMETER readdirplus_prefetch
-	 Sets the number of directory entries that will be prefetched when a readdirplus request is processed.
+	Sets the number of directory entries that will be prefetched when a readdirplus request is processed.
 
 .PARAMETER read_only
-	 If true, the export is read-only.
+	If true, the export is read-only.
 
 .PARAMETER read_only_clients
-	 Clients that have read only access to the export.
+	Clients that have read only access to the export.
 
 .PARAMETER read_transfer_max_size
-	 The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
+	The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
 
 .PARAMETER read_transfer_multiple
-	 The preferred multiple size for NFS read requests.  This option is advisory.
+	The preferred multiple size for NFS read requests.  This option is advisory.
 
 .PARAMETER read_transfer_size
-	 The optimal size for NFS read requests.  This option is advisory.
+	The optimal size for NFS read requests.  This option is advisory.
 
 .PARAMETER read_write_clients
-	 Clients that have read and write access to the export, even if the export is read-only.
+	Clients that have read and write access to the export, even if the export is read-only.
 
 .PARAMETER return_32bit_file_ids
-	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
 
 .PARAMETER root_clients
-	 Clients that have root access to the export.
+	Clients that have root access to the export.
 
 .PARAMETER security_flavors
-	 The authentication flavors that are supported for this export.
+	The authentication flavors that are supported for this export.
 
 .PARAMETER setattr_asynchronous
-	 If true, allows setattr operations to execute asynchronously.
+	If true, allows setattr operations to execute asynchronously.
 
 .PARAMETER snapshot
-	 Use this snapshot for all mounts.
+	Use this snapshot for all mounts.
 
 .PARAMETER symlinks
-	 If true, paths reachable by symlinks are exported.
+	If true, paths reachable by symlinks are exported.
 
 .PARAMETER time_delta
-	 The resolution of all time values that are returned to clients.
+	The resolution of all time values that are returned to clients.
 
 .PARAMETER write_datasync_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_datasync_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_transfer_max_size
-	 The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
+	The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
 
 .PARAMETER write_transfer_multiple
-	 The preferred multiple size for NFS write requests.  This option is advisory.
+	The preferred multiple size for NFS write requests.  This option is advisory.
 
 .PARAMETER write_transfer_size
-	 The optimal size for NFS read requests.  This option is advisory.
+	The optimal size for NFS read requests.  This option is advisory.
 
 .PARAMETER write_unstable_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_unstable_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER enforce
+	If true, the export will be updated even if that change conflicts with another export.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -6929,48 +6957,48 @@ function Set-isiNfsExportv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$all_dirs,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][int]$block_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$can_set_time,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][array]$clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$commit_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$directory_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$encoding,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][object]$map_all,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$map_full,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][bool]$map_lookup_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$map_retry,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][object]$map_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$max_file_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][array]$paths,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$readdirplus,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$readdirplus_prefetch,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$read_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][array]$read_only_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$read_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$read_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$read_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][array]$read_write_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$return_32bit_file_ids,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][array]$root_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$security_flavors,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$setattr_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][string]$snapshot,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$symlinks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][object]$time_delta,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$write_datasync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][string]$write_datasync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][string]$write_filesync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][string]$write_filesync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][int]$write_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][int]$write_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][int]$write_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][string]$write_unstable_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=41)][switch]$Force,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$commit_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$directory_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$encoding,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][object]$map_all,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$map_full,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$map_lookup_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][bool]$map_retry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][object]$map_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$max_file_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][array]$paths,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$readdirplus,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$readdirplus_prefetch,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$read_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][array]$read_only_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$read_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$read_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$read_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$read_write_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$return_32bit_file_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][array]$root_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][array]$security_flavors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$setattr_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$snapshot,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$symlinks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][object]$time_delta,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][int]$write_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][int]$write_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][int]$write_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=40)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][ValidateNotNullOrEmpty()][bool]$enforce,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -7010,47 +7038,41 @@ function Set-isiNfsExportv2{
 .PARAMETER id
 	 id
 
-.PARAMETER enforce
-	If true, the export will be updated even if that change conflicts with another export.
-
-.PARAMETER access_zone
-	Access zone
-
 .PARAMETER all_dirs
-	 True if all directories under the specified paths are mountable.
+	True if all directories under the specified paths are mountable.
 
 .PARAMETER block_size
-	 Specifies the block size returned by the NFS statfs procedure.
+	Specifies the block size returned by the NFS statfs procedure.
 
 .PARAMETER can_set_time
-	 True if the client can set file times through the NFS set attribute request. This parameter does not affect server behavior, but is included to accommoate legacy client requirements.
+	True if the client can set file times through the NFS set attribute request. This parameter does not affect server behavior, but is included to accommoate legacy client requirements.
 
 .PARAMETER case_insensitive
-	 True if the case is ignored for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the case is ignored for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER case_preserving
-	 True if the case is preserved for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the case is preserved for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER chown_restricted
-	 True if the superuser can change file ownership. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the superuser can change file ownership. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER clients
-	 Specifies the clients with root access to the export.
+	Specifies the clients with root access to the export.
 
 .PARAMETER commit_asynchronous
-	 True if NFS  commit  requests execute asynchronously.
+	True if NFS  commit  requests execute asynchronously.
 
 .PARAMETER description
 	Specifies the user-defined string that is used to identify the export.
 
 .PARAMETER directory_transfer_size
-	 Specifies the preferred size for directory read operations. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred size for directory read operations. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER encoding
-	 Specifies the default character set encoding of the clients connecting to the export, unless otherwise specified.
+	Specifies the default character set encoding of the clients connecting to the export, unless otherwise specified.
 
 .PARAMETER link_max
-	 Specifies the reported maximum number of links to a file. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the reported maximum number of links to a file. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER map_all
 	User and group mapping.
@@ -7059,109 +7081,121 @@ function Set-isiNfsExportv2{
 	User and group mapping.
 
 .PARAMETER map_full
-	 True if user mappings query the OneFS user database. When set to false, user mappings only query local authentication.
+	True if user mappings query the OneFS user database. When set to false, user mappings only query local authentication.
 
 .PARAMETER map_lookup_uid
-	 True if incoming user IDs (UIDs) are mapped to users in the OneFS user database. When set to false, incoming UIDs are applied directly to file operations.
+	True if incoming user IDs (UIDs) are mapped to users in the OneFS user database. When set to false, incoming UIDs are applied directly to file operations.
 
 .PARAMETER map_non_root
 	User and group mapping.
 
 .PARAMETER map_retry
-	 Determines whether searches for users specified in 'map_all', 'map_root' or 'map_nonroot' are retried if the search fails.
+	Determines whether searches for users specified in 'map_all', 'map_root' or 'map_nonroot' are retried if the search fails.
 
 .PARAMETER map_root
 	User and group mapping.
 
 .PARAMETER max_file_size
-	 Specifies the maximum file size for any file accessed from the export. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the maximum file size for any file accessed from the export. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER name_max_size
-	 Specifies the reported maximum length of a file name. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the reported maximum length of a file name. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER no_truncate
-	 True if long file names result in an error. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if long file names result in an error. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER paths
-	 Specifies the paths under /ifs that are exported.
+	Specifies the paths under /ifs that are exported.
 
 .PARAMETER readdirplus
-	 True if 'readdirplus' requests are enabled. Enabling this property might improve network performance and is only available for NFSv3.
+	True if 'readdirplus' requests are enabled. Enabling this property might improve network performance and is only available for NFSv3.
 
 .PARAMETER readdirplus_prefetch
-	 Sets the number of directory entries that are prefetched when a 'readdirplus' request is processed. (Deprecated.)
+	Sets the number of directory entries that are prefetched when a 'readdirplus' request is processed. (Deprecated.)
 
 .PARAMETER read_only
-	 True if the export is set to read-only.
+	True if the export is set to read-only.
 
 .PARAMETER read_only_clients
-	 Specifies the clients with read-only access to the export.
+	Specifies the clients with read-only access to the export.
 
 .PARAMETER read_transfer_max_size
-	 Specifies the maximum buffer size that clients should use on NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the maximum buffer size that clients should use on NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER read_transfer_multiple
-	 Specifies the preferred multiple size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER read_transfer_size
-	 Specifies the preferred size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER read_write_clients
-	 Specifies the clients with both read and write access to the export, even when the export is set to read-only.
+	Specifies the clients with both read and write access to the export, even when the export is set to read-only.
 
 .PARAMETER return_32bit_file_ids
-	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
 
 .PARAMETER root_clients
-	 Clients that have root access to the export.
+	Clients that have root access to the export.
 
 .PARAMETER security_flavors
-	 Specifies the authentication types that are supported for this export.
+	Specifies the authentication types that are supported for this export.
 
 .PARAMETER setattr_asynchronous
-	 True if set attribute operations execute asynchronously.
+	True if set attribute operations execute asynchronously.
 
 .PARAMETER snapshot
-	 Specifies the snapshot for all mounts.
+	Specifies the snapshot for all mounts.
 
 .PARAMETER symlinks
-	 True if symlinks are supported. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	True if symlinks are supported. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER time_delta
-	 Specifies the resolution of all time values that are returned to the clients
+	Specifies the resolution of all time values that are returned to the clients
 
 .PARAMETER write_datasync_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_datasync_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_transfer_max_size
-	 Specifies the maximum buffer size that clients should use on NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the maximum buffer size that clients should use on NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_transfer_multiple
-	 Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_transfer_size
-	 Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_unstable_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_unstable_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER zone
-	 Specifies the zone in which the export is valid.
+	Specifies the zone in which the export is valid.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER enforce
+	If true, the export will be updated even if that change conflicts with another export.
+
+.PARAMETER access_zone
+	Access zone
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7171,58 +7205,58 @@ function Set-isiNfsExportv2{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$enforce,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$all_dirs,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$block_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$can_set_time,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$case_insensitive,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$case_preserving,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$chown_restricted,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][array]$clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$commit_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$directory_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$encoding,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$link_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][object]$map_all,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][object]$map_failure,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$map_full,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$map_lookup_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][object]$map_non_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$map_retry,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][object]$map_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$max_file_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$name_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$no_truncate,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][array]$paths,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$readdirplus,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][int]$readdirplus_prefetch,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$read_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$read_only_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][int]$read_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][int]$read_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][int]$read_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$read_write_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][bool]$return_32bit_file_ids,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][array]$root_clients,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][array]$security_flavors,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$setattr_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$snapshot,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][bool]$symlinks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][object]$time_delta,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$write_datasync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$write_datasync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][string]$write_filesync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][string]$write_filesync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][int]$write_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][int]$write_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][int]$write_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][string]$write_unstable_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][string]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=51)][switch]$Force,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$case_insensitive,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$case_preserving,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$chown_restricted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][array]$clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$commit_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$directory_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$encoding,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$link_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][object]$map_all,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][object]$map_failure,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$map_full,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$map_lookup_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][object]$map_non_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$map_retry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][object]$map_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$max_file_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$name_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$no_truncate,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$paths,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$readdirplus,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$readdirplus_prefetch,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$read_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$read_only_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][int]$read_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][int]$read_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][int]$read_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][array]$read_write_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][bool]$return_32bit_file_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$root_clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][array]$security_flavors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$setattr_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$snapshot,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$symlinks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][object]$time_delta,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][int]$write_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][int]$write_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][int]$write_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=49)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][ValidateNotNullOrEmpty()][bool]$enforce,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=51)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -7308,11 +7342,11 @@ function Set-isiNfsNetgroup{
 .DESCRIPTION
 	Modify the current NFS netgroup settings.
 
-.PARAMETER host
-	Host to retrieve netgroup cache settings for.
-
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER host
+	Host to retrieve netgroup cache settings for.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7322,8 +7356,8 @@ function Set-isiNfsNetgroup{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$host,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=0)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$host,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -7359,103 +7393,109 @@ function Set-isiNfsSettingsExportv1{
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER all_dirs
-	 If true, all directories under the specified paths are mountable.
+	If true, all directories under the specified paths are mountable.
 
 .PARAMETER block_size
-	 The block size returned by the NFS STATFS procedure.
+	The block size returned by the NFS STATFS procedure.
 
 .PARAMETER can_set_time
-	 If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
+	If true, the client may  set file  times using the NFS SETATTR request.  This  option is advisory and the server always behaves as if it is true.
 
 .PARAMETER commit_asynchronous
-	 If true, allows NFS  commit  requests to  execute asynchronously.
+	If true, allows NFS  commit  requests to  execute asynchronously.
 
 .PARAMETER directory_transfer_size
-	 The preferred size for directory read operations.  This option is advisory.
+	The preferred size for directory read operations.  This option is advisory.
 
 .PARAMETER encoding
-	 The character encoding of clients connecting to the export.
+	The character encoding of clients connecting to the export.
 
 .PARAMETER map_all
 	User and group mapping.
 
 .PARAMETER map_full
-	 If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
+	If true, user mappings queries the OneFS user database.  If false, only local authentication is queried.
 
 .PARAMETER map_lookup_uid
-	 If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
+	If true, incoming UIDs are mapped to users in the OneFS user database.  If false, incoming UIDs are applied directly to file operations.
 
 .PARAMETER map_retry
-	 Determines whether lookups for users specified in map_all or map_root are retried if the look fails.
+	Determines whether lookups for users specified in map_all or map_root are retried if the look fails.
 
 .PARAMETER map_root
 	User and group mapping.
 
 .PARAMETER max_file_size
-	 The maximum file size in the export.
+	The maximum file size in the export.
 
 .PARAMETER readdirplus
-	 If true, readdirplus requests are enabled.
+	If true, readdirplus requests are enabled.
 
 .PARAMETER readdirplus_prefetch
-	 Sets the number of directory entries that will be prefetched when a readdirplus request is processed.
+	Sets the number of directory entries that will be prefetched when a readdirplus request is processed.
 
 .PARAMETER read_only
-	 If true, the export is read-only.
+	If true, the export is read-only.
 
 .PARAMETER read_transfer_max_size
-	 The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
+	The maximum buffer size that clients should use on NFS read requests.  This option is advisory.
 
 .PARAMETER read_transfer_multiple
-	 The preferred multiple size for NFS read requests.  This option is advisory.
+	The preferred multiple size for NFS read requests.  This option is advisory.
 
 .PARAMETER read_transfer_size
-	 The optimal size for NFS read requests.  This option is advisory.
+	The optimal size for NFS read requests.  This option is advisory.
 
 .PARAMETER return_32bit_file_ids
-	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
 
 .PARAMETER security_flavors
-	 The authentication flavors that are supported for this export.
+	The authentication flavors that are supported for this export.
 
 .PARAMETER setattr_asynchronous
-	 If true, allows setattr operations to execute asynchronously.
+	If true, allows setattr operations to execute asynchronously.
 
 .PARAMETER snapshot
-	 Use this snapshot for all mounts.
+	Use this snapshot for all mounts.
 
 .PARAMETER symlinks
-	 If true, paths reachable by symlinks are exported.
+	If true, paths reachable by symlinks are exported.
 
 .PARAMETER time_delta
-	 The resolution of all time values that are returned to clients.
+	The resolution of all time values that are returned to clients.
 
 .PARAMETER write_datasync_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_datasync_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_transfer_max_size
-	 The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
+	The maximum buffer size that clients should use on NFS write requests.  This option is advisory.
 
 .PARAMETER write_transfer_multiple
-	 The preferred multiple size for NFS write requests.  This option is advisory.
+	The preferred multiple size for NFS write requests.  This option is advisory.
 
 .PARAMETER write_transfer_size
-	 The optimal size for NFS read requests.  This option is advisory.
+	The optimal size for NFS read requests.  This option is advisory.
 
 .PARAMETER write_unstable_action
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_unstable_reply
 	The synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -7492,15 +7532,15 @@ function Set-isiNfsSettingsExportv1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$snapshot,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$symlinks,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][object]$time_delta,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$write_datasync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$write_datasync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$write_filesync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_reply,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][int]$write_transfer_max_size,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][int]$write_transfer_multiple,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][int]$write_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][string]$write_unstable_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_reply,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=33)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -7528,38 +7568,35 @@ function Set-isiNfsSettingsExportv2{
 .DESCRIPTION
 	Modify the default values for NFS exports. All input fields are optional, but one or more must be supplied.
 
-.PARAMETER access_zone
-	Access zone
-
 .PARAMETER all_dirs
-	 True if all directories under the specified paths are mountable.
+	True if all directories under the specified paths are mountable.
 
 .PARAMETER block_size
-	 Specifies the block size returned by the NFS statfs procedure.
+	Specifies the block size returned by the NFS statfs procedure.
 
 .PARAMETER can_set_time
-	 True if the client can set file times through the NFS set attribute request. This parameter does not affect server behavior, but is included to accommoate legacy client requirements.
+	True if the client can set file times through the NFS set attribute request. This parameter does not affect server behavior, but is included to accommoate legacy client requirements.
 
 .PARAMETER case_insensitive
-	 True if the case is ignored for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the case is ignored for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER case_preserving
-	 True if the case is preserved for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the case is preserved for file names. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER chown_restricted
-	 True if the superuser can change file ownership. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if the superuser can change file ownership. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER commit_asynchronous
-	 True if NFS  commit  requests execute asynchronously.
+	True if NFS  commit  requests execute asynchronously.
 
 .PARAMETER directory_transfer_size
-	 Specifies the preferred size for directory read operations. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred size for directory read operations. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER encoding
-	 Specifies the default character set encoding of the clients connecting to the export, unless otherwise specified.
+	Specifies the default character set encoding of the clients connecting to the export, unless otherwise specified.
 
 .PARAMETER link_max
-	 Specifies the reported maximum number of links to a file. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the reported maximum number of links to a file. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER map_all
 	User and group mapping.
@@ -7568,97 +7605,106 @@ function Set-isiNfsSettingsExportv2{
 	User and group mapping.
 
 .PARAMETER map_full
-	 True if user mappings query the OneFS user database. When set to false, user mappings only query local authentication.
+	True if user mappings query the OneFS user database. When set to false, user mappings only query local authentication.
 
 .PARAMETER map_lookup_uid
-	 True if incoming user IDs (UIDs) are mapped to users in the OneFS user database. When set to false, incoming UIDs are applied directly to file operations.
+	True if incoming user IDs (UIDs) are mapped to users in the OneFS user database. When set to false, incoming UIDs are applied directly to file operations.
 
 .PARAMETER map_non_root
 	User and group mapping.
 
 .PARAMETER map_retry
-	 Determines whether searches for users specified in 'map_all', 'map_root' or 'map_nonroot' are retried if the search fails.
+	Determines whether searches for users specified in 'map_all', 'map_root' or 'map_nonroot' are retried if the search fails.
 
 .PARAMETER map_root
 	User and group mapping.
 
 .PARAMETER max_file_size
-	 Specifies the maximum file size for any file accessed from the export. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the maximum file size for any file accessed from the export. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER name_max_size
-	 Specifies the reported maximum length of a file name. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	Specifies the reported maximum length of a file name. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER no_truncate
-	 True if long file names result in an error. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
+	True if long file names result in an error. This parameter does not affect server behavior, but is included to accommodate legacy client requirements.
 
 .PARAMETER readdirplus
-	 True if 'readdirplus' requests are enabled. Enabling this property might improve network performance and is only available for NFSv3.
+	True if 'readdirplus' requests are enabled. Enabling this property might improve network performance and is only available for NFSv3.
 
 .PARAMETER readdirplus_prefetch
-	 Sets the number of directory entries that are prefetched when a 'readdirplus' request is processed. (Deprecated.)
+	Sets the number of directory entries that are prefetched when a 'readdirplus' request is processed. (Deprecated.)
 
 .PARAMETER read_only
-	 True if the export is set to read-only.
+	True if the export is set to read-only.
 
 .PARAMETER read_transfer_max_size
-	 Specifies the maximum buffer size that clients should use on NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the maximum buffer size that clients should use on NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER read_transfer_multiple
-	 Specifies the preferred multiple size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER read_transfer_size
-	 Specifies the preferred size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER return_32bit_file_ids
-	 Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
 
 .PARAMETER security_flavors
-	 Specifies the authentication types that are supported for this export.
+	Specifies the authentication types that are supported for this export.
 
 .PARAMETER setattr_asynchronous
-	 True if set attribute operations execute asynchronously.
+	True if set attribute operations execute asynchronously.
 
 .PARAMETER snapshot
-	 Specifies the snapshot for all mounts.
+	Specifies the snapshot for all mounts.
 
 .PARAMETER symlinks
-	 True if symlinks are supported. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	True if symlinks are supported. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER time_delta
-	 Specifies the resolution of all time values that are returned to the clients
+	Specifies the resolution of all time values that are returned to the clients
 
 .PARAMETER write_datasync_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_datasync_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_filesync_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_transfer_max_size
-	 Specifies the maximum buffer size that clients should use on NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the maximum buffer size that clients should use on NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_transfer_multiple
-	 Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_transfer_size
-	 Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
+	Specifies the preferred multiple size for NFS write requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER write_unstable_action
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER write_unstable_reply
 	Specifies the synchronization type.
+	Valid inputs: DATASYNC,FILESYNC,UNSTABLE
 
 .PARAMETER zone
-	 Specifies the zone in which the export is valid.
+	Specifies the zone in which the export is valid.
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Access zone
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -7668,50 +7714,50 @@ function Set-isiNfsSettingsExportv2{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_dirs,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$block_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$can_set_time,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$case_insensitive,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$case_preserving,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$chown_restricted,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$commit_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$directory_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$encoding,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$link_max,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][object]$map_all,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][object]$map_failure,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$map_full,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][bool]$map_lookup_uid,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][object]$map_non_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$map_retry,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][object]$map_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$max_file_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][int]$name_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$no_truncate,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$readdirplus,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$readdirplus_prefetch,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$read_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$read_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$read_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][int]$read_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$return_32bit_file_ids,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$security_flavors,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$setattr_asynchronous,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][string]$snapshot,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$symlinks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][object]$time_delta,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][string]$write_datasync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][string]$write_datasync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][string]$write_filesync_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$write_filesync_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][int]$write_transfer_max_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][int]$write_transfer_multiple,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][int]$write_transfer_size,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$write_unstable_action,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$write_unstable_reply,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=43)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$all_dirs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$can_set_time,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$case_insensitive,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$case_preserving,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$chown_restricted,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$commit_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$directory_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$encoding,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$link_max,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][object]$map_all,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][object]$map_failure,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][bool]$map_full,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$map_lookup_uid,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][object]$map_non_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$map_retry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][object]$map_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$max_file_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$name_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$no_truncate,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$readdirplus,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$readdirplus_prefetch,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$read_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][int]$read_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][int]$read_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][int]$read_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$return_32bit_file_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$security_flavors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][bool]$setattr_asynchronous,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][string]$snapshot,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$symlinks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][object]$time_delta,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_datasync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_filesync_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][int]$write_transfer_max_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][int]$write_transfer_multiple,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][int]$write_transfer_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_action,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][ValidateSet('DATASYNC','FILESYNC','UNSTABLE')][string]$write_unstable_reply,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=42)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -7807,25 +7853,25 @@ function Set-isiNfsSettingsZone{
 	Modify the NFS server settings for this zone.
 
 .PARAMETER nfsv4_allow_numeric_ids
-	 If true, sends owners and groups as UIDs and GIDs when look up fails or if the 'nfsv4_no_name' property is set to 1.
+	If true, sends owners and groups as UIDs and GIDs when look up fails or if the 'nfsv4_no_name' property is set to 1.
 
 .PARAMETER nfsv4_domain
-	 Specifies the domain or realm through which users and groups are associated.
+	Specifies the domain or realm through which users and groups are associated.
 
 .PARAMETER nfsv4_no_domain
-	 If true, sends owners and groups without a domain name.
+	If true, sends owners and groups without a domain name.
 
 .PARAMETER nfsv4_no_domain_uids
-	 If true, sends UIDs and GIDs without a domain name.
+	If true, sends UIDs and GIDs without a domain name.
 
 .PARAMETER nfsv4_no_names
-	 If true, sends owners and groups as UIDs and GIDs.
+	If true, sends owners and groups as UIDs and GIDs.
 
 .PARAMETER nfsv4_replace_domain
-	 If true, replaces the owner or group domain with an NFS domain name.
+	If true, replaces the owner or group domain with an NFS domain name.
 
 .PARAMETER zone
-	 Specifies the access zones in which these settings apply.
+	Specifies the access zones in which these settings apply.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -7892,7 +7938,7 @@ function Set-isiNtpServer{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$key,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -8023,67 +8069,69 @@ function Set-isiSmbSettingsGlobalv1{
 	Modify one or more settings.
 
 .PARAMETER access_based_share_enum
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER audit_fileshare
-	 Specify level of file share audit events to log.
+	Specify level of file share audit events to log.
+	Valid inputs: all,success,failure,none
 
 .PARAMETER audit_global_sacl
-	 Specifies a list of permissions to audit.
+	Specifies a list of permissions to audit.
 
 .PARAMETER audit_logon
-	 Specify the level of logon audit events to log.
+	Specify the level of logon audit events to log.
+	Valid inputs: all,success,failure,none
 
 .PARAMETER dot_snap_accessible_child
-	 Allow access to .snapshot directories in share subdirectories.
+	Allow access to .snapshot directories in share subdirectories.
 
 .PARAMETER dot_snap_accessible_root
-	 Allow access to the .snapshot directory in the root of the share.
+	Allow access to the .snapshot directory in the root of the share.
 
 .PARAMETER dot_snap_visible_child
-	 Show .snapshot directories in share subdirectories.
+	Show .snapshot directories in share subdirectories.
 
 .PARAMETER dot_snap_visible_root
-	 Show the .snapshot directory in the root of a share.
+	Show the .snapshot directory in the root of a share.
 
 .PARAMETER enable_security_signatures
-	 Indicates whether the server supports signed SMB packets.
+	Indicates whether the server supports signed SMB packets.
 
 .PARAMETER guest_user
-	 Specifies the fully-qualified user to use for guest access.
+	Specifies the fully-qualified user to use for guest access.
 
 .PARAMETER ignore_eas
-	 Specify whether to ignore EAs on files.
+	Specify whether to ignore EAs on files.
 
 .PARAMETER onefs_cpu_multiplier
-	 Specify the number of OneFS driver worker threads per CPU.
+	Specify the number of OneFS driver worker threads per CPU.
 
 .PARAMETER onefs_num_workers
-	 Set the maximum number of OneFS driver worker threads.
+	Set the maximum number of OneFS driver worker threads.
 
 .PARAMETER require_security_signatures
-	 Indicates whether the server requires signed SMB packets.
+	Indicates whether the server requires signed SMB packets.
 
 .PARAMETER server_string
-	 Provides a description of the server.
+	Provides a description of the server.
 
 .PARAMETER service
 	Specify whether service is enabled.
 
 .PARAMETER srv_cpu_multiplier
-	 Specify the number of SRV service worker threads per CPU.
+	Specify the number of SRV service worker threads per CPU.
 
 .PARAMETER srv_num_workers
-	 Set the maximum number of SRV service worker threads.
+	Set the maximum number of SRV service worker threads.
 
 .PARAMETER support_multichannel
-	 Support multichannel.
+	Support multichannel.
 
 .PARAMETER support_netbios
-	 Support NetBIOS.
+	Support NetBIOS.
 
 .PARAMETER support_smb2
-	 Support the SMB2 protocol on the server.
+	Support the SMB2 protocol on the server.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -8097,9 +8145,9 @@ function Set-isiSmbSettingsGlobalv1{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_share_enum,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$audit_fileshare,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('all','success','failure','none')][string]$audit_fileshare,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$audit_global_sacl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$audit_logon,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('all','success','failure','none')][string]$audit_logon,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$dot_snap_accessible_child,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$dot_snap_accessible_root,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$dot_snap_visible_child,
@@ -8147,70 +8195,72 @@ function Set-isiSmbSettingsGlobalv3{
 	Modify one or more settings.
 
 .PARAMETER access_based_share_enum
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER audit_fileshare
-	 Specify level of file share audit events to log.
+	Specify level of file share audit events to log.
+	Valid inputs: all,success,failure,none
 
 .PARAMETER audit_global_sacl
-	 Specifies a list of permissions to audit.
+	Specifies a list of permissions to audit.
 
 .PARAMETER audit_logon
-	 Specify the level of logon audit events to log.
+	Specify the level of logon audit events to log.
+	Valid inputs: all,success,failure,none
 
 .PARAMETER dot_snap_accessible_child
-	 Allow access to .snapshot directories in share subdirectories.
+	Allow access to .snapshot directories in share subdirectories.
 
 .PARAMETER dot_snap_accessible_root
-	 Allow access to the .snapshot directory in the root of the share.
+	Allow access to the .snapshot directory in the root of the share.
 
 .PARAMETER dot_snap_visible_child
-	 Show .snapshot directories in share subdirectories.
+	Show .snapshot directories in share subdirectories.
 
 .PARAMETER dot_snap_visible_root
-	 Show the .snapshot directory in the root of a share.
+	Show the .snapshot directory in the root of a share.
 
 .PARAMETER enable_security_signatures
-	 Indicates whether the server supports signed SMB packets.
+	Indicates whether the server supports signed SMB packets.
 
 .PARAMETER guest_user
-	 Specifies the fully-qualified user to use for guest access.
+	Specifies the fully-qualified user to use for guest access.
 
 .PARAMETER ignore_eas
-	 Specify whether to ignore EAs on files.
+	Specify whether to ignore EAs on files.
 
 .PARAMETER onefs_cpu_multiplier
-	 Specify the number of OneFS driver worker threads per CPU.
+	Specify the number of OneFS driver worker threads per CPU.
 
 .PARAMETER onefs_num_workers
-	 Set the maximum number of OneFS driver worker threads.
+	Set the maximum number of OneFS driver worker threads.
 
 .PARAMETER require_security_signatures
-	 Indicates whether the server requires signed SMB packets.
+	Indicates whether the server requires signed SMB packets.
 
 .PARAMETER server_side_copy
-	 Enable Server Side Copy.
+	Enable Server Side Copy.
 
 .PARAMETER server_string
-	 Provides a description of the server.
+	Provides a description of the server.
 
 .PARAMETER service
 	Specify whether service is enabled.
 
 .PARAMETER srv_cpu_multiplier
-	 Specify the number of SRV service worker threads per CPU.
+	Specify the number of SRV service worker threads per CPU.
 
 .PARAMETER srv_num_workers
-	 Set the maximum number of SRV service worker threads.
+	Set the maximum number of SRV service worker threads.
 
 .PARAMETER support_multichannel
-	 Support multichannel.
+	Support multichannel.
 
 .PARAMETER support_netbios
-	 Support NetBIOS.
+	Support NetBIOS.
 
 .PARAMETER support_smb2
-	 Support the SMB2 protocol on the server.
+	Support the SMB2 protocol on the server.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -8224,9 +8274,9 @@ function Set-isiSmbSettingsGlobalv3{
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_share_enum,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$audit_fileshare,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('all','success','failure','none')][string]$audit_fileshare,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$audit_global_sacl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$audit_logon,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('all','success','failure','none')][string]$audit_logon,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$dot_snap_accessible_child,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$dot_snap_accessible_root,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$dot_snap_visible_child,
@@ -8272,77 +8322,81 @@ function Set-isiSmbSettingsSharev1{
 .DESCRIPTION
 	Modify one or more settings.
 
-.PARAMETER access_zone
-	Zone which contains these share settings.
-
 .PARAMETER access_based_enumeration
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER access_based_enumeration_root_only
-	 Access-based enumeration on only the root directory of the share.
+	Access-based enumeration on only the root directory of the share.
 
 .PARAMETER allow_delete_readonly
-	 Allow deletion of read-only files in the share.
+	Allow deletion of read-only files in the share.
 
 .PARAMETER allow_execute_always
-	 Allows users to execute files they have read rights for.
+	Allows users to execute files they have read rights for.
 
 .PARAMETER change_notify
-	 Specify level of change notification alerts on the share.
+	Specify level of change notification alerts on the share.
+	Valid inputs: all,norecurse,none
 
 .PARAMETER create_permissions
-	 Set the create permissions for new files and directories in share.
+	Set the create permissions for new files and directories in share.
+	Valid inputs: default acl,inherit mode bits,use create mask and mode
 
 .PARAMETER csc_policy
-	 Client-side caching policy for the shares.
+	Client-side caching policy for the shares.
+	Valid inputs: manual,documents,programs,none
 
 .PARAMETER directory_create_mask
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER directory_create_mode
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER file_create_mask
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER file_create_mode
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER hide_dot_files
-	 Hide files and directories that begin with a period '.'.
+	Hide files and directories that begin with a period '.'.
 
 .PARAMETER host_acl
-	 An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
+	An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
 
 .PARAMETER impersonate_guest
-	 Specify the condition in which user access is done as the guest account.
+	Specify the condition in which user access is done as the guest account.
+	Valid inputs: always,bad user,never
 
 .PARAMETER impersonate_user
-	 User account to be used as guest account.
+	User account to be used as guest account.
 
 .PARAMETER mangle_byte_start
-	 Specifies the wchar_t starting point for automatic byte mangling.
+	Specifies the wchar_t starting point for automatic byte mangling.
 
 .PARAMETER mangle_map
-	 Character mangle map.
+	Character mangle map.
 
 .PARAMETER ntfs_acl_support
-	 Support NTFS ACLs on files and directories.
+	Support NTFS ACLs on files and directories.
 
 .PARAMETER oplocks
-	 Allow oplock requests.
+	Allow oplock requests.
 
 .PARAMETER strict_flush
-	 Handle SMB flush operations.
+	Handle SMB flush operations.
 
 .PARAMETER strict_locking
-	 Specifies whether byte range locks contend against SMB I/O.
+	Specifies whether byte range locks contend against SMB I/O.
 
 .PARAMETER zone
-	 Name of the access zone in which to update settings
+	Name of the access zone in which to update settings
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Zone which contains these share settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8352,30 +8406,30 @@ function Set-isiSmbSettingsSharev1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_execute_always,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$change_notify,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$create_permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$csc_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$directory_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$directory_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$file_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$file_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][bool]$hide_dot_files,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][array]$host_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$impersonate_guest,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][string]$impersonate_user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$mangle_byte_start,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][array]$mangle_map,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$ntfs_acl_support,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$oplocks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$strict_flush,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=23)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][array]$mangle_map,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$oplocks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$strict_locking,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=22)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -8412,95 +8466,101 @@ function Set-isiSmbSettingsSharev3{
 .DESCRIPTION
 	Modify one or more settings.
 
-.PARAMETER access_zone
-	Zone which contains these share settings.
-
 .PARAMETER access_based_enumeration
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER access_based_enumeration_root_only
-	 Access-based enumeration on only the root directory of the share.
+	Access-based enumeration on only the root directory of the share.
 
 .PARAMETER allow_delete_readonly
-	 Allow deletion of read-only files in the share.
+	Allow deletion of read-only files in the share.
 
 .PARAMETER allow_execute_always
-	 Allows users to execute files they have read rights for.
+	Allows users to execute files they have read rights for.
 
 .PARAMETER ca_timeout
-	 Persistent open timeout for the share.
+	Persistent open timeout for the share.
 
 .PARAMETER ca_write_integrity
-	 Specify the level of write-integrity on continuously available shares.
+	Specify the level of write-integrity on continuously available shares.
+	Valid inputs: none,write-read-coherent,full
 
 .PARAMETER change_notify
-	 Specify level of change notification alerts on the share.
+	Specify level of change notification alerts on the share.
+	Valid inputs: all,norecurse,none
 
 .PARAMETER create_permissions
-	 Set the create permissions for new files and directories in share.
+	Set the create permissions for new files and directories in share.
+	Valid inputs: default acl,inherit mode bits,use create mask and mode
 
 .PARAMETER csc_policy
-	 Client-side caching policy for the shares.
+	Client-side caching policy for the shares.
+	Valid inputs: manual,documents,programs,none
 
 .PARAMETER directory_create_mask
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER directory_create_mode
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER file_create_mask
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER file_create_mode
-	 Unix umask or mode bits.
+	Unix umask or mode bits.
 
 .PARAMETER file_filtering_enabled
-	 Enables file filtering on the share.
+	Enables file filtering on the share.
 
 .PARAMETER file_filter_extensions
-	 Specifies the list of file extensions.
+	Specifies the list of file extensions.
 
 .PARAMETER file_filter_type
-	 Specifies if filter list is for deny or allow. Default is deny.
+	Specifies if filter list is for deny or allow. Default is deny.
+	Valid inputs: deny,allow
 
 .PARAMETER hide_dot_files
-	 Hide files and directories that begin with a period '.'.
+	Hide files and directories that begin with a period '.'.
 
 .PARAMETER host_acl
-	 An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
+	An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
 
 .PARAMETER impersonate_guest
-	 Specify the condition in which user access is done as the guest account.
+	Specify the condition in which user access is done as the guest account.
+	Valid inputs: always,bad user,never
 
 .PARAMETER impersonate_user
-	 User account to be used as guest account.
+	User account to be used as guest account.
 
 .PARAMETER mangle_byte_start
-	 Specifies the wchar_t starting point for automatic byte mangling.
+	Specifies the wchar_t starting point for automatic byte mangling.
 
 .PARAMETER mangle_map
-	 Character mangle map.
+	Character mangle map.
 
 .PARAMETER ntfs_acl_support
-	 Support NTFS ACLs on files and directories.
+	Support NTFS ACLs on files and directories.
 
 .PARAMETER oplocks
-	 Allow oplock requests.
+	Allow oplock requests.
 
 .PARAMETER strict_ca_lockout
-	 Specifies if persistent opens would do strict lockout on the share.
+	Specifies if persistent opens would do strict lockout on the share.
 
 .PARAMETER strict_flush
-	 Handle SMB flush operations.
+	Handle SMB flush operations.
 
 .PARAMETER strict_locking
-	 Specifies whether byte range locks contend against SMB I/O.
+	Specifies whether byte range locks contend against SMB I/O.
 
 .PARAMETER zone
-	 Name of the access zone in which to update settings
+	Name of the access zone in which to update settings
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Zone which contains these share settings.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8510,36 +8570,36 @@ function Set-isiSmbSettingsSharev3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_execute_always,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$ca_timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$ca_write_integrity,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$change_notify,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$create_permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$csc_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$directory_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$directory_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$file_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$file_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][bool]$file_filtering_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][array]$file_filter_extensions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][string]$file_filter_type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$hide_dot_files,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][array]$host_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$impersonate_guest,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$impersonate_user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$mangle_byte_start,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][array]$mangle_map,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$ntfs_acl_support,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$oplocks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$strict_ca_lockout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$strict_flush,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=29)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$ca_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('none','write-read-coherent','full')][string]$ca_write_integrity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][bool]$file_filtering_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][array]$file_filter_extensions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][ValidateSet('deny','allow')][string]$file_filter_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][array]$mangle_map,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][bool]$oplocks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$strict_ca_lockout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$strict_locking,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=28)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -8580,104 +8640,108 @@ function Set-isiSmbSharev1{
 .PARAMETER name
 	Share name
 
-.PARAMETER access_zone
-	Zone which contains this share.
-
 .PARAMETER access_based_enumeration
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER access_based_enumeration_root_only
-	 Access-based enumeration on only the root directory of the share.
+	Access-based enumeration on only the root directory of the share.
 
 .PARAMETER allow_delete_readonly
-	 Allow deletion of read-only files in the share.
+	Allow deletion of read-only files in the share.
 
 .PARAMETER allow_execute_always
-	 Allows users to execute files they have read rights for.
+	Allows users to execute files they have read rights for.
 
 .PARAMETER allow_variable_expansion
-	 Allow automatic expansion of variables for home directories.
+	Allow automatic expansion of variables for home directories.
 
 .PARAMETER auto_create_directory
-	 Automatically create home directories.
+	Automatically create home directories.
 
 .PARAMETER browsable
-	 Share is visible in net view and the browse list.
+	Share is visible in net view and the browse list.
 
 .PARAMETER change_notify
-	 Level of change notification alerts on the share.
+	Level of change notification alerts on the share.
+	Valid inputs: all,norecurse,none
 
 .PARAMETER create_permissions
-	 Create permissions for new files and directories in share.
+	Create permissions for new files and directories in share.
+	Valid inputs: default acl,inherit mode bits,use create mask and mode
 
 .PARAMETER csc_policy
-	 Client-side caching policy for the shares.
+	Client-side caching policy for the shares.
+	Valid inputs: manual,documents,programs,none
 
 .PARAMETER description
-	 Description for this SMB share.
+	Description for this SMB share.
 
 .PARAMETER directory_create_mask
-	 Directory create mask bits.
+	Directory create mask bits.
 
 .PARAMETER directory_create_mode
-	 Directory create mode bits.
+	Directory create mode bits.
 
 .PARAMETER file_create_mask
-	 File create mask bits.
+	File create mask bits.
 
 .PARAMETER file_create_mode
-	 File create mode bits.
+	File create mode bits.
 
 .PARAMETER hide_dot_files
-	 Hide files and directories that begin with a period '.'.
+	Hide files and directories that begin with a period '.'.
 
 .PARAMETER host_acl
-	 An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
+	An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
 
 .PARAMETER impersonate_guest
-	 Specify the condition in which user access is done as the guest account.
+	Specify the condition in which user access is done as the guest account.
+	Valid inputs: always,bad user,never
 
 .PARAMETER impersonate_user
-	 User account to be used as guest account.
+	User account to be used as guest account.
 
 .PARAMETER inheritable_path_acl
-	 Set the inheritable ACL on the share path.
+	Set the inheritable ACL on the share path.
 
 .PARAMETER mangle_byte_start
-	 Specifies the wchar_t starting point for automatic byte mangling.
+	Specifies the wchar_t starting point for automatic byte mangling.
 
 .PARAMETER mangle_map
-	 Character mangle map.
+	Character mangle map.
 
 .PARAMETER new_name
 	Share name.
 
 .PARAMETER ntfs_acl_support
-	 Support NTFS ACLs on files and directories.
+	Support NTFS ACLs on files and directories.
 
 .PARAMETER oplocks
-	 Support oplocks.
+	Support oplocks.
 
 .PARAMETER path
 	Path of share within /ifs.
 
 .PARAMETER permissions
-	 Specifies an ordered list of permission modifications.
+	Specifies an ordered list of permission modifications.
 
 .PARAMETER run_as_root
-	 Allow account to run as root.
+	Allow account to run as root.
 
 .PARAMETER strict_flush
-	 Handle SMB flush operations.
+	Handle SMB flush operations.
 
 .PARAMETER strict_locking
-	 Specifies whether byte range locks contend against SMB I/O.
+	Specifies whether byte range locks contend against SMB I/O.
 
 .PARAMETER zone
-	 Name of the access zone to which to move this SMB share
+	Name of the access zone to which to move this SMB share
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Zone which contains this share.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8687,41 +8751,41 @@ function Set-isiSmbSharev1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$access_based_enumeration_root_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_delete_readonly,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$allow_execute_always,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$allow_variable_expansion,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$auto_create_directory,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$browsable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$change_notify,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$create_permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$csc_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$directory_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$directory_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$file_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$file_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$hide_dot_files,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][array]$host_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$impersonate_guest,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$impersonate_user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$inheritable_path_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][int]$mangle_byte_start,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$mangle_map,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$new_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$ntfs_acl_support,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$oplocks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][array]$run_as_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_flush,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=33)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$allow_variable_expansion,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$auto_create_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$browsable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][bool]$inheritable_path_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][array]$mangle_map,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$oplocks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$run_as_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$strict_locking,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=32)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -8729,14 +8793,14 @@ function Set-isiSmbSharev1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -8775,122 +8839,128 @@ function Set-isiSmbSharev3{
 .PARAMETER name
 	Share name
 
-.PARAMETER access_zone
-	Zone which contains this share.
-
 .PARAMETER access_based_enumeration
-	 Only enumerate files and folders the requesting user has access to.
+	Only enumerate files and folders the requesting user has access to.
 
 .PARAMETER access_based_enumeration_root_only
-	 Access-based enumeration on only the root directory of the share.
+	Access-based enumeration on only the root directory of the share.
 
 .PARAMETER allow_delete_readonly
-	 Allow deletion of read-only files in the share.
+	Allow deletion of read-only files in the share.
 
 .PARAMETER allow_execute_always
-	 Allows users to execute files they have read rights for.
+	Allows users to execute files they have read rights for.
 
 .PARAMETER allow_variable_expansion
-	 Allow automatic expansion of variables for home directories.
+	Allow automatic expansion of variables for home directories.
 
 .PARAMETER auto_create_directory
-	 Automatically create home directories.
+	Automatically create home directories.
 
 .PARAMETER browsable
-	 Share is visible in net view and the browse list.
+	Share is visible in net view and the browse list.
 
 .PARAMETER ca_timeout
-	 Persistent open timeout for the share.
+	Persistent open timeout for the share.
 
 .PARAMETER ca_write_integrity
-	 Specify the level of write-integrity on continuously available shares.
+	Specify the level of write-integrity on continuously available shares.
+	Valid inputs: none,write-read-coherent,full
 
 .PARAMETER change_notify
-	 Level of change notification alerts on the share.
+	Level of change notification alerts on the share.
+	Valid inputs: all,norecurse,none
 
 .PARAMETER create_permissions
-	 Create permissions for new files and directories in share.
+	Create permissions for new files and directories in share.
+	Valid inputs: default acl,inherit mode bits,use create mask and mode
 
 .PARAMETER csc_policy
-	 Client-side caching policy for the shares.
+	Client-side caching policy for the shares.
+	Valid inputs: manual,documents,programs,none
 
 .PARAMETER description
-	 Description for this SMB share.
+	Description for this SMB share.
 
 .PARAMETER directory_create_mask
-	 Directory create mask bits.
+	Directory create mask bits.
 
 .PARAMETER directory_create_mode
-	 Directory create mode bits.
+	Directory create mode bits.
 
 .PARAMETER file_create_mask
-	 File create mask bits.
+	File create mask bits.
 
 .PARAMETER file_create_mode
-	 File create mode bits.
+	File create mode bits.
 
 .PARAMETER file_filtering_enabled
-	 Enables file filtering on this zone.
+	Enables file filtering on this zone.
 
 .PARAMETER file_filter_extensions
-	 Specifies the list of file extensions.
+	Specifies the list of file extensions.
 
 .PARAMETER file_filter_type
-	 Specifies if filter list is for deny or allow. Default is deny.
+	Specifies if filter list is for deny or allow. Default is deny.
+	Valid inputs: deny,allow
 
 .PARAMETER hide_dot_files
-	 Hide files and directories that begin with a period '.'.
+	Hide files and directories that begin with a period '.'.
 
 .PARAMETER host_acl
-	 An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
+	An ACL expressing which hosts are allowed access. A deny clause must be the final entry.
 
 .PARAMETER impersonate_guest
-	 Specify the condition in which user access is done as the guest account.
+	Specify the condition in which user access is done as the guest account.
+	Valid inputs: always,bad user,never
 
 .PARAMETER impersonate_user
-	 User account to be used as guest account.
+	User account to be used as guest account.
 
 .PARAMETER inheritable_path_acl
-	 Set the inheritable ACL on the share path.
+	Set the inheritable ACL on the share path.
 
 .PARAMETER mangle_byte_start
-	 Specifies the wchar_t starting point for automatic byte mangling.
+	Specifies the wchar_t starting point for automatic byte mangling.
 
 .PARAMETER mangle_map
-	 Character mangle map.
+	Character mangle map.
 
 .PARAMETER new_name
 	Share name.
 
 .PARAMETER ntfs_acl_support
-	 Support NTFS ACLs on files and directories.
+	Support NTFS ACLs on files and directories.
 
 .PARAMETER oplocks
-	 Support oplocks.
+	Support oplocks.
 
 .PARAMETER path
 	Path of share within /ifs.
 
 .PARAMETER permissions
-	 Specifies an ordered list of permission modifications.
+	Specifies an ordered list of permission modifications.
 
 .PARAMETER run_as_root
-	 Allow account to run as root.
+	Allow account to run as root.
 
 .PARAMETER strict_ca_lockout
-	 Specifies if persistent opens would do strict lockout on the share.
+	Specifies if persistent opens would do strict lockout on the share.
 
 .PARAMETER strict_flush
-	 Handle SMB flush operations.
+	Handle SMB flush operations.
 
 .PARAMETER strict_locking
-	 Specifies whether byte range locks contend against SMB I/O.
+	Specifies whether byte range locks contend against SMB I/O.
 
 .PARAMETER zone
-	 Name of the access zone to which to move this SMB share
+	Name of the access zone to which to move this SMB share
 
 .PARAMETER Force
 	Force update of object without prompt
+
+.PARAMETER access_zone
+	Zone which contains this share.
 
 .PARAMETER Cluster
 	Name of Isilon Cluster
@@ -8900,47 +8970,47 @@ function Set-isiSmbSharev3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$access_zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$access_based_enumeration_root_only,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_delete_readonly,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$allow_execute_always,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$allow_variable_expansion,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$auto_create_directory,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$browsable,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][int]$ca_timeout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$ca_write_integrity,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$change_notify,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$create_permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$csc_policy,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$description,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$directory_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$directory_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$file_create_mask,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][int]$file_create_mode,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][bool]$file_filtering_enabled,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][array]$file_filter_extensions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$file_filter_type,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][bool]$hide_dot_files,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][array]$host_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$impersonate_guest,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$impersonate_user,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][bool]$inheritable_path_acl,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][int]$mangle_byte_start,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][array]$mangle_map,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][string]$new_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$ntfs_acl_support,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][bool]$oplocks,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$permissions,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][array]$run_as_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$strict_ca_lockout,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][bool]$strict_flush,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][bool]$strict_locking,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$zone,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=39)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$access_based_enumeration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$access_based_enumeration_root_only,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$allow_delete_readonly,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$allow_execute_always,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$allow_variable_expansion,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$auto_create_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][bool]$browsable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$ca_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('none','write-read-coherent','full')][string]$ca_write_integrity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateSet('all','norecurse','none')][string]$change_notify,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateSet('default acl','inherit mode bits','use create mask and mode')][string]$create_permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateSet('manual','documents','programs','none')][string]$csc_policy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$directory_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][int]$directory_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][int]$file_create_mask,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][int]$file_create_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][bool]$file_filtering_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][array]$file_filter_extensions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][ValidateSet('deny','allow')][string]$file_filter_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][bool]$hide_dot_files,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][array]$host_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][ValidateSet('always','bad user','never')][string]$impersonate_guest,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$impersonate_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][bool]$inheritable_path_acl,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][int]$mangle_byte_start,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][array]$mangle_map,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$ntfs_acl_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][bool]$oplocks,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][array]$permissions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][array]$run_as_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][bool]$strict_ca_lockout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][bool]$strict_flush,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][bool]$strict_locking,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][string]$zone,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=38)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
@@ -8948,14 +9018,14 @@ function Set-isiSmbSharev3{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($new_name){
-				$BoundParameters.Remove('new_name') | out-null
-				$BoundParameters.Add('name',$new_name)
 			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
@@ -8993,10 +9063,10 @@ function Set-isiSnmpSettings{
 	Whether the SNMP service is enabled.
 
 .PARAMETER snmp_v1_v2c_access
-	 Whether SNMP v1 and v2c protocols are enabled.  @DEFAULT reverts this field to its default value.
+	Whether SNMP v1 and v2c protocols are enabled.  @DEFAULT reverts this field to its default value.
 
 .PARAMETER snmp_v3_access
-	 Whether SNMP v3 is enabled.  @DEFAULT reverts this field to its default value.
+	Whether SNMP v3 is enabled.  @DEFAULT reverts this field to its default value.
 
 .PARAMETER snmp_v3_password
 	This field allows a client to change the SNMP v3 password. There is always a password set.  @DEFAULT reverts this field to its default value.
@@ -9005,7 +9075,7 @@ function Set-isiSnmpSettings{
 	The read-only user for SNMP v3 read requests.  @DEFAULT reverts this field to its default value.
 
 .PARAMETER system_contact
-	 Contact information for the system owner.  This must be a valid email address.  @DEFAULT reverts this field to its default value.
+	Contact information for the system owner.  This must be a valid email address.  @DEFAULT reverts this field to its default value.
 
 .PARAMETER system_location
 	A location name for the SNMP system.  @DEFAULT reverts this field to its default value.
@@ -9091,7 +9161,7 @@ function Set-isiSwiftAccount{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_name,
@@ -9173,7 +9243,7 @@ function Set-isiQuota{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$container,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enforced,
@@ -9231,7 +9301,7 @@ function Set-isiQuotaNotifications{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$quota_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$quota_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
@@ -9308,9 +9378,9 @@ function Set-isiQuotaNotification{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$quota_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$quota_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$quota_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$action_alert,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$action_email_address,
@@ -9379,7 +9449,7 @@ function Set-isiQuotaSettingsMapping{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$mapping,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -9451,7 +9521,7 @@ function Set-isiQuotaSettingsNotification{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$action_alert,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$action_email_address,
@@ -9497,7 +9567,7 @@ function Set-isiQuotaSettingsReports{
 	The directory on /ifs where manual or live reports will be placed.
 
 .PARAMETER live_retain
-	 The number of manual reports to keep.
+	The number of manual reports to keep.
 
 .PARAMETER schedule
 	The isidate schedule used to generate reports.
@@ -9506,7 +9576,7 @@ function Set-isiQuotaSettingsReports{
 	The directory on /ifs where schedule reports will be placed.
 
 .PARAMETER scheduled_retain
-	 The number of scheduled reports to keep.
+	The number of scheduled reports to keep.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -9552,22 +9622,22 @@ function Set-isiRemoteSupport{
 	Modify one or more settings.
 
 .PARAMETER email_customer_on_failure
-	 Email the customer if all transmission methods fail.
+	Email the customer if all transmission methods fail.
 
 .PARAMETER enabled
-	 Enable ConnectEMC.
+	Enable ConnectEMC.
 
 .PARAMETER gateway_access_pools
-	 List of network pools that are able to connect to the ESRS gateway.  Necessary to enable ConnectEMC.
+	List of network pools that are able to connect to the ESRS gateway.  Necessary to enable ConnectEMC.
 
 .PARAMETER primary_esrs_gateway
-	 Primary ESRS Gateway. Necessary to enable ConnectEMC.
+	Primary ESRS Gateway. Necessary to enable ConnectEMC.
 
 .PARAMETER secondary_esrs_gateway
-	 Secondary ESRS Gateway. Used if Primary is unavailable.
+	Secondary ESRS Gateway. Used if Primary is unavailable.
 
 .PARAMETER use_smtp_failover
-	 Use SMPT if primary and secondary gateways are unavailable.
+	Use SMPT if primary and secondary gateways are unavailable.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -9636,7 +9706,7 @@ function Set-isiSnapshotAlias{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$new_name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$target,
@@ -9713,7 +9783,7 @@ function Set-isiSnapshotSchedule{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][object]$alias,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$duration,
@@ -9879,7 +9949,7 @@ function Set-isiSnapshot{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alias,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$expires,
@@ -9948,9 +10018,9 @@ function Set-isiSnapshotLock{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$snapshot_id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$snapshot_id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$snapshot_name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=1,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][object]$expires,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
@@ -10020,7 +10090,7 @@ function Set-isiStoragepoolCompatibilitiesSSDActivev3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$assess,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$count,
@@ -10091,7 +10161,7 @@ function Set-isiStoragepoolNodepoolv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$l3,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$lnns,
@@ -10170,7 +10240,7 @@ function Set-isiStoragepoolNodepoolv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$l3,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$lnns,
@@ -10322,7 +10392,7 @@ function Set-isiStoragepoolTier{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$children,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_name,
@@ -10385,7 +10455,7 @@ function Set-isiSyncJobv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('canceled','running','paused')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -10445,7 +10515,7 @@ function Set-isiSyncJobv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('canceled','running','paused')][string]$state,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
@@ -10613,7 +10683,7 @@ function Set-isiSyncPolicyv1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateSet('copy','sync')][string]$action,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$burst_mode,
@@ -10851,7 +10921,7 @@ function Set-isiSyncPolicyv3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$accelerated_failback,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateSet('copy','sync')][string]$action,
@@ -10966,7 +11036,7 @@ function Set-isiSyncRulev1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -11037,7 +11107,7 @@ function Set-isiSyncRulev3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$description,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$enabled,
@@ -11315,7 +11385,7 @@ function Set-isiWormDomain{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$autocommit_offset,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$default_retention,
@@ -11407,73 +11477,74 @@ function Set-isiZonev1{
 	Zone name
 
 .PARAMETER all_auth_providers
-	 Enables all available authentication providers.
+	Enables all available authentication providers.
 
 .PARAMETER alternate_system_provider
-	 Specifies an alternate system provider.
+	Specifies an alternate system provider.
 
 .PARAMETER audit_failure
-	 Specifies a list of failed operations to audit.
+	Specifies a list of failed operations to audit.
 
 .PARAMETER audit_success
-	 Specifies a list of successful operations to audit.
+	Specifies a list of successful operations to audit.
 
 .PARAMETER auth_providers
-	 Specifies the list of authentication providers available on this access zone.
+	Specifies the list of authentication providers available on this access zone.
 
 .PARAMETER create_path
-	 Determines if a path is created when a path does not exist.
+	Determines if a path is created when a path does not exist.
 
 .PARAMETER hdfs_ambari_namenode
-	 Specifies the SmartConnect name of the cluster that will be used for the HDFS service.
+	Specifies the SmartConnect name of the cluster that will be used for the HDFS service.
 
 .PARAMETER hdfs_ambari_server
-	 Specifies the valid hostname, FQDN, IPv4, or IPv6 string of the Ambari server.
+	Specifies the valid hostname, FQDN, IPv4, or IPv6 string of the Ambari server.
 
 .PARAMETER hdfs_authentication
-	 Specifies the authentication type for HDFS protocol.
+	Specifies the authentication type for HDFS protocol.
+	Valid inputs: all,simple_only,kerberos_only
 
 .PARAMETER hdfs_root_directory
-	 Specifies the root directory for the HDFS protocol.
+	Specifies the root directory for the HDFS protocol.
 
 .PARAMETER home_directory_umask
-	 Specifies the permissions set on automatically created user home directories.
+	Specifies the permissions set on automatically created user home directories.
 
 .PARAMETER ifs_restricted
-	 Specifies a list of users and groups that have read and write access to /ifs.
+	Specifies a list of users and groups that have read and write access to /ifs.
 
 .PARAMETER map_untrusted
-	 Maps untrusted domains to this NetBIOS domain during authentication.
+	Maps untrusted domains to this NetBIOS domain during authentication.
 
 .PARAMETER new_name
 	Specifies the access zone name.
 
 .PARAMETER netbios_name
-	 Specifies the NetBIOS name.
+	Specifies the NetBIOS name.
 
 .PARAMETER path
-	 Specifies the access zone base directory path.
+	Specifies the access zone base directory path.
 
 .PARAMETER protocol_audit_enabled
-	 Determines if I/O auditing is enabled on this access zone.
+	Determines if I/O auditing is enabled on this access zone.
 
 .PARAMETER skeleton_directory
-	 Specifies the skeleton directory that is used for user home directories.
+	Specifies the skeleton directory that is used for user home directories.
 
 .PARAMETER syslog_audit_events
-	 Specifies a list of audit operations to forward to the syslog.
+	Specifies a list of audit operations to forward to the syslog.
 
 .PARAMETER syslog_forwarding_enabled
-	 Determines if access zone events are forwarded to the syslog.
+	Determines if access zone events are forwarded to the syslog.
 
 .PARAMETER system_provider
-	 Specifies the system provider for the access zone.
+	Specifies the system provider for the access zone.
 
 .PARAMETER user_mapping_rules
-	 Specifies the current ID mapping rules.
+	Specifies the current ID mapping rules.
 
 .PARAMETER webhdfs_enabled
-	 True if WebHDFS is enabled on this access zone.
+	True if WebHDFS is enabled on this access zone.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -11486,7 +11557,7 @@ function Set-isiZonev1{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$all_auth_providers,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$alternate_system_provider,
@@ -11496,7 +11567,7 @@ function Set-isiZonev1{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$create_path,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$hdfs_ambari_namenode,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$hdfs_ambari_server,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$hdfs_authentication,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('all','simple_only','kerberos_only')][string]$hdfs_authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$hdfs_root_directory,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$home_directory_umask,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][array]$ifs_restricted,
@@ -11558,46 +11629,46 @@ function Set-isiZonev3{
 	Zone name
 
 .PARAMETER alternate_system_provider
-	 Specifies an alternate system provider.
+	Specifies an alternate system provider.
 
 .PARAMETER auth_providers
-	 Specifies the list of authentication providers available on this access zone.
+	Specifies the list of authentication providers available on this access zone.
 
 .PARAMETER cache_entry_expiry
-	 Specifies amount of time in seconds to cache a user/group.
+	Specifies amount of time in seconds to cache a user/group.
 
 .PARAMETER create_path
-	 Determines if a path is created when a path does not exist.
+	Determines if a path is created when a path does not exist.
 
 .PARAMETER force_overlap
-	 Allow for overlapping base path.
+	Allow for overlapping base path.
 
 .PARAMETER home_directory_umask
-	 Specifies the permissions set on automatically created user home directories.
+	Specifies the permissions set on automatically created user home directories.
 
 .PARAMETER ifs_restricted
-	 Specifies a list of users and groups that have read and write access to /ifs.
+	Specifies a list of users and groups that have read and write access to /ifs.
 
 .PARAMETER map_untrusted
-	 Maps untrusted domains to this NetBIOS domain during authentication.
+	Maps untrusted domains to this NetBIOS domain during authentication.
 
 .PARAMETER new_name
 	Specifies the access zone name.
 
 .PARAMETER netbios_name
-	 Specifies the NetBIOS name.
+	Specifies the NetBIOS name.
 
 .PARAMETER path
-	 Specifies the access zone base directory path.
+	Specifies the access zone base directory path.
 
 .PARAMETER skeleton_directory
-	 Specifies the skeleton directory that is used for user home directories.
+	Specifies the skeleton directory that is used for user home directories.
 
 .PARAMETER system_provider
-	 Specifies the system provider for the access zone.
+	Specifies the system provider for the access zone.
 
 .PARAMETER user_mapping_rules
-	 Specifies the current ID mapping rules.
+	Specifies the current ID mapping rules.
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -11610,7 +11681,7 @@ function Set-isiZonev3{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
 		param (
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][int]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alternate_system_provider,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$auth_providers,
