@@ -792,6 +792,11 @@ function Get-isiAuthAccess{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($numeric){
 				$queryArguments += 'numeric=' + $numeric
@@ -801,11 +806,6 @@ function Get-isiAuthAccess{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -965,6 +965,11 @@ function Get-isiAuthGroup{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($cached){
 				$queryArguments += 'cached=' + $cached
@@ -977,11 +982,6 @@ function Get-isiAuthGroup{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1040,6 +1040,11 @@ function Get-isiAuthGroupMembers{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('group_id')){
+				$parameter1 = $group_id
+			} else {
+				$parameter1 = $group_name
+			}
 			$queryArguments = @()
 			if ($limit){
 				$queryArguments += 'limit=' + $limit
@@ -1052,11 +1057,6 @@ function Get-isiAuthGroupMembers{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('group_id')){
-				$parameter1 = $group_id
-			} else {
-				$parameter1 = $group_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1215,17 +1215,17 @@ function Get-isiAuthMappingIdentities{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($nocreate){
 				$queryArguments += 'nocreate=' + $nocreate
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1401,6 +1401,11 @@ function Get-isiAuthNetgroup{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($ignore_errors){
 				$queryArguments += 'ignore_errors=' + $ignore_errors
@@ -1413,11 +1418,6 @@ function Get-isiAuthNetgroup{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1581,14 +1581,14 @@ function Get-isiAuthProviderAdsv1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1638,14 +1638,14 @@ function Get-isiAuthProviderAdsv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1736,14 +1736,14 @@ function Get-isiAuthProviderAdsDomainsv1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1793,14 +1793,14 @@ function Get-isiAuthProviderAdsDomainsv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1993,6 +1993,11 @@ function Get-isiAuthProviderAdsSearch{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($description){
 				$queryArguments += 'description=' + $description
@@ -2020,11 +2025,6 @@ function Get-isiAuthProviderAdsSearch{
 			}
 			if ($user){
 				$queryArguments += 'user=' + $user
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2118,14 +2118,14 @@ function Get-isiAuthProviderFile{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2259,14 +2259,14 @@ function Get-isiAuthProviderKrb5v1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2316,14 +2316,14 @@ function Get-isiAuthProviderKrb5v3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2457,14 +2457,14 @@ function Get-isiAuthProviderLdapv1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2514,14 +2514,14 @@ function Get-isiAuthProviderLdapv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2611,14 +2611,14 @@ function Get-isiAuthProviderLocal{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2752,14 +2752,14 @@ function Get-isiAuthProviderNisv1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2809,14 +2809,14 @@ function Get-isiAuthProviderNisv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2992,14 +2992,14 @@ function Get-isiAuthRole{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($resolve_names){
-				$queryArguments += 'resolve_names=' + $resolve_names
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($resolve_names){
+				$queryArguments += 'resolve_names=' + $resolve_names
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3046,14 +3046,14 @@ function Get-isiAuthRoleMembers{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($resolve_names){
-				$queryArguments += 'resolve_names=' + $resolve_names
-			}
 			if ($psBoundParameters.ContainsKey('role_id')){
 				$parameter1 = $role_id
 			} else {
 				$parameter1 = $role_name
+			}
+			$queryArguments = @()
+			if ($resolve_names){
+				$queryArguments += 'resolve_names=' + $resolve_names
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3602,6 +3602,11 @@ function Get-isiAuthUser{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($cached){
 				$queryArguments += 'cached=' + $cached
@@ -3614,11 +3619,6 @@ function Get-isiAuthUser{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3673,6 +3673,11 @@ function Get-isiAuthUserMemberOfGroupsv3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('user_id')){
+				$parameter1 = $user_id
+			} else {
+				$parameter1 = $user_name
+			}
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -3682,11 +3687,6 @@ function Get-isiAuthUserMemberOfGroupsv3{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('user_id')){
-				$parameter1 = $user_id
-			} else {
-				$parameter1 = $user_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3741,6 +3741,11 @@ function Get-isiAuthUserMemberOfGroupsv1{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('user_id')){
+				$parameter1 = $user_id
+			} else {
+				$parameter1 = $user_name
+			}
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -3750,11 +3755,6 @@ function Get-isiAuthUserMemberOfGroupsv1{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('user_id')){
-				$parameter1 = $user_id
-			} else {
-				$parameter1 = $user_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3828,11 +3828,11 @@ function Get-isiAuthWellknown{
 	Begin{
 	}
 	Process{
+			$parameter1 = $id
 			$queryArguments = @()
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -3930,12 +3930,12 @@ function Get-isiCloudAccess{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -4033,12 +4033,12 @@ function Get-isiCloudAccountv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -4161,6 +4161,11 @@ function Get-isiCloudJobsFilev3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($batch){
 				$queryArguments += 'batch=' + $batch
@@ -4179,11 +4184,6 @@ function Get-isiCloudJobsFilev3{
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -4230,12 +4230,12 @@ function Get-isiCloudJobv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -4333,12 +4333,12 @@ function Get-isiCloudPoolv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -5577,6 +5577,11 @@ function Get-isiClusterTimezoneRegion{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
@@ -5595,11 +5600,6 @@ function Get-isiClusterTimezoneRegion{
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5868,14 +5868,14 @@ function Get-isiDedupeReport{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($scope){
-				$queryArguments += 'scope=' + $scope
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($scope){
+				$queryArguments += 'scope=' + $scope
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -6823,12 +6823,12 @@ function Get-isiFilepoolTemplate{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -7131,6 +7131,11 @@ function Get-isiFsaResultDirectories{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($comp_report){
 				$queryArguments += 'comp_report=' + $comp_report
@@ -7146,11 +7151,6 @@ function Get-isiFsaResultDirectories{
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -7218,6 +7218,16 @@ function Get-isiFsaResultDirectory{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($psBoundParameters.ContainsKey('linid2')){
+				$parameter2 = $linid2
+			} else {
+				$parameter2 = $linname2
+			}
 			$queryArguments = @()
 			if ($comp_report){
 				$queryArguments += 'comp_report=' + $comp_report
@@ -7230,16 +7240,6 @@ function Get-isiFsaResultDirectory{
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
-			if ($psBoundParameters.ContainsKey('linid2')){
-				$parameter2 = $linid2
-			} else {
-				$parameter2 = $linname2
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -7377,6 +7377,16 @@ function Get-isiFsaResultHistogram{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($psBoundParameters.ContainsKey('statid2')){
+				$parameter2 = $statid2
+			} else {
+				$parameter2 = $statname2
+			}
 			$queryArguments = @()
 			if ($atime_filter){
 				$queryArguments += 'atime_filter=' + $atime_filter
@@ -7410,16 +7420,6 @@ function Get-isiFsaResultHistogram{
 			}
 			if ($tier_filter){
 				$queryArguments += 'tier_filter=' + $tier_filter
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
-			if ($psBoundParameters.ContainsKey('statid2')){
-				$parameter2 = $statid2
-			} else {
-				$parameter2 = $statname2
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -7590,6 +7590,16 @@ function Get-isiFsaResultTopDir{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($psBoundParameters.ContainsKey('statid2')){
+				$parameter2 = $statid2
+			} else {
+				$parameter2 = $statname2
+			}
 			$queryArguments = @()
 			if ($comp_report){
 				$queryArguments += 'comp_report=' + $comp_report
@@ -7605,16 +7615,6 @@ function Get-isiFsaResultTopDir{
 			}
 			if ($start){
 				$queryArguments += 'start=' + $start
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
-			if ($psBoundParameters.ContainsKey('statid2')){
-				$parameter2 = $statid2
-			} else {
-				$parameter2 = $statname2
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -7729,6 +7729,16 @@ function Get-isiFsaResultTopFile{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($psBoundParameters.ContainsKey('statid2')){
+				$parameter2 = $statid2
+			} else {
+				$parameter2 = $statname2
+			}
 			$queryArguments = @()
 			if ($comp_report){
 				$queryArguments += 'comp_report=' + $comp_report
@@ -7744,16 +7754,6 @@ function Get-isiFsaResultTopFile{
 			}
 			if ($start){
 				$queryArguments += 'start=' + $start
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
-			}
-			if ($psBoundParameters.ContainsKey('statid2')){
-				$parameter2 = $statid2
-			} else {
-				$parameter2 = $statname2
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -9213,6 +9213,7 @@ function Get-isiNetworkGroupnetSubnets{
 	Begin{
 	}
 	Process{
+			$parameter1 = $id
 			$queryArguments = @()
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
@@ -9226,7 +9227,6 @@ function Get-isiNetworkGroupnetSubnets{
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
 			}
-			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -9280,16 +9280,16 @@ function Get-isiNetworkGroupnetSubnet{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($enforce){
-				$queryArguments += 'force=' + $enforce
-			}
 			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
 			} else {
 				$parameter1 = $groupnet_name
 			}
 			$parameter2 = $id
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -9361,6 +9361,12 @@ function Get-isiNetworkGroupnetSubnetPools{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('groupnet_id')){
+				$parameter1 = $groupnet_id
+			} else {
+				$parameter1 = $groupnet_name
+			}
+			$parameter2 = $id
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'access_zone=' + $access_zone
@@ -9380,12 +9386,6 @@ function Get-isiNetworkGroupnetSubnetPools{
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
 			}
-			if ($psBoundParameters.ContainsKey('groupnet_id')){
-				$parameter1 = $groupnet_id
-			} else {
-				$parameter1 = $groupnet_name
-			}
-			$parameter2 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -9873,12 +9873,12 @@ function Get-isiHdfsProxyUser{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
 			}
+			$queryArguments = @()
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -10753,17 +10753,17 @@ function Get-isiNfsAlias{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -11133,11 +11133,11 @@ function Get-isiNfsExportv1{
 	Begin{
 	}
 	Process{
+			$parameter1 = $id
 			$queryArguments = @()
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
 			}
-			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -11184,6 +11184,7 @@ function Get-isiNfsExportv2{
 	Begin{
 	}
 	Process{
+			$parameter1 = $id
 			$queryArguments = @()
 			if ($scope){
 				$queryArguments += 'scope=' + $scope
@@ -11191,7 +11192,6 @@ function Get-isiNfsExportv2{
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 			}
-			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -11634,17 +11634,17 @@ function Get-isiNfsNlmSessionv3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($ip){
 				$queryArguments += 'ip=' + $ip
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -12766,6 +12766,11 @@ function Get-isiSmbSharev1{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
@@ -12775,11 +12780,6 @@ function Get-isiSmbSharev1{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -12837,6 +12837,11 @@ function Get-isiSmbSharev3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
@@ -12846,11 +12851,6 @@ function Get-isiSmbSharev3{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -13194,17 +13194,17 @@ function Get-isiQuota{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -13434,14 +13434,14 @@ function Get-isiQuotaReport{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($contents){
-				$queryArguments += 'contents=' + $contents
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($contents){
+				$queryArguments += 'contents=' + $contents
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -14580,6 +14580,11 @@ function Get-isiSnapshotLocks{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('snapshot_id')){
+				$parameter1 = $snapshot_id
+			} else {
+				$parameter1 = $snapshot_name
+			}
 			$queryArguments = @()
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
@@ -14592,11 +14597,6 @@ function Get-isiSnapshotLocks{
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
-			}
-			if ($psBoundParameters.ContainsKey('snapshot_id')){
-				$parameter1 = $snapshot_id
-			} else {
-				$parameter1 = $snapshot_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -17243,6 +17243,11 @@ function Get-isiSyncReportSubreports{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('report_id')){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
 			$queryArguments = @()
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
@@ -17261,11 +17266,6 @@ function Get-isiSyncReportSubreports{
 			}
 			if ($state){
 				$queryArguments += 'state=' + $state
-			}
-			if ($psBoundParameters.ContainsKey('report_id')){
-				$parameter1 = $report_id
-			} else {
-				$parameter1 = $report_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -17952,6 +17952,11 @@ function Get-isiSyncTargetReportSubreports{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('report_id')){
+				$parameter1 = $report_id
+			} else {
+				$parameter1 = $report_name
+			}
 			$queryArguments = @()
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
@@ -17970,11 +17975,6 @@ function Get-isiSyncTargetReportSubreports{
 			}
 			if ($state){
 				$queryArguments += 'state=' + $state
-			}
-			if ($psBoundParameters.ContainsKey('report_id')){
-				$parameter1 = $report_id
-			} else {
-				$parameter1 = $report_name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -18266,17 +18266,17 @@ function Get-isiUpgradeClusterNodeFirmwareStatus{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($devices){
 				$queryArguments += 'devices=' + $devices
 			}
 			if ($package){
 				$queryArguments += 'package=' + $package
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -18397,14 +18397,14 @@ function Get-isiUpgradeClusterPatchPatche{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($local){
-				$queryArguments += 'local=' + $local
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($local){
+				$queryArguments += 'local=' + $local
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)

@@ -298,6 +298,13 @@ function New-isiAuthGroupMembers{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($psBoundParameters.ContainsKey('group_id')){
+				$parameter1 = $group_id
+				$BoundParameters.Remove('group_id') | out-null
+			} else {
+				$parameter1 = $group_name
+				$BoundParameters.Remove('group_name') | out-null
+			}
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -306,13 +313,6 @@ function New-isiAuthGroupMembers{
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($psBoundParameters.ContainsKey('group_id')){
-				$parameter1 = $group_id
-				$BoundParameters.Remove('group_id') | out-null
-			} else {
-				$parameter1 = $group_name
-				$BoundParameters.Remove('group_name') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -434,6 +434,13 @@ function New-isiAuthMappingIdentities{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
 			$queryArguments = @()
 			if ($type){
 				$queryArguments += 'type=' + $type
@@ -442,13 +449,6 @@ function New-isiAuthMappingIdentities{
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-				$BoundParameters.Remove('id') | out-null
-			} else {
-				$parameter1 = $name
-				$BoundParameters.Remove('name') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2498,6 +2498,13 @@ function New-isiAuthUserMemberOfGroupsv3{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($psBoundParameters.ContainsKey('user_id')){
+				$parameter1 = $user_id
+				$BoundParameters.Remove('user_id') | out-null
+			} else {
+				$parameter1 = $user_name
+				$BoundParameters.Remove('user_name') | out-null
+			}
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -2506,13 +2513,6 @@ function New-isiAuthUserMemberOfGroupsv3{
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($psBoundParameters.ContainsKey('user_id')){
-				$parameter1 = $user_id
-				$BoundParameters.Remove('user_id') | out-null
-			} else {
-				$parameter1 = $user_name
-				$BoundParameters.Remove('user_name') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2578,6 +2578,13 @@ function New-isiAuthUserMemberOfGroupsv1{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
+			if ($psBoundParameters.ContainsKey('user_id')){
+				$parameter1 = $user_id
+				$BoundParameters.Remove('user_id') | out-null
+			} else {
+				$parameter1 = $user_name
+				$BoundParameters.Remove('user_name') | out-null
+			}
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -2586,13 +2593,6 @@ function New-isiAuthUserMemberOfGroupsv1{
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 				$BoundParameters.Remove('access_zone') | out-null
-			}
-			if ($psBoundParameters.ContainsKey('user_id')){
-				$parameter1 = $user_id
-				$BoundParameters.Remove('user_id') | out-null
-			} else {
-				$parameter1 = $user_name
-				$BoundParameters.Remove('user_name') | out-null
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -4407,11 +4407,6 @@ function New-isiNetworkGroupnetSubnetPools{
 	Process{
 			$BoundParameters = $PSBoundParameters
 			$BoundParameters.Remove('Cluster') | out-null
-			$queryArguments = @()
-			if ($enforce){
-				$queryArguments += 'force=' + $enforce
-				$BoundParameters.Remove('enforce') | out-null
-			}
 			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
 				$BoundParameters.Remove('groupnet_id') | out-null
@@ -4421,6 +4416,11 @@ function New-isiNetworkGroupnetSubnetPools{
 			}
 			$parameter2 = $id
 			$BoundParameters.Remove('id') | out-null
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}

@@ -439,6 +439,11 @@ function Remove-isiAuthGroup{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($cached){
 				$queryArguments += 'cached=' + $cached
@@ -448,11 +453,6 @@ function Remove-isiAuthGroup{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -516,13 +516,6 @@ function Remove-isiAuthGroupMember{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($provider){
-				$queryArguments += 'provider=' + $provider
-			}
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('group_id')){
 				$parameter1 = $group_id
 			} else {
@@ -532,6 +525,13 @@ function Remove-isiAuthGroupMember{
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
+			}
+			$queryArguments = @()
+			if ($provider){
+				$queryArguments += 'provider=' + $provider
+			}
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -656,6 +656,11 @@ function Remove-isiAuthMappingIdentities{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($2way){
 				$queryArguments += '2way=' + $2way
@@ -668,11 +673,6 @@ function Remove-isiAuthMappingIdentities{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1546,6 +1546,11 @@ function Remove-isiAuthUser{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($cached){
 				$queryArguments += 'cached=' + $cached
@@ -1555,11 +1560,6 @@ function Remove-isiAuthUser{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1623,13 +1623,6 @@ function Remove-isiAuthUserMemberOfGroupv3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($provider){
-				$queryArguments += 'provider=' + $provider
-			}
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
 			} else {
@@ -1639,6 +1632,13 @@ function Remove-isiAuthUserMemberOfGroupv3{
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
+			}
+			$queryArguments = @()
+			if ($provider){
+				$queryArguments += 'provider=' + $provider
+			}
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -1702,13 +1702,6 @@ function Remove-isiAuthUserMemberOfGroupv1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($provider){
-				$queryArguments += 'provider=' + $provider
-			}
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
 			} else {
@@ -1718,6 +1711,13 @@ function Remove-isiAuthUserMemberOfGroupv1{
 				$parameter2 = $id
 			} else {
 				$parameter2 = $name
+			}
+			$queryArguments = @()
+			if ($provider){
+				$queryArguments += 'provider=' + $provider
+			}
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -2446,16 +2446,16 @@ function Remove-isiNetworkGroupnetSubnet{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($enforce){
-				$queryArguments += 'force=' + $enforce
-			}
 			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
 			} else {
 				$parameter1 = $groupnet_name
 			}
 			$parameter2 = $id
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -2991,14 +2991,14 @@ function Remove-isiNfsAlias{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3086,11 +3086,11 @@ function Remove-isiNfsExportv2{
 	Begin{
 	}
 	Process{
+			$parameter1 = $id
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
 			}
-			$parameter1 = $id
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
@@ -3249,6 +3249,11 @@ function Remove-isiNfsNlmSessionv3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($ip){
 				$queryArguments += 'ip=' + $ip
@@ -3258,11 +3263,6 @@ function Remove-isiNfsNlmSessionv3{
 			}
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3693,14 +3693,14 @@ function Remove-isiSmbSharev1{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -3754,14 +3754,14 @@ function Remove-isiSmbSharev3{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($access_zone){
-				$queryArguments += 'zone=' + $access_zone
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($access_zone){
+				$queryArguments += 'zone=' + $access_zone
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5217,17 +5217,17 @@ function Remove-isiSyncPolicyv1{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
 			}
 			if ($local_only){
 				$queryArguments += 'local_only=' + $local_only
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5285,17 +5285,17 @@ function Remove-isiSyncPolicyv3{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
 			}
 			if ($local_only){
 				$queryArguments += 'local_only=' + $local_only
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5541,14 +5541,14 @@ function Remove-isiSyncTargetPolicy{
 	Begin{
 	}
 	Process{
-			$queryArguments = @()
-			if ($enforce){
-				$queryArguments += 'force=' + $enforce
-			}
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 			} else {
 				$parameter1 = $name
+			}
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
@@ -5604,17 +5604,17 @@ function Remove-isiUpgradeClusterPatchPatche{
 	Begin{
 	}
 	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
 			$queryArguments = @()
 			if ($override){
 				$queryArguments += 'override=' + $override
 			}
 			if ($rolling){
 				$queryArguments += 'rolling=' + $rolling
-			}
-			if ($psBoundParameters.ContainsKey('id')){
-				$parameter1 = $id
-			} else {
-				$parameter1 = $name
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
