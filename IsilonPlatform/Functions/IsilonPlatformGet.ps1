@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_8_0_0_037(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_0_1_131(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -6504,6 +6504,10 @@ function Get-isiEventEventlists{
 .PARAMETER resume
 	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
 
+.PARAMETER severity
+	Minimum severity of returned events.
+	Valid inputs: information,warning,critical,emergency
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -6515,7 +6519,8 @@ function Get-isiEventEventlists{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$event_instance,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$resume,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][ValidateSet('information','warning','critical','emergency')][string]$severity,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6529,6 +6534,9 @@ function Get-isiEventEventlists{
 			}
 			if ($resume){
 				$queryArguments += 'resume=' + $resume
+			}
+			if ($severity){
+				$queryArguments += 'severity=' + $severity
 			}
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_8_0_0_037(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_0_1_131(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -2678,8 +2678,8 @@ function New-isiCloudAccountsv3{
 	(S3 only) The name of the bucket into which generated metrics reports are placed by the cloud service provider
 
 .PARAMETER type
-	The type of cloud protocol required.  E.g., "isilon" for EMC Isilon, "ecs" for EMC ECS Appliance, "ecs2" for EMC Elastic Cloud Storage Service, "azure" for Microsoft Azure and "s3" for Amazon S3
-	Valid inputs: isilon,ecs,ecs2,azure,s3,ran
+	The type of cloud protocol required.  E.g., "isilon" for EMC Isilon, "ecs" for EMC ECS Appliance, "virtustream" for Virtustream Storage Cloud, "azure" for Microsoft Azure and "s3" for Amazon S3
+	Valid inputs: isilon,ecs,virtustream,azure,s3,ran,ecs2
 
 .PARAMETER uri
 	A valid URI pointing to the location of the cloud storage
@@ -2701,7 +2701,7 @@ function New-isiCloudAccountsv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][bool]$skip_ssl_validation,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$storage_region,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$telemetry_bucket,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('isilon','ecs','ecs2','azure','s3','ran')][string]$type,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('isilon','ecs','virtustream','azure','s3','ran','ecs2')][string]$type,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$uri,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -2801,8 +2801,8 @@ function New-isiCloudPoolsv3{
 	A unique name for this pool
 
 .PARAMETER type
-	The type of cloud protocol required.  E.g., "isilon" for EMC Isilon, "ecs" for EMC ECS Appliance, "ecs2" for EMC Elastic Cloud Storage Service, "azure" for Microsoft Azure and "s3" for Amazon S3
-	Valid inputs: isilon,ecs,ecs2,azure,s3,ran
+	The type of cloud protocol required.  E.g., "isilon" for EMC Isilon, "ecs" for EMC ECS Appliance, "virtustream" for Virtustream Storage Cloud, "azure" for Microsoft Azure and "s3" for Amazon S3
+	Valid inputs: isilon,ecs,virtustream,azure,s3,ran,ecs2
 
 .PARAMETER vendor
 	A string identifier of the cloud services vendor
@@ -2819,7 +2819,7 @@ function New-isiCloudPoolsv3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$birth_cluster_id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$description,
 		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$name,
-		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('isilon','ecs','ecs2','azure','s3','ran')][string]$type,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('isilon','ecs','virtustream','azure','s3','ran','ecs2')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$vendor,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
