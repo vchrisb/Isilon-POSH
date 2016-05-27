@@ -40,7 +40,7 @@ Function Get-isiSmbOpenfilesNode{
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=(Get-isiSessionDefault)
 		)
 	Begin{
 	}
@@ -62,3 +62,43 @@ Function Get-isiSmbOpenfilesNode{
 }
 
 Export-ModuleMember -Function Get-isiSmbOpenfilesNode
+
+Function Get-isiSmbSessionsNode{
+
+<#
+.SYNOPSIS
+	Get Smb Sessions from a specific Node
+
+.DESCRIPTION
+	List sessions from a specific  Node
+
+.PARAMETER Cluster
+	Name of Isilon Node
+
+.NOTES
+
+#>
+	[CmdletBinding()]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0)][ValidateNotNullOrEmpty()][string]$Cluster=(Get-isiSessionDefault)
+		)
+	Begin{
+	}
+	Process{
+
+        $token = ''
+        # Isilon API limits returned Openfiles to 1000 by default
+        $opensessions_node, $token = Get-isiSmbSessions -Cluster $Cluster -limit 1000
+        while($token){
+            $opensessions_node_resume, $token = Get-isiSmbSessions -resume $token -Cluster $Cluster
+            $opensessions_node += $opensessions_node_resume
+        }
+        $opensessions_node | Add-Member -NotePropertyName Cluster -NotePropertyValue $Cluster
+        return $opensessions_node
+
+    }
+    End {
+    }
+}
+
+Export-ModuleMember -Function Get-isiSmbSessionsNode
