@@ -9481,9 +9481,9 @@ function Get-isiNetworkInterfaces{
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/3/network/interfaces" + "$queryArguments") -Cluster $Cluster
 			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
-				return $ISIObject.interface,$ISIObject.resume
+				return $ISIObject.interfaces,$ISIObject.resume
 			}else{
-				return $ISIObject.interface
+				return $ISIObject.interfaces
 			}
 	}
 	End{
