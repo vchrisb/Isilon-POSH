@@ -47,8 +47,7 @@ function New-isiAntivirusPolicies{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/antivirus/policies" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -95,8 +94,7 @@ function New-isiAntivirusScan{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/antivirus/scan" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -127,8 +125,7 @@ function New-isiAntivirusServers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/antivirus/servers" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -167,8 +164,7 @@ function New-isiAuditTopics{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/audit/topics" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -223,8 +219,7 @@ function New-isiAuthGroups{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -296,8 +291,7 @@ function New-isiAuthGroupMembers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('group_id')){
 				$parameter1 = $group_id
 				$BoundParameters.Remove('group_id') | out-null
@@ -367,8 +361,7 @@ function New-isiAuthMappingIdentities{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($2way){
 				$queryArguments += '2way=' + $2way
@@ -432,8 +425,7 @@ function New-isiAuthMappingIdentities{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -640,8 +632,7 @@ function New-isiAuthProvidersAdsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/providers/ads" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -843,8 +834,7 @@ function New-isiAuthProvidersAdsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/auth/providers/ads" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1004,8 +994,7 @@ function New-isiAuthProvidersFile{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/providers/file" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1064,8 +1053,7 @@ function New-isiAuthProvidersKrb5v1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/providers/krb5" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1130,8 +1118,7 @@ function New-isiAuthProvidersKrb5v3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/auth/providers/krb5" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1416,8 +1403,7 @@ function New-isiAuthProvidersLdapv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/providers/ldap" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1708,8 +1694,7 @@ function New-isiAuthProvidersLdapv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/auth/providers/ldap" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -1869,8 +1854,7 @@ function New-isiAuthProvidersNisv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/providers/nis" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2036,8 +2020,7 @@ function New-isiAuthProvidersNisv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/auth/providers/nis" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2068,8 +2051,7 @@ function New-isiAuthRefresh{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/auth/refresh" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2116,8 +2098,7 @@ function New-isiAuthRoles{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/roles" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2169,8 +2150,7 @@ function New-isiAuthRoleMembers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('role_id')){
 				$parameter1 = $role_id
 				$BoundParameters.Remove('role_id') | out-null
@@ -2228,8 +2208,7 @@ function New-isiAuthRolePrivileges{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('role_id')){
 				$parameter1 = $role_id
 				$BoundParameters.Remove('role_id') | out-null
@@ -2275,8 +2254,7 @@ function New-isiAuthSettingsKrb5Domains{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/settings/krb5/domains" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.domain
 	}
@@ -2327,8 +2305,7 @@ function New-isiAuthSettingsKrb5Realms{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/auth/settings/krb5/realms" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2423,8 +2400,7 @@ function New-isiAuthUsers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($provider){
 				$queryArguments += 'provider=' + $provider
@@ -2496,8 +2472,7 @@ function New-isiAuthUserMemberOfGroupsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
 				$BoundParameters.Remove('user_id') | out-null
@@ -2576,8 +2551,7 @@ function New-isiAuthUserMemberOfGroupsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('user_id')){
 				$parameter1 = $user_id
 				$BoundParameters.Remove('user_id') | out-null
@@ -2631,8 +2605,7 @@ function New-isiCloudAccess{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/access" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -2708,8 +2681,7 @@ function New-isiCloudAccountsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/accounts" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2769,8 +2741,7 @@ function New-isiCloudJobsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/jobs" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2826,8 +2797,7 @@ function New-isiCloudPoolsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/pools" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -2858,8 +2828,7 @@ function New-isiCloudSettingsEncryptionKey{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/settings/encryption-key" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -2898,8 +2867,7 @@ function New-isiCloudSettingsReportingEula{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cloud/settings/reporting-eula" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -2942,8 +2910,7 @@ function New-isiClusterAddNode{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/cluster/add-node" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -2990,8 +2957,7 @@ function New-isiClusterNodeDriveAdd{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3056,8 +3022,7 @@ function New-isiClusterNodeDriveFirmwareUpdate{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3122,8 +3087,7 @@ function New-isiClusterNodeDriveFormat{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3188,8 +3152,7 @@ function New-isiClusterNodeDrivePurpose{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3250,8 +3213,7 @@ function New-isiClusterNodeDriveSmartfail{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3312,8 +3274,7 @@ function New-isiClusterNodeDriveStopfail{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3374,8 +3335,7 @@ function New-isiClusterNodeDriveSuspend{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3428,8 +3388,7 @@ function New-isiClusterNodeReboot{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3475,8 +3434,7 @@ function New-isiClusterNodeShutdown{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3551,8 +3509,7 @@ function New-isiEventAlertConditions{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/event/alert-conditions" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -3616,8 +3573,7 @@ function New-isiEventChannels{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/event/channels" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -3652,8 +3608,7 @@ function New-isiEventEventsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/event/events" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -3704,8 +3659,7 @@ function New-isiFilepoolPolicies{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/filepool/policies" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -3744,8 +3698,7 @@ function New-isiHardeningApply{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/hardening/apply" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.message
 	}
@@ -3784,8 +3737,7 @@ function New-isiHardeningResolve{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($accept){
 				$queryArguments += 'accept=' + $accept
@@ -3828,8 +3780,7 @@ function New-isiHardeningRevert{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
@@ -3876,8 +3827,7 @@ function New-isiHardwareTape{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -3955,8 +3905,7 @@ function New-isiJobsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/job/jobs" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4033,8 +3982,7 @@ function New-isiJobsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/job/jobs" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4077,8 +4025,7 @@ function New-isiJobPolicies{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/job/policies" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4113,8 +4060,7 @@ function New-isiLicenses{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/license/licenses" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -4145,8 +4091,7 @@ function New-isiNetworkDnscacheFlush{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/network/dnscache/flush" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -4205,8 +4150,7 @@ function New-isiNetworkGroupnets{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/network/groupnets" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4286,8 +4230,7 @@ function New-isiNetworkGroupnetSubnets{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$parameter1 = $id
 			$BoundParameters.Remove('id') | out-null
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/network/groupnets/$parameter1/subnets" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
@@ -4405,8 +4348,7 @@ function New-isiNetworkGroupnetSubnetPools{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('groupnet_id')){
 				$parameter1 = $groupnet_id
 				$BoundParameters.Remove('groupnet_id') | out-null
@@ -4454,8 +4396,7 @@ function New-isiNetworkScRebalanceAll{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/network/sc-rebalance-all" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -4498,8 +4439,7 @@ function New-isiHdfsProxyUsers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/protocols/hdfs/proxyusers" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4551,8 +4491,7 @@ function New-isiHdfsProxyUserMembers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('proxyuser_id')){
 				$parameter1 = $proxyuser_id
 				$BoundParameters.Remove('proxyuser_id') | out-null
@@ -4602,8 +4541,7 @@ function New-isiHdfsRacks{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/protocols/hdfs/racks" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -4650,8 +4588,7 @@ function New-isiNdmpSettingsVariable{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$parameter1 = $id
 			$BoundParameters.Remove('id') | out-null
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/protocols/ndmp/settings/variables/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
@@ -4692,8 +4629,7 @@ function New-isiNdmpUsers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/protocols/ndmp/users" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -4744,8 +4680,7 @@ function New-isiNfsAliases{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
@@ -4944,8 +4879,7 @@ function New-isiNfsExportsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
@@ -5184,8 +5118,7 @@ function New-isiNfsExportsv2{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($enforce){
 				$queryArguments += 'force=' + $enforce
@@ -5234,8 +5167,7 @@ function New-isiNfsNetgroupCheck{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($host){
 				$queryArguments += 'host=' + $host
@@ -5278,8 +5210,7 @@ function New-isiNfsNetgroupFlush{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($host){
 				$queryArguments += 'host=' + $host
@@ -5326,8 +5257,7 @@ function New-isiNfsNlmSessionsCheck{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($ip){
 				$queryArguments += 'ip=' + $ip
@@ -5370,8 +5300,7 @@ function New-isiNfsReloadv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/protocols/nfs/reload" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -5402,8 +5331,7 @@ function New-isiNfsReloadv2{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/2/protocols/nfs/reload" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -5440,8 +5368,7 @@ function New-isiNfsReloadv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
@@ -5488,8 +5415,7 @@ function New-isiNtpServers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/protocols/ntp/servers" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -5533,8 +5459,7 @@ function New-isiSmbLogLevelFilters{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/protocols/smb/log-level/filters" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -5701,8 +5626,7 @@ function New-isiSmbSharesv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
@@ -5909,8 +5833,7 @@ function New-isiSmbSharesv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
@@ -5973,8 +5896,7 @@ function New-isiSwiftAccounts{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/protocols/swift/accounts" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6046,8 +5968,7 @@ function New-isiQuotas{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($access_zone){
 				$queryArguments += 'zone=' + $access_zone
@@ -6128,8 +6049,7 @@ function New-isiQuotaNotifications{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('quota_id')){
 				$parameter1 = $quota_id
 				$BoundParameters.Remove('quota_id') | out-null
@@ -6167,8 +6087,7 @@ function New-isiQuotaReports{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/quota/reports" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6212,8 +6131,7 @@ function New-isiQuotaSettingsMappings{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/quota/settings/mappings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6278,8 +6196,7 @@ function New-isiQuotaSettingsNotifications{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/quota/settings/notifications" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6318,8 +6235,7 @@ function New-isiSnapshotAliases{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/snapshot/aliases" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.aliases
 	}
@@ -6378,8 +6294,7 @@ function New-isiSnapshotChangelists{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/snapshot/changelists" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6422,8 +6337,7 @@ function New-isiSnapshotRepstates{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/snapshot/repstates" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6478,8 +6392,7 @@ function New-isiSnapshotSchedulesv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/snapshot/schedules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6536,8 +6449,7 @@ function New-isiSnapshotSchedulesv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/snapshot/schedules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6584,8 +6496,7 @@ function New-isiSnapshots{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/snapshot/snapshots" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6632,8 +6543,7 @@ function New-isiSnapshotLocks{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('snapshot_id')){
 				$parameter1 = $snapshot_id
 				$BoundParameters.Remove('snapshot_id') | out-null
@@ -6683,8 +6593,7 @@ function New-isiStoragepoolCompatibilitiesClassActive{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/storagepool/compatibilities/class/active" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6727,8 +6636,7 @@ function New-isiStoragepoolCompatibilitiesSSDActivev1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/storagepool/compatibilities/ssd/active" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6777,8 +6685,7 @@ function New-isiStoragepoolCompatibilitiesSSDActivev3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/storagepool/compatibilities/ssd/active" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -6829,8 +6736,7 @@ function New-isiStoragepoolNodepoolsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/storagepool/nodepools" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6883,8 +6789,7 @@ function New-isiStoragepoolNodepoolsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/storagepool/nodepools" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6923,8 +6828,7 @@ function New-isiStoragepoolTiers{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/storagepool/tiers" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -6977,8 +6881,7 @@ function New-isiSyncJobsv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/sync/jobs" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7033,8 +6936,7 @@ function New-isiSyncJobsv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/sync/jobs" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7211,8 +7113,7 @@ function New-isiSyncPoliciesv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/sync/policies" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7428,8 +7329,7 @@ function New-isiSyncPoliciesv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/sync/policies" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7468,8 +7368,7 @@ function New-isiSyncPolicyReset{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -7507,8 +7406,7 @@ function New-isiSyncReportsRotate{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/sync/reports-rotate" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.message
 	}
@@ -7560,8 +7458,7 @@ function New-isiSyncRulesv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/sync/rules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7615,8 +7512,7 @@ function New-isiSyncRulesv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/sync/rules" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -7655,8 +7551,7 @@ function New-isiSyncTargetPolicyCancel{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			if ($psBoundParameters.ContainsKey('id')){
 				$parameter1 = $id
 				$BoundParameters.Remove('id') | out-null
@@ -7694,8 +7589,7 @@ function New-isiUpgradeClusterAddRemainingNodes{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/add_remaining_nodes" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7730,8 +7624,7 @@ function New-isiUpgradeClusterArchive{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/archive" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7766,8 +7659,7 @@ function New-isiUpgradeClusterAssess{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/assess" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7798,8 +7690,7 @@ function New-isiUpgradeClusterCommit{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/commit" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7830,8 +7721,7 @@ function New-isiUpgradeClusterFirmwareAssess{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/firmware/assess" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7894,8 +7784,7 @@ function New-isiUpgradeClusterFirmwareUpgrade{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/firmware/upgrade" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7926,8 +7815,7 @@ function New-isiUpgradeClusterPatchAbort{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/patch/abort" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -7974,8 +7862,7 @@ function New-isiUpgradeClusterPatchPatches{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$queryArguments = @()
 			if ($override){
 				$queryArguments += 'override=' + $override
@@ -8022,8 +7909,7 @@ function New-isiUpgradeClusterRetryLastAction{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/retry_last_action" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -8054,8 +7940,7 @@ function New-isiUpgradeClusterRollback{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/rollback" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -8102,8 +7987,7 @@ function New-isiUpgradeClusterUpgrade{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/upgrade/cluster/upgrade" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -8168,8 +8052,7 @@ function New-isiWormDomains{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/worm/domains" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject
 	}
@@ -8293,8 +8176,7 @@ function New-isiZonesv1{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/1/zones" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}
@@ -8387,8 +8269,7 @@ function New-isiZonesv3{
 	Begin{
 	}
 	Process{
-			$BoundParameters = $PSBoundParameters
-			$BoundParameters.Remove('Cluster') | out-null
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
 			$ISIObject = Send-isiAPI -Method POST -Resource "/platform/3/zones" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			return $ISIObject.id
 	}

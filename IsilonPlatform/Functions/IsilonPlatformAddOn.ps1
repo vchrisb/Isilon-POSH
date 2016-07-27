@@ -102,3 +102,31 @@ Function Get-isiSmbSessionsNode{
 }
 
 Export-ModuleMember -Function Get-isiSmbSessionsNode
+
+
+
+function SanitizeBoundParameters {
+<#
+.SYNOPSIS
+	Sanitize Bound Parameters
+
+.DESCRIPTION
+	Sanitize Bound Parameters
+
+.NOTES
+
+#>
+    [cmdletbinding()]
+    param(
+        [parameter(Mandatory=$True, ValueFromPipeline=$True)][hashtable]$Parameters
+    )
+
+    $commonParameters = @('Cluster', 'Verbose', 'Debug', 'ErrorAction', 'ErrorVariable', 'WarningAction', 'WarningVariable', 'OutBuffer', 'PipelineVariable', 'OutVariable')
+
+    $commonParameters | % {
+        $Parameters.Remove($_)
+    }
+    return $Parameters
+}
+
+Export-ModuleMember -Function SanitizeBoundParameters
