@@ -12863,8 +12863,8 @@ function Get-isiSmbSharev3{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/3/protocols/smb/shares/$parameter1" + "$queryArguments") -Cluster $Cluster
-			return $ISIObject.shares
+			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/3/protocols/smb/shares/$parameter1" + "$queryArguments") -Cluster $Cluster			
+			return $ISIObject.shares			
 	}
 	End{
 	}
@@ -13123,11 +13123,13 @@ function Get-isiQuotas{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/quota/quotas" + "$queryArguments") -Cluster $Cluster
-			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
-				return $ISIObject.quotas,$ISIObject.resume
-			}else{
-				return $ISIObject.quotas
-			}
+			if ($ISIObject) {
+				if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
+					return $ISIObject.quotas,$ISIObject.resume
+				}else{
+					return $ISIObject.quotas
+				}
+			}			
 	}
 	End{
 	}
