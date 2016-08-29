@@ -11,18 +11,20 @@ More Information clould be found in these blog posts:
 * https://banck.net/2014/01/isilon-rest-api-using-powershell-part-2.html
 * https://banck.net/2014/08/tcp-connection-hanging-in-close_wait-when-using-invoke-restmethod-with-put-or-delete/
 
-#### Requirements
+Most of the cmdlets are generated using [Isilon-POSH-Generator](https://github.com/vchrisb/Isilon-POSH-Generator). Please see [Contribution](Page#Contribution) for more information.
+
+### Requirements
 * Powershell 3.0 and newer
 * Isilon OneFS 7.1.0.0 and newer
 
-#### Features
+### Features
 * Websession support, no need to store password
 * PowerShell pipeline support
 * concurrently connecting to multiple Isilon clusters
 * 99% of the Platform API for OneFS v8.0 covered
 * confirmation and error handling
 
-#### Installation
+### Installation
 
 Copy the folder 'IsilonPlatform' and 'SSLValidation' to the desired module path.
 You can find the configured Powershell module paths in the variable 
@@ -30,7 +32,7 @@ You can find the configured Powershell module paths in the variable
 $env:PSModulePath
 ```
 
-#### Examples
+### Examples
 ```PowerShell
 Import-Module IsilonPlatform
 
@@ -68,7 +70,7 @@ $shares += $next_shares
 Get-Help -Detailed New-isiSmbShares
 ```
 
-#### Known Issues
+### Known Issues
 
 **receiving large amount of data fails**  
 You may get following error:  
@@ -80,7 +82,7 @@ To overcome this limitation you can use the `limit` and corresponding `resume`fl
 The resource `/platform/1/protocols/smb/openfiles` does return at maximum `1000` openfiles by default  
 To overcome this limitation you can use the `limit` and corresponding `resume`flag. See example above.
 
-#### SSL Validation
+### SSL Validation
 If you are using self signed certificates on your Isilon you need to disable SSL validation in powershell.
 This could be accomplished by code from Matthew Graeber. (http://poshcode.org/3606)
 The code could also be found in this repository.
@@ -90,11 +92,24 @@ Import-Module SSLValidation
 Disable-SSLValidation
 ```
 
-#### Things to do
+### Things to do
 * Add support for API endpoints with three parameters (e.g. `/3/network/groupnets/<GROUPNET>/subnets/<SUBNET>/pools/<POOL>`)
 * testing
 * testing
 
+### Contribution
 
-#### DISCLAIMER
+Happy to get PRs! 
+Please open an issue before sending a PR and for each fix only one PR.
+
+Following files are are automatically generated via [Isilon-POSH-Generator](https://github.com/vchrisb/Isilon-POSH-Generator):
+
+* IsilonPlatformGet.ps1
+* IsilonPlatformNew.ps1
+* IsilonPlatformRemove.ps1
+* IsilonPlatformSet.ps1
+
+To discuss enhancements and bugs open an issue in this repo and PRs for these files will have to go to the [Isilon-POSH-Generator](https://github.com/vchrisb/Isilon-POSH-Generator) repo.
+
+### DISCLAIMER
 This Powershell Module is not supported. Use at your own risk!
