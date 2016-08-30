@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_MR_8_0_0_1_131(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_0_2_111(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -4540,6 +4540,9 @@ function Set-isiEventAlertCondition{
 .PARAMETER limit
 	Required with NEW EVENTS condition only, limits the number of alerts sent as events are added
 
+.PARAMETER severities
+	Severities to be alerted
+
 .PARAMETER transient
 	Any eventgroup lasting less than this many seconds is deemed transient and will not generate alerts under this condition.
 
@@ -4562,9 +4565,10 @@ function Set-isiEventAlertCondition{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$eventgroup_ids,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$interval,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$limit,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$transient,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][array]$severities,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$transient,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=9)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}

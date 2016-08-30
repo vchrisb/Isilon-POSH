@@ -421,13 +421,13 @@ function Send-isiAPI{
     }else{
             try{
                 if ($Method -eq 'GET_JSON') {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout).content
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout -UseBasicParsing).content
 
                 } elseif ( ($Method -eq 'GET') -or ($Method -eq 'DELETE') ) {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout).content | ConvertFrom-Json
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -UseBasicParsing).content | ConvertFrom-Json
                 
                 } elseif ( ($Method -eq 'PUT') -or ($Method -eq 'POST') ) {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json; charset=utf-8").content | ConvertFrom-Json
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json; charset=utf-8" -UseBasicParsing).content | ConvertFrom-Json
 
                 }       
             } 

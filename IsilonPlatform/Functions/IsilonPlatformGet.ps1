@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_MR_8_0_0_1_131(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_0_2_111(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -2915,8 +2915,14 @@ function Get-isiAuthRoles{
 	The direction of the sort.
 	Valid inputs: ASC,DESC
 
+.PARAMETER limit
+	Return no more than this many results at once (see resume).
+
 .PARAMETER resolve_names
 	Filter users by zone.
+
+.PARAMETER resume
+	Continue returning results from previous call using this token (token should come from the previous call, resume cannot be used with other options).
 
 .PARAMETER sort
 	The field that will be used for sorting.
@@ -2930,9 +2936,11 @@ function Get-isiAuthRoles{
 	[CmdletBinding()]
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][ValidateSet('ASC','DESC')][string]$dir,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][bool]$resolve_names,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$sort,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$resolve_names,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$resume,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$sort,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -2941,8 +2949,14 @@ function Get-isiAuthRoles{
 			if ($dir){
 				$queryArguments += 'dir=' + $dir
 			}
+			if ($limit){
+				$queryArguments += 'limit=' + $limit
+			}
 			if ($resolve_names){
 				$queryArguments += 'resolve_names=' + $resolve_names
+			}
+			if ($resume){
+				$queryArguments += 'resume=' + $resume
 			}
 			if ($sort){
 				$queryArguments += 'sort=' + $sort
@@ -2951,7 +2965,11 @@ function Get-isiAuthRoles{
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
 			$ISIObject = Send-isiAPI -Method GET -Resource ("/platform/1/auth/roles" + "$queryArguments") -Cluster $Cluster
-			return $ISIObject.roles
+			if ($ISIObject.PSObject.Properties['resume'] -and ($resume -or $limit)){
+				return $ISIObject.roles,$ISIObject.resume
+			}else{
+				return $ISIObject.roles
+			}
 	}
 	End{
 	}

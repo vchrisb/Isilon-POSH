@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_MR_8_0_0_1_131(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_0_2_111(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
