@@ -26,11 +26,41 @@ Most of the cmdlets are generated using [Isilon-POSH-Generator](https://github.c
 
 ### Installation
 
+#### Windows
+
 Copy the folder 'IsilonPlatform' and 'SSLValidation' to the desired module path.
 You can find the configured Powershell module paths in the variable 
 ```PowerShell
 $env:PSModulePath
 ```
+
+#### Linux
+
+[linux PowerShell installation instructions](https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md#paths) can be found in the PowerShell GitHub Repo.
+Make sure that you have `libcurl3` (for Ubuntu 16.04) or equivalent installed.
+
+Copy the folder 'IsilonPlatform' to one of the [supported module paths](https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md#paths).
+For example the shared modules path: `/usr/local/share/powershell/Modules/`
+
+##### SSL certificate
+
+The `SSLValidation' module does not work on linux. To be able to connect to the Isilon cluster, you will have to trust the SSL certificate on the linux client.
+Make sure that the `ComputerName` is identical to the `common name` in the SSL certificate, when connecting to the cluster.
+If you are using a self-signed certificate, you will need to replace it with the `common name` configured to match the hostname, used to connect to the Isilon. This should be a DNS Record pointing to the SmartConnect service IP address or the IP itself. A procedure can be found in the [Web Administration Guide](http://www.emc.com/collateral/TechnicalDocument/docu65068.pdf)
+
+Retrieving and installing the certificate can be accomplished on Ubuntu 16.04 as followed:
+```
+echo -n | openssl s_client -connect <hostname>:8080 -showcerts 2>/dev/null | openssl x509 -outform PEM > isilon.crt
+sudo cp isilon.crt /usr/share/ca-certificates/
+echo "isilon.crt" | sudo tee --append /etc/ca-certificates.conf 
+sudo update-ca-certificates
+```
+
+`curl https://<hostname>:8080/session/1/session` shouldn't print any error if successful.
+
+#### macOS
+
+tbd
 
 ### Examples
 ```PowerShell

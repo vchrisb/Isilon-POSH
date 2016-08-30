@@ -82,14 +82,13 @@ This variable will default to the ComputerName if not set.
             $Cluster = $ComputerName
         }
 
-        $ComputerName = ([System.Net.Dns]::GetHostAddresses($ComputerName)).IPAddressToString
         $baseurl = "https://$ComputerName`:$Port"
 
         #create Jason Object for Input Values
         $jobj = convertto-json @{username= $Credential.UserName; password = $Credential.GetNetworkCredential().Password; services = ('platform','namespace')}
 
         #create session
-        $ISIObject = Invoke-RestMethod -Uri "$baseurl/session/1/session" -Body $jobj -ContentType "application/json; charset=utf-8" -Method POST -SessionVariable session -TimeoutSec 180
+        $ISIObject = Invoke-RestMethod -Uri "$baseurl/session/1/session" -Body $jobj -ContentType "application/json" -Method POST -SessionVariable session -TimeoutSec 180
 
         #remove cluster if entry exists
         Clear-isiSession -Cluster $Cluster
@@ -427,7 +426,7 @@ function Send-isiAPI{
                     $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -UseBasicParsing).content | ConvertFrom-Json
                 
                 } elseif ( ($Method -eq 'PUT') -or ($Method -eq 'POST') ) {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json; charset=utf-8" -UseBasicParsing).content | ConvertFrom-Json
+                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json" -UseBasicParsing).content | ConvertFrom-Json
 
                 }       
             } 
