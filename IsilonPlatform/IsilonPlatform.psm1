@@ -454,13 +454,3 @@ Export-ModuleMember -Function Get-isiSessionDefault
 Export-ModuleMember -Function Set-isiSessionDefault
 Export-ModuleMember -Function Remove-isiSession
 Export-ModuleMember -Function Send-isiAPI
-
-
-
-$moduleRoot = Split-Path -Path $MyInvocation.MyCommand.Path
-
-#GET functions
-
-"$moduleRoot\Functions\*.ps1" | Resolve-Path | ForEach-Object { . $_.ProviderPath }
-
-

@@ -34,6 +34,9 @@ You can find the configured Powershell module paths in the variable
 $env:PSModulePath
 ```
 
+With PowerShell 5.0 you can simply use following command:
+`Install-Module IsilonPlatform`
+
 #### Linux
 
 [Linux PowerShell installation instructions](https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md#paths) can be found in the PowerShell GitHub Repo.
