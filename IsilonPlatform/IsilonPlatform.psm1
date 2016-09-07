@@ -436,7 +436,8 @@ function Send-isiAPI{
                     $result = $_.Exception.Response.GetResponseStream()
                     $reader = New-Object System.IO.StreamReader($result)
                     $responseBody = $reader.ReadToEnd() | ConvertFrom-Json
-                    Write-Error $responseBody.errors.message
+                    $responeMessage = $responseBody.errors.message | Out-String
+                    Write-Error $responeMessage
                 } else {
                     Write-Error $_.Exception
                 }

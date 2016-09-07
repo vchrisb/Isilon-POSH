@@ -121,7 +121,7 @@ function SanitizeBoundParameters {
         [parameter(Mandatory=$True, ValueFromPipeline=$True)][hashtable]$Parameters
     )
 
-    $commonParameters = @('Cluster', 'Verbose', 'Debug', 'ErrorAction', 'ErrorVariable', 'WarningAction', 'WarningVariable', 'OutBuffer', 'PipelineVariable', 'OutVariable')
+    $commonParameters = @('Cluster', 'Verbose', 'Debug', 'ErrorAction', 'ErrorVariable', 'WarningAction', 'WarningVariable', 'InformationAction', 'InformationVariable', 'OutBuffer', 'PipelineVariable', 'OutVariable', 'Force')
 
     $commonParameters | % {
         $Parameters.Remove($_)
