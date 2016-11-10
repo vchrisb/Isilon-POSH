@@ -101,6 +101,9 @@ $shares += $next_shares
 
 # print help for function New-isiSmbShares
 Get-Help -Detailed New-isiSmbShares
+
+# permission repair job
+New-isiJobs -type permissionrepair -paths /ifs/data/path -prepair_params @{mode="inherit";template="/path"}
 ```
 
 ### Known Issues
