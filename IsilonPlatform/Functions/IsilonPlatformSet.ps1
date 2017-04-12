@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_MR_8_0_0_2_111(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_1_1_112(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -740,7 +740,7 @@ function Set-isiAuthMappingImport{
 		param (
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$identities,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][object]$replace,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][bool]$replace,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$access_zone,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -2165,6 +2165,352 @@ function Set-isiAuthProviderLdapv3{
 
 Export-ModuleMember -Function Set-isiAuthProviderLdapv3
 
+function Set-isiAuthProvidersLdapv4{
+<#
+.SYNOPSIS
+	Set Auth Providers Ldap
+
+.DESCRIPTION
+	Modify the LDAP provider.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER alternate_security_identities_attribute
+	Specifies the attribute name used when searching for alternate security identities.
+
+.PARAMETER authentication
+	If true, enables authentication and identity management through the authentication provider.
+
+.PARAMETER balance_servers
+	If true, connects the provider to a random server.
+
+.PARAMETER base_dn
+	Specifies the root of the tree in which to search identities.
+
+.PARAMETER bind_dn
+	Specifies the distinguished name for binding to the LDAP server.
+
+.PARAMETER bind_mechanism
+	Specifies which bind mechanism to use when connecting to an LDAP server. The only supported option is the 'simple' value.
+	Valid inputs: simple,gssapi,digest-md5
+
+.PARAMETER bind_password
+	Specifies the password for the distinguished name for binding to the LDAP server.
+
+.PARAMETER bind_timeout
+	Specifies the timeout in seconds when binding to an LDAP server.
+
+.PARAMETER certificate_authority_file
+	Specifies the path to the root certificates file.
+
+.PARAMETER check_online_interval
+	Specifies the time in seconds between provider online checks.
+
+.PARAMETER cn_attribute
+	Specifies the canonical name.
+
+.PARAMETER create_home_directory
+	Automatically create the home directory on the first login.
+
+.PARAMETER crypt_password_attribute
+	Specifies the hashed password value.
+
+.PARAMETER email_attribute
+	Specifies the LDAP Email attribute.
+
+.PARAMETER enabled
+	If true, enables the LDAP provider.
+
+.PARAMETER enumerate_groups
+	If true, allows the provider to enumerate groups.
+
+.PARAMETER enumerate_users
+	If true, allows the provider to enumerate users.
+
+.PARAMETER findable_groups
+	Specifies the list of groups that can be resolved.
+
+.PARAMETER findable_users
+	Specifies the list of users that can be resolved.
+
+.PARAMETER gecos_attribute
+	Specifies the LDAP GECOS attribute.
+
+.PARAMETER gid_attribute
+	Specifies the LDAP GID attribute.
+
+.PARAMETER group_base_dn
+	Specifies the distinguished name of the entry where LDAP searches for groups are started.
+
+.PARAMETER group_domain
+	Specifies the domain for this provider through which groups are qualified.
+
+.PARAMETER group_filter
+	Specifies the LDAP filter for group objects.
+
+.PARAMETER group_members_attribute
+	Specifies the LDAP Group Members attribute.
+
+.PARAMETER group_search_scope
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
+
+.PARAMETER homedir_attribute
+	Specifies the LDAP Homedir attribute.
+
+.PARAMETER home_directory_template
+	Specifies the path to the home directory template.
+
+.PARAMETER ignore_tls_errors
+	If true, continues over secure connections even if identity checks fail.
+
+.PARAMETER listable_groups
+	Specifies the groups that can be viewed in the provider.
+
+.PARAMETER listable_users
+	Specifies the users that can be viewed in the provider.
+
+.PARAMETER login_shell
+	Specifies the login shell path.
+
+.PARAMETER member_of_attribute
+	Specifies the LDAP Query Member Of attribute, which performs reverse membership queries.
+
+.PARAMETER new_name
+	Specifies the name of the LDAP provider.
+
+.PARAMETER name_attribute
+	Specifies the LDAP UID attribute, which is used as the login name.
+
+.PARAMETER netgroup_base_dn
+	Specifies the distinguished name of the entry where LDAP searches for netgroups are started.
+
+.PARAMETER netgroup_filter
+	Specifies the LDAP filter for netgroup objects.
+
+.PARAMETER netgroup_members_attribute
+	Specifies the LDAP Netgroup Members attribute.
+
+.PARAMETER netgroup_search_scope
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
+
+.PARAMETER netgroup_triple_attribute
+	Specifies the LDAP Netgroup Triple attribute.
+
+.PARAMETER normalize_groups
+	Normalizes group names to lowercase before look up.
+
+.PARAMETER normalize_users
+	Normalizes user names to lowercase before look up.
+
+.PARAMETER ntlm_support
+	Specifies which NTLM versions to support for users with NTLM-compatible credentials.
+	Valid inputs: all,v2only,none
+
+.PARAMETER nt_password_attribute
+	Specifies the LDAP NT Password attribute.
+
+.PARAMETER provider_domain
+	Specifies the provider domain.
+
+.PARAMETER require_secure_connection
+	Determines whether to continue over a non-TLS connection.
+
+.PARAMETER restrict_findable
+	If true, checks the provider for filtered lists of findable and unfindable users and groups.
+
+.PARAMETER restrict_listable
+	If true, checks the provider for filtered lists of listable and unlistable users and groups.
+
+.PARAMETER search_scope
+	Specifies the default depth from the base DN to perform LDAP searches.
+	Valid inputs: base,onelevel,subtree,children
+
+.PARAMETER search_timeout
+	Specifies the search timeout period in seconds.
+
+.PARAMETER server_uris
+	Specifies the server URIs.
+
+.PARAMETER shadow_expire_attribute
+	Sets the attribute name that indicates the absolute date to expire the account.
+
+.PARAMETER shadow_flag_attribute
+	Sets the attribute name that indicates the section of the shadow map that is used to store the flag value.
+
+.PARAMETER shadow_inactive_attribute
+	Sets the attribute name that indicates the number of days of inactivity that is allowed for the user.
+
+.PARAMETER shadow_last_change_attribute
+	Sets the attribute name that indicates the last change of the shadow information.
+
+.PARAMETER shadow_max_attribute
+	Sets the attribute name that indicates the maximum number of days a password can be valid.
+
+.PARAMETER shadow_min_attribute
+	Sets the attribute name that indicates the minimum number of days between shadow changes.
+
+.PARAMETER shadow_user_filter
+	Sets LDAP filter for shadow user objects.
+
+.PARAMETER shadow_warning_attribute
+	Sets the attribute name that indicates the number of days before the password expires to warn the user.
+
+.PARAMETER shell_attribute
+	Specifies the the LDAP Shell attribute.
+
+.PARAMETER template
+	Specifies template to be used to create the LDAP provider. The list of templates can be found at /auth/providers/ldap-templates.  Any fields directly defined in your request will override the template values.
+
+.PARAMETER uid_attribute
+	Specifies the the LDAP UID Number attribute.
+
+.PARAMETER unfindable_groups
+	Specifies the groups that cannot be resolved by the provider.
+
+.PARAMETER unfindable_users
+	Specifies users that cannot be resolved by the provider.
+
+.PARAMETER unique_group_members_attribute
+	Sets the LDAP Unique Group Members attribute.
+
+.PARAMETER unlistable_groups
+	Specifies a group that cannot be listed by the provider.
+
+.PARAMETER unlistable_users
+	Specifies a user that cannot be listed by the provider.
+
+.PARAMETER user_base_dn
+	Specifies the distinguished name of the entry at which to start LDAP searches for users.
+
+.PARAMETER user_domain
+	Specifies the domain for this provider through which users are qualified.
+
+.PARAMETER user_filter
+	Specifies the LDAP filter for user objects.
+
+.PARAMETER user_search_scope
+	Specifies the depth from the base DN to perform LDAP searches.
+	Valid inputs: default,base,onelevel,subtree,children
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$alternate_security_identities_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$authentication,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$balance_servers,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$base_dn,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$bind_dn,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('simple','gssapi','digest-md5')][string]$bind_mechanism,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$bind_password,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][int]$bind_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$certificate_authority_file,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$check_online_interval,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$cn_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][bool]$create_home_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$crypt_password_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$email_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][bool]$enumerate_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][bool]$enumerate_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=18)][array]$findable_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=19)][array]$findable_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=20)][string]$gecos_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=21)][string]$gid_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=22)][string]$group_base_dn,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=23)][string]$group_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=24)][string]$group_filter,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=25)][string]$group_members_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=26)][ValidateSet('default','base','onelevel','subtree','children')][string]$group_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=27)][string]$homedir_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=28)][string]$home_directory_template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=29)][bool]$ignore_tls_errors,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=30)][array]$listable_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=31)][array]$listable_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=32)][string]$login_shell,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=33)][string]$member_of_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=34)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=35)][string]$name_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=36)][string]$netgroup_base_dn,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=37)][string]$netgroup_filter,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=38)][string]$netgroup_members_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=39)][ValidateSet('default','base','onelevel','subtree','children')][string]$netgroup_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=40)][string]$netgroup_triple_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=41)][bool]$normalize_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=42)][bool]$normalize_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=43)][ValidateSet('all','v2only','none')][string]$ntlm_support,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=44)][string]$nt_password_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=45)][string]$provider_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=46)][bool]$require_secure_connection,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=47)][bool]$restrict_findable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=48)][bool]$restrict_listable,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=49)][ValidateSet('base','onelevel','subtree','children')][string]$search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=50)][int]$search_timeout,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=51)][array]$server_uris,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=52)][string]$shadow_expire_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=53)][string]$shadow_flag_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=54)][string]$shadow_inactive_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=55)][string]$shadow_last_change_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=56)][string]$shadow_max_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=57)][string]$shadow_min_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=58)][string]$shadow_user_filter,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=59)][string]$shadow_warning_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=60)][string]$shell_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=61)][string]$template,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=62)][string]$uid_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=63)][array]$unfindable_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=64)][array]$unfindable_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=65)][string]$unique_group_members_attribute,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=66)][array]$unlistable_groups,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=67)][array]$unlistable_users,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=68)][string]$user_base_dn,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=69)][string]$user_domain,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=70)][string]$user_filter,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=71)][ValidateSet('default','base','onelevel','subtree','children')][string]$user_search_scope,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=72)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=73)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiAuthProvidersLdapv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/auth/providers/ldap/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiAuthProvidersLdapv4
+
 function Set-isiAuthProviderLocal{
 <#
 .SYNOPSIS
@@ -2998,6 +3344,9 @@ function Set-isiAuthSettingsKrb5Defaults{
 .DESCRIPTION
 	Modify the krb5 settings.
 
+.PARAMETER allow_weak_crypto
+	If true, allow the use of DES encryption
+
 .PARAMETER always_send_preauth
 	If true, always attempts to preauthenticate to the domain controller.
 
@@ -3021,12 +3370,13 @@ function Set-isiAuthSettingsKrb5Defaults{
 #>
 	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
 		param (
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$always_send_preauth,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$default_realm,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$dns_lookup_kdc,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$dns_lookup_realm,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=4)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$allow_weak_crypto,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$always_send_preauth,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$default_realm,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$dns_lookup_kdc,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$dns_lookup_realm,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=5)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -3520,6 +3870,66 @@ function Set-isiAuthUserChangePasswordv1{
 
 Export-ModuleMember -Function Set-isiAuthUserChangePasswordv1
 
+function Set-isiCertificateServer{
+<#
+.SYNOPSIS
+	Set Certificate Server
+
+.DESCRIPTION
+	Modify a TLS server certificate.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER default
+	Boolean identifying if a certificate is the default certificate.The default certificate is used as the fallback when no other certificates match a TLS enabled service's particular criteria. There must always be a configured default certificate.
+
+.PARAMETER description
+	Description field associated with a certificate provided for administrative convenience.
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$default,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCertificateServer')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/certificate/server/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiCertificateServer
+
 function Set-isiCloudAccountv3{
 <#
 .SYNOPSIS
@@ -3615,6 +4025,110 @@ function Set-isiCloudAccountv3{
 }
 
 Export-ModuleMember -Function Set-isiCloudAccountv3
+
+function Set-isiCloudAccountv4{
+<#
+.SYNOPSIS
+	Set Cloud Account
+
+.DESCRIPTION
+	Modify cloud account.  All fields are optional, but one or more must be supplied.
+
+.PARAMETER id
+	Account id
+
+.PARAMETER name
+	Account name
+
+.PARAMETER account_id
+	(S3 only) The user id of the S3 account
+
+.PARAMETER account_username
+	The username required to authenticate against the cloud service
+
+.PARAMETER birth_cluster_id
+	The guid of the cluster where this account was created
+
+.PARAMETER enabled
+	Whether this account is explicitly enabled or disabled by a user
+
+.PARAMETER key
+	A valid authentication key for connecting to the cloud
+
+.PARAMETER new_name
+	A unique name for this account
+
+.PARAMETER proxy
+	The id or name of a proxy to be used by this account
+
+.PARAMETER skip_account_check
+	(Not recommended) Indicates whether to skip validation that the cloud account is still accessible
+
+.PARAMETER skip_ssl_validation
+	Indicates whether to skip SSL certificate validation when connecting to the cloud
+
+.PARAMETER storage_region
+	(S3 only) An appropriate region for the S3 account.  For example, faster access times may be gained by referencing a nearby region
+
+.PARAMETER telemetry_bucket
+	(S3 only) The name of the bucket into which generated metrics reports are placed by the cloud service provider
+
+.PARAMETER uri
+	A valid URI pointing to the location of the cloud storage
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$account_id,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$account_username,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$birth_cluster_id,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$key,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$proxy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][bool]$skip_account_check,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$skip_ssl_validation,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$storage_region,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$telemetry_bucket,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$uri,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=13)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudAccountv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/cloud/accounts/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiCloudAccountv4
 
 function Set-isiCloudJobv3{
 <#
@@ -3757,6 +4271,87 @@ function Set-isiCloudPoolv3{
 
 Export-ModuleMember -Function Set-isiCloudPoolv3
 
+function Set-isiCloudProxy{
+<#
+.SYNOPSIS
+	Set Cloud Proxy
+
+.DESCRIPTION
+	Modify cloud account.  All fields are optional, but one or more must be supplied.
+
+.PARAMETER id
+	Proxy id
+
+.PARAMETER name
+	Proxy name
+
+.PARAMETER host
+	A host name or network address for connecting to this proxy
+
+.PARAMETER new_name
+	A unique friendly name for this proxy configuration
+
+.PARAMETER password
+	The password to connect to this proxy if required (write-only)
+
+.PARAMETER port
+	The port used to connect to this proxy
+
+.PARAMETER type
+	The type of connection used to connect to this proxy
+	Valid inputs: socks_4,socks_5,http
+
+.PARAMETER username
+	The username to connect to this proxy if required
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$host,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$password,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$port,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][ValidateSet('socks_4','socks_5','http')][string]$type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$username,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiCloudProxy')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/cloud/proxies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiCloudProxy
+
 function Set-isiCloudSettingsv3{
 <#
 .SYNOPSIS
@@ -3766,7 +4361,7 @@ function Set-isiCloudSettingsv3{
 	Modify one or more settings.
 
 .PARAMETER cloud_policy_defaults
-	The default filepool policy values for cloud pools.
+	The default filepool policy values for cloudpools.
 
 .PARAMETER retry_coefficient_archive
 	Coefficients in the quadratic function for determining the rest period between successive archive attempts.
@@ -3853,6 +4448,178 @@ function Set-isiCloudSettingsv3{
 }
 
 Export-ModuleMember -Function Set-isiCloudSettingsv3
+
+function Set-isiClusterDiagnosticsGatherSettings{
+<#
+.SYNOPSIS
+	Set Cluster Diagnostics Gather Settings
+
+.DESCRIPTION
+	Set the default options for isi_gather_info.
+
+.PARAMETER esrs
+	Use ESRS for upload of gather.
+
+.PARAMETER ftp_upload
+	
+
+.PARAMETER ftp_upload_host
+	Alternate FTP host to upload to.
+
+.PARAMETER ftp_upload_mode
+	FTP upload mode.
+	Valid inputs: both,passive,active
+
+.PARAMETER ftp_upload_pass
+	FTP password for upload.
+
+.PARAMETER ftp_upload_path
+	Alternate FTP path to upload to.
+
+.PARAMETER ftp_upload_proxy
+	FTP proxy to use for upload.
+
+.PARAMETER ftp_upload_proxy_port
+	FTP proxy port to use for upload.
+
+.PARAMETER ftp_upload_user
+	FTP user for upload.
+
+.PARAMETER gather_mode
+	Set gather to full or incremental.
+	Valid inputs: full,incremental
+
+.PARAMETER http_upload
+	Whether or not to use HTTP upload on completed gather.
+
+.PARAMETER http_upload_host
+	Alternate HTTP Host to upload to.
+
+.PARAMETER http_upload_path
+	Alternate path to write gather to.
+
+.PARAMETER http_upload_proxy
+	Proxy to use for HTTP upload.
+
+.PARAMETER http_upload_proxy_port
+	Alternate port for proxy server
+
+.PARAMETER upload
+	Upload gather to EMC.
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$esrs,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$ftp_upload,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$ftp_upload_host,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('both','passive','active')][string]$ftp_upload_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$ftp_upload_pass,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$ftp_upload_path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$ftp_upload_proxy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$ftp_upload_proxy_port,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$ftp_upload_user,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateSet('full','incremental')][string]$gather_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$http_upload,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$http_upload_host,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$http_upload_path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$http_upload_proxy,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][int]$http_upload_proxy_port,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][bool]$upload,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=16)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterDiagnosticsGatherSettings')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/diagnostics/gather/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiClusterDiagnosticsGatherSettings
+
+function Set-isiClusterDiagnosticsNetloggerSettings{
+<#
+.SYNOPSIS
+	Set Cluster Diagnostics Netlogger Settings
+
+.DESCRIPTION
+	Set the default options for isi_netlogger.
+
+.PARAMETER clients
+	IP Addresses or host names of clients
+
+.PARAMETER count
+	Count of capture files to keep, 0 is infinite.
+
+.PARAMETER duration
+	Duration in minutes of each capture file
+
+.PARAMETER interfaces
+	Network interfaces to capture on.
+
+.PARAMETER nodelist
+	List of nodes, or empty for all
+
+.PARAMETER ports
+	List of Integers of TCP or UDP ports
+
+.PARAMETER protocols
+	which protocol(s) to gather on
+
+.PARAMETER snaplength
+	Amount of bytes per packet to capture
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$clients,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][int]$count,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$duration,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$interfaces,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][string]$nodelist,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$ports,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$protocols,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$snaplength,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiClusterDiagnosticsNetloggerSettings')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/cluster/diagnostics/netlogger/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiClusterDiagnosticsNetloggerSettings
 
 function Set-isiClusterEmail{
 <#
@@ -4507,7 +5274,7 @@ function Set-isiDedupeSettings{
 
 Export-ModuleMember -Function Set-isiDedupeSettings
 
-function Set-isiEventAlertCondition{
+function Set-isiEventAlertConditionv3{
 <#
 .SYNOPSIS
 	Set Event Alert Condition
@@ -4523,6 +5290,87 @@ function Set-isiEventAlertCondition{
 
 .PARAMETER categories
 	Event Group categories to be alerted
+
+.PARAMETER channel_ids
+	Channels for alert
+
+.PARAMETER condition
+	Trigger condition for alert
+	Valid inputs: NEW,NEW EVENTS,ONGOING,SEVERITY INCREASE,SEVERITY DECREASE,RESOLVED
+
+.PARAMETER eventgroup_ids
+	Event Group IDs to be alerted
+
+.PARAMETER interval
+	Required with ONGOING condition only, period in seconds between alerts of ongoing conditions
+
+.PARAMETER limit
+	Required with NEW EVENTS condition only, limits the number of alerts sent as events are added
+
+.PARAMETER transient
+	Any eventgroup lasting less than this many seconds is deemed transient and will not generate alerts under this condition.
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$categories,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][array]$channel_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('NEW','NEW EVENTS','ONGOING','SEVERITY INCREASE','SEVERITY DECREASE','RESOLVED')][string]$condition,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][array]$eventgroup_ids,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$interval,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][int]$limit,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][int]$transient,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventAlertConditionv3')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/alert-conditions/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiEventAlertConditionv3
+
+function Set-isiEventAlertConditionv4{
+<#
+.SYNOPSIS
+	Set Event Alert Condition
+
+.DESCRIPTION
+	Modify the alert-condition
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER categories
+	Event Group categories to be alerted: all, 100000000 (SYS_DISK_EVENTS), 200000000 (NODE_STATUS_EVENTS), 300000000 (REBOOT_EVENTS), 400000000 (SW_EVENTS), 500000000 (QUOTA_EVENTS), 600000000 (SNAP_EVENTS), 700000000 (WINNET_EVENTS), 800000000 (FILESYS_EVENTS), 900000000 (HW_EVENTS), 1100000000 (CPOOL_EVENTS)
 
 .PARAMETER channel_ids
 	Channels for alert
@@ -4581,8 +5429,8 @@ function Set-isiEventAlertCondition{
 				$parameter1 = $name
 				$BoundParameters.Remove('name') | out-null
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventAlertCondition')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/event/alert-conditions/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiEventAlertConditionv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/event/alert-conditions/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -4590,7 +5438,7 @@ function Set-isiEventAlertCondition{
 	}
 }
 
-Export-ModuleMember -Function Set-isiEventAlertCondition
+Export-ModuleMember -Function Set-isiEventAlertConditionv4
 
 function Set-isiEventChannel{
 <#
@@ -4598,7 +5446,7 @@ function Set-isiEventChannel{
 	Set Event Channel
 
 .DESCRIPTION
-	Modify the alert-condition
+	Modify the channel.
 
 .PARAMETER id
 	Id id
@@ -4877,7 +5725,7 @@ function Set-isiFileFilterSettings{
 
 Export-ModuleMember -Function Set-isiFileFilterSettings
 
-function Set-isiFilepoolDefaultPolicy{
+function Set-isiFilepoolDefaultPolicyv1{
 <#
 .SYNOPSIS
 	Set Filepool Default Policy
@@ -4907,7 +5755,7 @@ function Set-isiFilepoolDefaultPolicy{
 	}
 	Process{
 			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolDefaultPolicy')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolDefaultPolicyv1')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/default-policy" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
@@ -4916,9 +5764,52 @@ function Set-isiFilepoolDefaultPolicy{
 	}
 }
 
-Export-ModuleMember -Function Set-isiFilepoolDefaultPolicy
+Export-ModuleMember -Function Set-isiFilepoolDefaultPolicyv1
+Set-Alias Set-isiFilepoolDefaultPolicy -Value Set-isiFilepoolDefaultPolicyv1
+Export-ModuleMember -Alias Set-isiFilepoolDefaultPolicy
 
-function Set-isiFilepoolPolicy{
+function Set-isiFilepoolDefaultPolicyv4{
+<#
+.SYNOPSIS
+	Set Filepool Default Policy
+
+.DESCRIPTION
+	Set default file pool policy.
+
+.PARAMETER actions
+	
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][array]$actions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolDefaultPolicyv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/filepool/default-policy" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiFilepoolDefaultPolicyv4
+
+function Set-isiFilepoolPolicyv1{
 <#
 .SYNOPSIS
 	Set Filepool Policy
@@ -4983,7 +5874,7 @@ function Set-isiFilepoolPolicy{
 				$BoundParameters.Remove('new_name') | out-null
 				$BoundParameters.Add('name',$new_name)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolPolicy')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolPolicyv1')){
 				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/1/filepool/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
@@ -4992,7 +5883,85 @@ function Set-isiFilepoolPolicy{
 	}
 }
 
-Export-ModuleMember -Function Set-isiFilepoolPolicy
+Export-ModuleMember -Function Set-isiFilepoolPolicyv1
+Set-Alias Set-isiFilepoolPolicy -Value Set-isiFilepoolPolicyv1
+Export-ModuleMember -Alias Set-isiFilepoolPolicy
+
+function Set-isiFilepoolPolicyv4{
+<#
+.SYNOPSIS
+	Set Filepool Policy
+
+.DESCRIPTION
+	Modify file pool policy. All input fields are optional, but one or more must be supplied.
+
+.PARAMETER id
+	Polname id
+
+.PARAMETER name
+	Polname name
+
+.PARAMETER actions
+	A list of actions to be taken for matching files
+
+.PARAMETER apply_order
+	The order in which this policy should be applied (relative to other policies)
+
+.PARAMETER description
+	A description for this policy
+
+.PARAMETER file_matching_pattern
+	The file matching rules for this policy
+
+.PARAMETER new_name
+	A unique name for this policy
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$actions,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][int]$apply_order,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][string]$description,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][object]$file_matching_pattern,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$new_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=6)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($new_name){
+				$BoundParameters.Remove('new_name') | out-null
+				$BoundParameters.Add('name',$new_name)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiFilepoolPolicyv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/filepool/policies/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiFilepoolPolicyv4
 
 function Set-isiFilesystemAccessTime{
 <#
@@ -5859,6 +6828,9 @@ function Set-isiNetworkGroupnetSubnet{
 .PARAMETER Force
 	Force update of object without prompt
 
+.PARAMETER enforce
+	force modifying this subnet even if it causes an MTU conflict.
+
 .PARAMETER Cluster
 	Name of Isilon Cluster
 
@@ -5881,7 +6853,8 @@ function Set-isiNetworkGroupnetSubnet{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$vlan_enabled,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][int]$vlan_id,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=12)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][ValidateNotNullOrEmpty()][bool]$enforce,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -5896,8 +6869,16 @@ function Set-isiNetworkGroupnetSubnet{
 			}
 			$parameter2 = $id
 			$BoundParameters.Remove('id') | out-null
+			$queryArguments = @()
+			if ($enforce){
+				$queryArguments += 'force=' + $enforce
+				$BoundParameters.Remove('enforce') | out-null
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
 			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNetworkGroupnetSubnet')){
-				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/3/network/groupnets/$parameter1/subnets/$parameter2" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+				$ISIObject = Send-isiAPI -Method PUT -Resource ("/platform/3/network/groupnets/$parameter1/subnets/$parameter2" + "$queryArguments") -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
 			}
 			return $ISIObject
 	}
@@ -6292,6 +7273,55 @@ function Set-isiHdfsRack{
 
 Export-ModuleMember -Function Set-isiHdfsRack
 
+function Set-isiHdfsRangerPluginSettings{
+<#
+.SYNOPSIS
+	Set Protocols Hdfs Ranger Plugin Settings
+
+.DESCRIPTION
+	Modify HDFS ranger-plugin properties.
+
+.PARAMETER enabled
+	Enable or disable the HDFS ranger plugin
+
+.PARAMETER policy_manager_url
+	The scheme, hostname, and port of the Apache Ranger server (e.g. http://ranger.com:6080)
+
+.PARAMETER repository_name
+	The HDFS repository name that is registered with Apache Ranger server
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][bool]$enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$policy_manager_url,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$repository_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=3)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsRangerPluginSettings')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/protocols/hdfs/ranger-plugin/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiHdfsRangerPluginSettings
+
 function Set-isiHdfsSettingsv3{
 <#
 .SYNOPSIS
@@ -6367,6 +7397,90 @@ function Set-isiHdfsSettingsv3{
 
 Export-ModuleMember -Function Set-isiHdfsSettingsv3
 
+function Set-isiHdfsSettingsv4{
+<#
+.SYNOPSIS
+	Set Protocols Hdfs Settings
+
+.DESCRIPTION
+	Modify HDFS properties.
+
+.PARAMETER ambari_metrics_collector
+	Ambari metrics collector
+
+.PARAMETER ambari_namenode
+	NameNode of Ambari server
+
+.PARAMETER ambari_server
+	Ambari server
+
+.PARAMETER authentication_mode
+	Type of authentication for HDFS protocol.
+	Valid inputs: all,simple_only,kerberos_only
+
+.PARAMETER data_transfer_cipher
+	Encryption algorithm to use for data transfer (if any)
+	Valid inputs: none,aes_128_ctr,aes_192_ctr,aes_256_ctr
+
+.PARAMETER default_block_size
+	Block size (size=2**value) reported by HDFS server.
+
+.PARAMETER default_checksum_type
+	Checksum type reported by HDFS server.
+	Valid inputs: none,crc32,crc32c
+
+.PARAMETER odp_version
+	ODP stack repository version number
+
+.PARAMETER root_directory
+	HDFS root directory
+
+.PARAMETER service
+	Enable or disable the HDFS service.
+
+.PARAMETER webhdfs_enabled
+	Enable or disable WebHDFS
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][string]$ambari_metrics_collector,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][string]$ambari_namenode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][string]$ambari_server,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateSet('all','simple_only','kerberos_only')][string]$authentication_mode,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][ValidateSet('none','aes_128_ctr','aes_192_ctr','aes_256_ctr')][string]$data_transfer_cipher,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$default_block_size,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('none','crc32','crc32c')][string]$default_checksum_type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][string]$odp_version,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$root_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][bool]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][bool]$webhdfs_enabled,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=11)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiHdfsSettingsv4')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/protocols/hdfs/settings" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiHdfsSettingsv4
+
 function Set-isiHttpSettings{
 <#
 .SYNOPSIS
@@ -6386,6 +7500,9 @@ function Set-isiHttpSettings{
 
 .PARAMETER enable_access_log
 	Enable HTTP access logging
+
+.PARAMETER https
+	Use HTTPS transport
 
 .PARAMETER integrated_authentication
 	Enable Integrated Authentication
@@ -6412,11 +7529,12 @@ function Set-isiHttpSettings{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][bool]$basic_authentication,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][bool]$dav,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][bool]$enable_access_log,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$integrated_authentication,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][string]$server_root,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('enabled','disabled','redirect')][string]$service,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=7)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][bool]$https,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][bool]$integrated_authentication,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][string]$server_root,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('enabled','disabled','redirect')][string]$service,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}
@@ -6544,6 +7662,62 @@ function Set-isiNdmpSettingsGlobal{
 }
 
 Export-ModuleMember -Function Set-isiNdmpSettingsGlobal
+
+function Set-isiNdmpSettingsPreferredIp{
+<#
+.SYNOPSIS
+	Set Protocols Ndmp Settings Preferred Ip
+
+.DESCRIPTION
+	Modify a preferred ip preference.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER data_subnets
+	
+
+.PARAMETER Force
+	Force update of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][array]$data_subnets,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=2)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=3)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$BoundParameters = $PSBoundParameters | SanitizeBoundParameters
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+				$BoundParameters.Remove('id') | out-null
+			} else {
+				$parameter1 = $name
+				$BoundParameters.Remove('name') | out-null
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Set-isiNdmpSettingsPreferredIp')){
+				$ISIObject = Send-isiAPI -Method PUT -Resource "/platform/4/protocols/ndmp/settings/preferred-ips/$parameter1" -body (convertto-json -depth 40 $BoundParameters) -Cluster $Cluster
+			}
+			return $ISIObject
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Set-isiNdmpSettingsPreferredIp
 
 function Set-isiNdmpSettingsVariable{
 <#
@@ -6813,7 +7987,7 @@ function Set-isiNfsExportv1{
 	Clients that have read and write access to the export, even if the export is read-only.
 
 .PARAMETER return_32bit_file_ids
-	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values (may require remount).
 
 .PARAMETER root_clients
 	Clients that have root access to the export.
@@ -7054,7 +8228,7 @@ function Set-isiNfsExportv2{
 	Specifies the clients with both read and write access to the export, even when the export is set to read-only.
 
 .PARAMETER return_32bit_file_ids
-	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values (may require remount).
 
 .PARAMETER root_clients
 	Clients that have root access to the export.
@@ -7366,7 +8540,7 @@ function Set-isiNfsSettingsExportv1{
 	The optimal size for NFS read requests.  This option is advisory.
 
 .PARAMETER return_32bit_file_ids
-	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values (may require remount).
 
 .PARAMETER security_flavors
 	The authentication flavors that are supported for this export.
@@ -7565,7 +8739,7 @@ function Set-isiNfsSettingsExportv2{
 	Specifies the preferred size for NFS read requests. This value is used to advise the client of optimal settings for the server, but is not enforced.
 
 .PARAMETER return_32bit_file_ids
-	Limits the size of file identifiers returned by NFSv3+ to 32-bit values.
+	Limits the size of file identifiers returned by NFSv3+ to 32-bit values (may require remount).
 
 .PARAMETER security_flavors
 	Specifies the authentication types that are supported for this export.
@@ -8540,7 +9714,7 @@ function Set-isiSmbSharev1{
 	Set Smb Share
 
 .DESCRIPTION
-	Modify share. All input fields are optional, but one or must be supplied.
+	Modify share. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER id
 	Share id
@@ -8738,7 +9912,7 @@ function Set-isiSmbSharev3{
 	Set Protocols Smb Share
 
 .DESCRIPTION
-	Modify share. All input fields are optional, but one or must be supplied.
+	Modify share. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER id
 	Share id
@@ -9237,7 +10411,7 @@ function Set-isiQuotaNotification{
 	Set Quota Notification
 
 .DESCRIPTION
-	Modify notification rule. All input fields are optional, but one or must be supplied.
+	Modify notification rule. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER quota_id
 	Quota quota_id
@@ -9384,7 +10558,7 @@ function Set-isiQuotaSettingsNotification{
 	Set Quota Settings Notification
 
 .DESCRIPTION
-	Modify notification rule. All input fields are optional, but one or must be supplied.
+	Modify notification rule. All input fields are optional, but one or more must be supplied.
 
 .PARAMETER id
 	Notification id
@@ -11250,7 +12424,7 @@ function Set-isiWormDomain{
 
 .PARAMETER type
 	Specifies whether the domain is an enterprise domain or a compliance domain. Compliance domains can not be created on enterprise clusters. Enterprise and compliance domains can be created on compliance clusters.
-	Valid inputs: enterprise,compliance
+	Valid inputs: enterprise,compliance,compliance (legacy)
 
 .PARAMETER Force
 	Force update of object without prompt
@@ -11271,7 +12445,7 @@ function Set-isiWormDomain{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=4)][int]$min_retention,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=5)][int]$override_date,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=6)][ValidateSet('on','off','disabled')][string]$privileged_delete,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('enterprise','compliance')][string]$type,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][ValidateSet('enterprise','compliance','compliance (legacy)')][string]$type,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=8)][switch]$Force,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
@@ -11530,6 +12704,9 @@ function Set-isiZonev3{
 .PARAMETER new_name
 	Specifies the access zone name.
 
+.PARAMETER negative_cache_entry_expiry
+	Specifies number of seconds the negative cache entry is valid.
+
 .PARAMETER netbios_name
 	Specifies the NetBIOS name.
 
@@ -11567,13 +12744,14 @@ function Set-isiZonev3{
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=7)][array]$ifs_restricted,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=8)][string]$map_untrusted,
 		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=9)][string]$new_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][string]$netbios_name,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$path,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$skeleton_directory,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$system_provider,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][array]$user_mapping_rules,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=15)][switch]$Force,
-		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=16)][ValidateNotNullOrEmpty()][string]$Cluster
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=10)][int]$negative_cache_entry_expiry,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=11)][string]$netbios_name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=12)][string]$path,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=13)][string]$skeleton_directory,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=14)][string]$system_provider,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=15)][array]$user_mapping_rules,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=16)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=17)][ValidateNotNullOrEmpty()][string]$Cluster
 		)
 	Begin{
 	}

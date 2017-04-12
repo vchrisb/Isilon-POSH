@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#Build using Isilon OneFS build: B_MR_8_0_0_2_111(RELEASE)
+#Build using Isilon OneFS build: B_MR_8_0_1_1_112(RELEASE)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -1029,6 +1029,54 @@ function Remove-isiAuthProviderLdapv3{
 
 Export-ModuleMember -Function Remove-isiAuthProviderLdapv3
 
+function Remove-isiAuthProvidersLdapv4{
+<#
+.SYNOPSIS
+	Remove Auth Providers Ldap
+
+.DESCRIPTION
+	Delete the LDAP provider.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiAuthProvidersLdapv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/auth/providers/ldap/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiAuthProvidersLdapv4
+
 function Remove-isiAuthProviderLocal{
 <#
 .SYNOPSIS
@@ -1732,6 +1780,54 @@ function Remove-isiAuthUserMemberOfGroupv1{
 
 Export-ModuleMember -Function Remove-isiAuthUserMemberOfGroupv1
 
+function Remove-isiCertificateServer{
+<#
+.SYNOPSIS
+	Remove Certificate Server
+
+.DESCRIPTION
+	Delete a TLS server certificate.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCertificateServer')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/certificate/server/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiCertificateServer
+
 function Remove-isiCloudAccess{
 <#
 .SYNOPSIS
@@ -1828,6 +1924,54 @@ function Remove-isiCloudAccountv3{
 
 Export-ModuleMember -Function Remove-isiCloudAccountv3
 
+function Remove-isiCloudAccountv4{
+<#
+.SYNOPSIS
+	Remove Cloud Account
+
+.DESCRIPTION
+	Delete cloud account.
+
+.PARAMETER id
+	Account id
+
+.PARAMETER name
+	Account name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudAccountv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/cloud/accounts/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiCloudAccountv4
+
 function Remove-isiCloudPoolv3{
 <#
 .SYNOPSIS
@@ -1875,6 +2019,54 @@ function Remove-isiCloudPoolv3{
 }
 
 Export-ModuleMember -Function Remove-isiCloudPoolv3
+
+function Remove-isiCloudProxy{
+<#
+.SYNOPSIS
+	Remove Cloud Proxy
+
+.DESCRIPTION
+	Delete cloud account.
+
+.PARAMETER id
+	Proxy id
+
+.PARAMETER name
+	Proxy name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiCloudProxy')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/cloud/proxies/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiCloudProxy
 
 function Remove-isiCloudSettingsReportingEula{
 <#
@@ -1946,7 +2138,7 @@ function Remove-isiDebugStats{
 
 Export-ModuleMember -Function Remove-isiDebugStats
 
-function Remove-isiEventAlertConditions{
+function Remove-isiEventAlertConditionsv3{
 <#
 .SYNOPSIS
 	Remove Event Alert Conditions
@@ -1982,7 +2174,7 @@ function Remove-isiEventAlertConditions{
 			if ($queryArguments) {
 				$queryArguments = '?' + [String]::Join('&',$queryArguments)
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertConditions')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertConditionsv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/3/event/alert-conditions" + "$queryArguments") -Cluster $Cluster
 			}
 	}
@@ -1990,9 +2182,55 @@ function Remove-isiEventAlertConditions{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiEventAlertConditions
+Export-ModuleMember -Function Remove-isiEventAlertConditionsv3
 
-function Remove-isiEventAlertCondition{
+function Remove-isiEventAlertConditionsv4{
+<#
+.SYNOPSIS
+	Remove Event Alert Conditions
+
+.DESCRIPTION
+	Bulk delete of alert conditions.
+
+.PARAMETER channel
+	Delete only conditions for this channel
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=0)][ValidateNotNullOrEmpty()][string]$channel,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			$queryArguments = @()
+			if ($channel){
+				$queryArguments += 'channel=' + $channel
+			}
+			if ($queryArguments) {
+				$queryArguments = '?' + [String]::Join('&',$queryArguments)
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertConditionsv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource ("/platform/4/event/alert-conditions" + "$queryArguments") -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiEventAlertConditionsv4
+
+function Remove-isiEventAlertConditionv3{
 <#
 .SYNOPSIS
 	Remove Event Alert Condition
@@ -2030,7 +2268,7 @@ function Remove-isiEventAlertCondition{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertCondition')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertConditionv3')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/event/alert-conditions/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -2038,7 +2276,55 @@ function Remove-isiEventAlertCondition{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiEventAlertCondition
+Export-ModuleMember -Function Remove-isiEventAlertConditionv3
+
+function Remove-isiEventAlertConditionv4{
+<#
+.SYNOPSIS
+	Remove Event Alert Condition
+
+.DESCRIPTION
+	Delete the alert-condition.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiEventAlertConditionv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/event/alert-conditions/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiEventAlertConditionv4
 
 function Remove-isiEventChannel{
 <#
@@ -2046,7 +2332,7 @@ function Remove-isiEventChannel{
 	Remove Event Channel
 
 .DESCRIPTION
-	Delete the alert-condition.
+	Delete the channel.
 
 .PARAMETER id
 	Id id
@@ -2088,7 +2374,7 @@ function Remove-isiEventChannel{
 
 Export-ModuleMember -Function Remove-isiEventChannel
 
-function Remove-isiFilepoolPolicy{
+function Remove-isiFilepoolPolicyv1{
 <#
 .SYNOPSIS
 	Remove Filepool Policy
@@ -2126,7 +2412,7 @@ function Remove-isiFilepoolPolicy{
 			} else {
 				$parameter1 = $name
 			}
-			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiFilepoolPolicy')){
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiFilepoolPolicyv1')){
 				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/1/filepool/policies/$parameter1" -Cluster $Cluster
 			}
 	}
@@ -2134,7 +2420,57 @@ function Remove-isiFilepoolPolicy{
 	}
 }
 
-Export-ModuleMember -Function Remove-isiFilepoolPolicy
+Export-ModuleMember -Function Remove-isiFilepoolPolicyv1
+Set-Alias Remove-isiFilepoolPolicy -Value Remove-isiFilepoolPolicyv1
+Export-ModuleMember -Alias Remove-isiFilepoolPolicy
+
+function Remove-isiFilepoolPolicyv4{
+<#
+.SYNOPSIS
+	Remove Filepool Policy
+
+.DESCRIPTION
+	Delete file pool policy.
+
+.PARAMETER id
+	Polname id
+
+.PARAMETER name
+	Polname name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiFilepoolPolicyv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/filepool/policies/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiFilepoolPolicyv4
 
 function Remove-isiFsaResultv1{
 <#
@@ -2865,6 +3201,54 @@ function Remove-isiNdmpSession{
 }
 
 Export-ModuleMember -Function Remove-isiNdmpSession
+
+function Remove-isiNdmpSettingsPreferredIp{
+<#
+.SYNOPSIS
+	Remove Protocols Ndmp Settings Preferred Ip
+
+.DESCRIPTION
+	Delete a preferred ip preference.
+
+.PARAMETER id
+	Id id
+
+.PARAMETER name
+	Id name
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High',DefaultParametersetName='ByID')]
+		param (
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByID')][ValidateNotNullOrEmpty()][string]$id,
+		[Parameter(Mandatory=$True,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$True,Position=0,ParameterSetName='ByName')][ValidateNotNullOrEmpty()][string]$name,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=1)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=2)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($psBoundParameters.ContainsKey('id')){
+				$parameter1 = $id
+			} else {
+				$parameter1 = $name
+			}
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiNdmpSettingsPreferredIp')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/protocols/ndmp/settings/preferred-ips/$parameter1" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiNdmpSettingsPreferredIp
 
 function Remove-isiNdmpSettingsVariable{
 <#
@@ -3655,6 +4039,41 @@ function Remove-isiSmbSharesv3{
 }
 
 Export-ModuleMember -Function Remove-isiSmbSharesv3
+
+function Remove-isiSmbSharesv4{
+<#
+.SYNOPSIS
+	Remove Protocols Smb Shares
+
+.DESCRIPTION
+	Delete multiple smb shares.
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=0)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiSmbSharesv4')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/4/protocols/smb/shares" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiSmbSharesv4
 
 function Remove-isiSmbSharev1{
 <#
@@ -4886,6 +5305,41 @@ function Remove-isiStoragepoolCompatibilitiesSSDActivev3{
 }
 
 Export-ModuleMember -Function Remove-isiStoragepoolCompatibilitiesSSDActivev3
+
+function Remove-isiStoragepoolNodepoolsv3{
+<#
+.SYNOPSIS
+	Remove Storagepool Nodepools
+
+.DESCRIPTION
+	Delete all node pools.
+
+.PARAMETER Force
+	Force deletion of object without prompt
+
+.PARAMETER Cluster
+	Name of Isilon Cluster
+
+.NOTES
+
+#>
+	[CmdletBinding(SupportsShouldProcess=$True,ConfirmImpact='High')]
+		param (
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$False,ValueFromPipeline=$False,Position=0)][switch]$Force,
+		[Parameter(Mandatory=$False,ValueFromPipelineByPropertyName=$True,ValueFromPipeline=$False,Position=1)][ValidateNotNullOrEmpty()][string]$Cluster
+		)
+	Begin{
+	}
+	Process{
+			if ($Force -or $PSCmdlet.ShouldProcess("$parameter1",'Remove-isiStoragepoolNodepoolsv3')){
+				$ISIObject = Send-isiAPI -Method DELETE -Resource "/platform/3/storagepool/nodepools" -Cluster $Cluster
+			}
+	}
+	End{
+	}
+}
+
+Export-ModuleMember -Function Remove-isiStoragepoolNodepoolsv3
 
 function Remove-isiStoragepoolNodepoolv1{
 <#
