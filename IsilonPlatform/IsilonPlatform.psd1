@@ -30,7 +30,7 @@
 RootModule = 'IsilonPlatform.psm1'
 
 # Version number of this module.
-ModuleVersion = '8.0.5'
+ModuleVersion = '8.0.6'
 
 # ID used to uniquely identify this module
 GUID = '0bcb10cf-1d7e-4bad-8239-f725dcf1808f'
@@ -42,7 +42,7 @@ Author = 'Christopher Banck'
 CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c) 2016 Christopher Banck. All rights reserved.'
+Copyright = '(c) 2017 Christopher Banck. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'EMC Isilon Platform API implementation in PowerShell'
