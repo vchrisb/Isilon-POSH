@@ -420,13 +420,20 @@ function Send-isiAPI{
     }else{
             try{
                 if ($Method -eq 'GET_JSON') {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout -UseBasicParsing).content
+                    $webResponse = Invoke-WebRequest -Uri $url -Method GET -WebSession $session -TimeoutSec $timeout -UseBasicParsing
+                    $webResponseContentEncoded = [System.Text.Encoding]::UTF8.GetString($webResponse.RawContentStream.ToArray())
+                    $ISIObject = $webResponseContentEncoded
 
                 } elseif ( ($Method -eq 'GET') -or ($Method -eq 'DELETE') ) {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -UseBasicParsing).content | ConvertFrom-Json
+                    $webResponse = Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -UseBasicParsing
+                    $webResponseContentEncoded = [System.Text.Encoding]::UTF8.GetString($webResponse.RawContentStream.ToArray())
+                    $ISIObject = $webResponseContentEncoded | ConvertFrom-Json
                 
                 } elseif ( ($Method -eq 'PUT') -or ($Method -eq 'POST') ) {
-                    $ISIObject = (Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $body -ContentType "application/json" -UseBasicParsing).content | ConvertFrom-Json
+                    $bodyEncoded = [System.Text.Encoding]::UTF8.GetBytes($body)
+                    $webResponse = Invoke-WebRequest -Uri $url -Method $Method -WebSession $session -TimeoutSec $timeout -Body $bodyEncoded -ContentType "application/json; charset=utf-8" -UseBasicParsing
+                    $webResponseContentEncoded = [System.Text.Encoding]::UTF8.GetString($webResponse.RawContentStream.ToArray())
+                    $ISIObject = $webResponseContentEncoded | ConvertFrom-Json
 
                 }       
             } 
