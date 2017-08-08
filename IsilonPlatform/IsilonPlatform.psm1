@@ -436,12 +436,17 @@ function Send-isiAPI{
                     $result = $_.Exception.Response.GetResponseStream()
                     $reader = New-Object System.IO.StreamReader($result)
                     $responseBody = $reader.ReadToEnd() | ConvertFrom-Json
-                    $responeMessage = $responseBody.errors.message | Out-String
-                    Write-Error $responeMessage
+                    if ($responseBody.PSObject.Properties.name -contains "errors") {
+                        $errorResponse = $_.Exception.Message + " " + $responseBody.errors.message
+                    } elseif ($responseBody.PSObject.Properties.name -contains "message") {
+                        $errorResponse = $_.Exception.Message + " " + $responseBody.message
+                    } else {
+                        $errorResponse = $_.Exception.Message
+                    }
+                    Write-Error $errorResponse
                 } else {
                     Write-Error $_.Exception
                 }
-
             }  
         $isi_session.timeout = (Get-Date).AddSeconds($isi_session.timeout_inactive)
         $ISIObject
