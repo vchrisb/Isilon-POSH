@@ -96,6 +96,19 @@ This variable will default to the ComputerName if not set.
         #add new cluster
         $script:isi_sessions += New-Object -TypeName psObject -Property @{Cluster = $Cluster; url=$baseurl; session= $session; timeout_absolute=(Get-Date).AddSeconds($ISIObject.timeout_absolute); timeout=(Get-Date).AddSeconds($ISIObject.timeout_inactive); timeout_inactive=$ISIObject.timeout_inactive;username=$ISIObject.username}
 
+        # Add CSRF and Referer headers (if cookie present)
+        # https://emcservice.force.com/CustomersPartners/kA5f10000004Jn3CAE
+        $cookies = $session.cookies.GetCookies($baseurl)
+        try {
+            $csrfcookie = [string]$cookies['isicsrf']
+            $csrftoken = $csrfcookie.split('=')[1]
+            $session.Headers.Add('X-CSRF-Token', $csrftoken)
+            $session.Headers.Add('Referer', $baseurl)
+            Write-Verbose 'CSRF protection detected.'
+        } catch {
+            Write-Verbose 'No CSRF protection detected.'
+        }
+
         #if default $true or default cluster not present set current cluster 
         if ($default -or (@($isi_sessions | where { $_.cluster -eq $isi_sessiondefault} ).count -eq 0)){
             $script:isi_sessiondefault = $Cluster
